@@ -79,7 +79,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="login/logout.php">
+            <a class="nav-link" href="../login/logout.php">
             <i class='bx bx-log-out menu-icon' title="Logout"></i>
               <span class="menu-title">Logout</span>
             </a>
