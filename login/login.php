@@ -1,26 +1,28 @@
 <?php
   $page_title = 'Login';
   require_once '../includes/header.php';
-  require_once '../classes/account.class.php';
+  require_once '../includes/dbconfig.php';
 
   session_start();
 
-  $account_obj = new Account();
+  
+
   if(isset($_POST['email']) && isset($_POST['password'])){
     //Sanitizing the inputs of the users. Mandatory to prevent injections!
-    $account_obj->email = htmlentities($_POST['email']);
-    $account_obj->password = htmlentities($_POST['password']);
-    if($account_obj->sign_in_admin()){
-        $account = $account_obj->get_account_info();
-        foreach($account as $row){
+    $email = htmlentities($_POST['email']);
+    $password = htmlentities($_POST['password']);
+    $sql ="SELECT * FROM account WHERE email ='$email' AND password ='$password'";
+    $result = mysqli_query($conn, $sql);
+    if(mysqli_num_rows($result) > 0){
+       
+        while($row = mysqli_fetch_assoc($result)){
+
             $_SESSION['logged_id'] = $row['id'];
             $_SESSION['fullname'] = 'Temporary';
             $_SESSION['user_type'] = $row['type'];
             //display the appropriate dashboard page for user
-            if($row['type'] == 'admin'){
+            if($_SESSION['user_type'] == 'admin'){
                 header('location: ../admin/dashboard.php');
-            }else if($row['type'] == 'landlord'){
-                header('location: ../landlord/dashboard.php');
             }
         }
     }else{
