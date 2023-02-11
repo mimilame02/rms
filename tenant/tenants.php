@@ -1,10 +1,3 @@
-tenants (1).php
-Earlier this week
-Wed 9:49 PM
-
-FATIMA DHOEVIA RACQUIZA J. ABDULHAMID uploaded an item
-PHP
-tenants (1).php
 <?php
 
     //resume session here to fetch session values
