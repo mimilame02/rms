@@ -1,0 +1,83 @@
+* {
+  color: #176f73;
+}
+
+i.bx.bx-bell , i.bx.bx-plus.btn-icon-prepend {
+  color: white;
+}
+.bx.bx-caret-left {
+  color: rgb(17, 83, 36);
+  font-size: 0.75rem;
+}
+.bx.bx-menu {
+  color: white;
+  font-size: 2rem;
+}
+.icon-menu:before {
+  content: "\e120";
+}
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+.span.bx.bx-menu:before{
+  color: white;
+  font-size: 2rem;
+}
+
+.add-page-container {
+  margin-bottom: 1rem;
+}
+.add-page-container button{
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+input {
+  box-shadow: 0px 4px 8px rgba(29, 65, 46, 0.2);
+}
+
+
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: 1rem;
+}
+
+.tr{
+  color: #176f73;
+  font-weight: bold;
+}
+table.table-bordered.dataTable thead tr:first-child th, table.table-bordered.dataTable thead tr:first-child td {
+  border-top-width: 1px;
+  color: #176f73;
+  font-weight: bolder;
+}
+.action .me-2.green i {
+  color: #176f73;
+}
+
+.action .green i {
+  color: rgb(240, 39, 39);
+}
+input#save {
+  float: right;
+  width: 7.5rem;
+  height: 3rem;
+  margin-right: 2rem;
+}
+
+/* calendar */
+
+#calendar {
+  max-width: 900px;
+  margin: 0 auto; }
+  #calendar .fc-view-container {
+    padding: 30px;
+    background-color: #fff;
+    -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2); }
