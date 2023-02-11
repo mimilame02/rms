@@ -57,7 +57,7 @@
                                         Please enter valid password.
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-10">
                                     <div class="form-check form-check-inline me-0">
                                         <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
                                         <label class="form-check-label" for="inlineCheckbox1">Remember me</label>
