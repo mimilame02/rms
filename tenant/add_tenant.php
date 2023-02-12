@@ -1,8 +1,6 @@
 <?php
   require_once '../tools/functions.php';
   require_once '../classes/tenants.class.php';
-  require_once '../tools/variables.php';
-  require_once '../includes/dbconfig.php';
 
     //resume session here to fetch session values
     session_start();
@@ -16,56 +14,63 @@
     }
 
     if(isset($_POST['save'])){
-
+      $account_obj = new Tenant();
       //sanitize user inputs
-      
-      $first_name = htmlentities($_POST['first_name']);
-      $last_name = htmlentities($_POST['last_name']);
-      $email = htmlentities($_POST['email']);
-      $contact_no = htmlentities($_POST['contact_no']);
-      $relationship_status = htmlentities($_POST['relationship_status']);
-      $type_of_household = htmlentities($_POST['type_of_household']);
-      $previous_address = htmlentities($_POST['previous_address']);
-      $city = htmlentities($_POST['city']);
-      $provinces = htmlentities($_POST['provinces']);
-      $zip_code = htmlentities($_POST['zip_code']);
-      $sex = htmlentities($_POST['sex']);
-      $date_of_birth = htmlentities($_POST['date_of_birth']);
-      $has_pet = htmlentities($_POST['has_pet']);
-      $number_of_pets = htmlentities($_POST['number_of_pets']);
-      $type_of_pet = htmlentities($_POST['type_of_pet']);
-      $is_smoking = htmlentities($_POST['is_smoking']);
+      $account_obj->first_name = htmlentities($_POST['first_name']);
+      $account_obj->last_name = htmlentities($_POST['last_name']);
+      $account_obj->email = htmlentities($_POST['email']);
+      $account_obj->contact_no = htmlentities($_POST['contact_no']);
+      $account_obj->relationship_status = htmlentities($_POST['relationship_status']);
+      $account_obj->type_of_household = htmlentities($_POST['type_of_household']);
+      $account_obj->previous_address = htmlentities($_POST['previous_address']);
+      $account_obj->city = htmlentities($_POST['city']);
+      $account_obj->provinces = htmlentities($_POST['provinces']);
+      $account_obj->zip_code = htmlentities($_POST['zip_code']);
+      $account_obj->sex = ' ';
+      if (isset($_POST['sex'])) {
+        $sex = $_POST['sex'];
+      } else {
+        $sex = 'Female';
+      }
+      $account_obj->date_of_birth = htmlentities($_POST['date_of_birth']);
+      $account_obj->has_pet = ' ';
+      if (isset($_POST['has_pet'])) {
+        $sex = $_POST['has_pet'];
+      } else {
+        $sex = 'No';
+      }
+      $account_obj->number_of_pets = htmlentities($_POST['number_of_pets']);
+      $account_obj->type_of_pet = htmlentities($_POST['type_of_pet']);
+      $account_obj->is_smoking = ' ';
+      if (isset($_POST['is_smoking'])) {
+        $is_smoking = $_POST['is_smoking'];
+      } else {
+        $is_smoking = 'No';
+      }
 
-      $vehicle_types = '';
-        if (isset($_POST['vehicle_type']) && is_array($_POST['vehicle_type'])) {
-            $vehicle_types = implode(',', $_POST['vehicle_type']);
+      $account_obj->has_vehicle = '';
+        if (isset($_POST['has_vehicle']) && is_array($_POST['has_vehicle'])) {
+            $has_vehicle = implode(',', $_POST['has_vehicle']);
         }
 
 
-      $occupants = htmlentities($_POST['occupants']);
-      $co_applicant_first_name = htmlentities($_POST['co_applicant_first_name']);
-      $co_applicant_last_name = htmlentities($_POST['co_applicant_last_name']);
-      $co_applicant_email = htmlentities($_POST['co_applicant_email']);
-      $co_applicant_contact_no = htmlentities($_POST['co_applicant_contact_no']);
+      $account_obj->occupants = htmlentities($_POST['occupants']);
+      $account_obj->co_applicant_first_name = htmlentities($_POST['co_applicant_first_name']);
+      $account_obj->co_applicant_last_name = htmlentities($_POST['co_applicant_last_name']);
+      $account_obj->co_applicant_email = htmlentities($_POST['co_applicant_email']);
+      $account_obj->co_applicant_contact_no = htmlentities($_POST['co_applicant_number']);
       
-      $emergency_contact_person = htmlentities($_POST['emergency_contact_person']);
-      $emergency_contact_number = htmlentities($_POST['emergency_contact_number']);
-      
-      
-      // Attempt insert query execution
-      $sql = "INSERT INTO `tenant`(`first_name`, `last_name`, `email`, `contact_no`, `relationship_status`, `type_of_household`, `previous_address`, `city`, `provinces`, `zip_code`, `sex`, `date_of_birth`, `has_pet`, `number_of_pets`, `type_of_pet`, `is_smoking`, `has_vehicle`, `occupants`, `co_applicant_first_name`, `co_applicant_last_name`, `co_applicant_email`, `co_applicant_contact_no`, `emergency_contact_person`, `emergency_contact_number`) 
-      VALUES ('$first_name', '$last_name', '$email', '$contact_no', '$relationship_status', '$type_of_household', '$previous_address', '$city', '$provinces', '$zip_code', '$sex', '$date_of_birth', '$has_pet', '$number_of_pets', '$type_of_pet', '$is_smoking', '$vehicle_types', '$occupants', '$co_applicant_first_name', '$co_applicant_last_name', '$co_applicant_email', '$co_applicant_contact_no', '$emergency_contact_person', '$emergency_contact_number')";
-      $result = mysqli_query($conn, $sql);
-
-      if ($result) {
-        header("Location: tenants.php");
-        exit;
-    } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+      $account_obj->emergency_contact_person = htmlentities($_POST['emergency_fname']);
+      $account_obj->emergency_contact_number = htmlentities($_POST['emergency_contact']);
+      if(validate_add_tenants($_POST)){
+        if($account_obj->tenants_add()){  
+            //redirect user to landing page after saving
+            header('location: tenants.php');
+        }
     }
-    }
+  }
 
-    
+  require_once '../tools/variables.php';
     $page_title = 'RMS | Add Tenant';
     $tenant = 'active';
     require_once '../includes/header.php';
@@ -91,21 +96,27 @@
           </div>
         </div>
       </div>
-      <form action="add_tenant.php" method="POST">
-            <div class="col-12 grid-margin">
-              <div class="card">
-                <div class="card-body">
+      <form action="add_tenant.php" method="post">
+        <div class="col-12 grid-margin">
+          <div class="card">
+              <div class="card-body">
                   <h4 class="card-title fw-bolder">Tenant Details</h4>
-                    <form class="form-sample">
                       <div class="row g-3">
                           <div class="col-md-6">
                             <div class="form-group-row">
                               <div class="col">
                               <label for="first_name">First Name</label>
-                              <input class="form-control form-control-sm" type="text" id="first_name" name="first_name" value="" required>                              </div>
+                              <input class="form-control form-control-sm" type="text" id="first_name" name="first_name" value="" >                              
+                              </div>
                             </div>
                           </div>
-
+                          <?php
+                          if(isset($_POST['save']) && !validate_first_name($_POST)){
+                          ?>
+                            <span class="form-control-sm text-danger">First name is invalid. Trailing spaces will be ignored.</span>
+                          <?php
+                              }
+                          ?>
                           <div class="col-md-6">
                             <div class="form-group-row">
                               <div class="col">
@@ -114,16 +125,22 @@
                               </div>
                             </div>
                           </div>
-
+                          
                           <div class="col-md-6">
                             <div class="form-group-row">
                               <div class="col">
                               <label for="last_name">Last Name</label>
-                              <input class="form-control form-control-sm" type="text" id="last_name" name="last_name" value="" required>
+                              <input class="form-control form-control-sm" type="text" id="last_name" name="last_name" value="" >
                               </div>
                             </div>
                           </div>
-
+                          <?php
+                          if(isset($_POST['save']) && !validate_last_name($_POST)){
+                          ?>
+                            <span class="form-control form-control-sm text-danger">Last name is invalid. Trailing spaces will be ignored.</span>
+                          <?php
+                              }
+                          ?>
                             <div class="col-md-6">
                               <div class="">
                                 <div class="col d-flex">
@@ -147,17 +164,24 @@
                             <div class="form-group-row">
                               <div class="col">
                                 <label for="email">Email</label>
-                                <input class="form-control form-control-sm" placeholder="Email" type="text" id="email" name="email" required>
+                                <input class="form-control form-control-sm" placeholder="Email" type="text" id="email" name="email">
                               </div>
                             </div>
+                            <?php
+                            if(isset($_POST['save']) && !validate_email($_POST)){
+                            ?>
+                              <span class="form-control-sm text-danger">Email is invalid. Must be valid '@'.</span>
+                            <?php
+                                }
+                            ?>
                             </div>
                             <div class="col-md-6">
                               <div class="row">
                                 <div class="col">
                                 <label for="sex">Sex</label><br>
-                                <input type="radio" id="male" name="sex" value="Male">
+                                <input type="radio" id="sex" name="sex" value="Male">
                                 <label for="male">Male</label>
-                                <input type="radio" id="female" name="sex" value="Female">
+                                <input type="radio" id="sex" name="sex" value="Female">
                                 <label for="female">Female</label>
                                 </div>
                                 <div class="col">
@@ -173,29 +197,36 @@
                               <div class="form-group-row">
                                 <div class="col">
                                 <label for="contact_no">Contact Number</label>
-                                <input class="form-control form-control-sm" type="text" id="contact_no" name="contact_no" value="" required>
+                                <input class="form-control form-control-sm" type="text" id="contact_no" name="contact_no" value="" >
                                 </div>
                               </div>
                             </div>
+                            <?php
+                            if(isset($_POST['save']) && !validate_contact_num($_POST)){
+                            ?>
+                              <span class="form-control-sm text-danger">Contact Number is invalid. Other character [',' '-' '()'] are ignored.</span>
+                            <?php
+                                }
+                            ?>
                             <div class="col-md-6">
                               <div class="row">
                                 <div class="col">
                                   <label for="has_pet">Do Tenant own a pet?</label><br>
-                                  <input type="radio" id="has_pet" name="has_pet" value="yes">
+                                  <input type="radio" id="has_pet" name="has_pet" value="Yes">
                                   <label for="yes">Yes</label>
-                                  <input type="radio" id="has_pet" name="has_pet" value="no">
+                                  <input type="radio" id="has_pet" name="has_pet" value="No">
                                   <label for="no">No</label>
                                 </div>
                                 <div class="col">
                                   <label for="number_of_pets">No. of Pets</label>
                                   <div class="col-sm-12">
-                                    <input class="form-control form-control-sm" type="number" name="number_of_pets" required>
+                                    <input class="form-control form-control-sm" type="number" name="number_of_pets" >
                                   </div>
                                 </div>
                                 <div class="col">
                                   <label for="type_of_pet">Pet Type:</label>
                                   <div class="col-sm-12">
-                                  <input class="form-control form-control-md" type="text" id="type_of_pet" name="type_of_pet" required>
+                                  <input class="form-control form-control-md" type="text" id="type_of_pet" name="type_of_pet" >
                                   </div>
                                 </div>
                               </div>
@@ -204,11 +235,11 @@
                               <div class="form-group-row">
                                 <div class="col">
                                   <label for="relationship_status">Relationship Status</label>
-                                  <select class="form-control form-control-sm" id="relationship_status" name="relationship_status" required>
-                                    <option value="None">--Select--</option>
-                                    <option value="single">Single</option>
-                                    <option value="in a relationship">In a relationship</option>
-                                    <option value="married">Married</option>
+                                  <select class="form-control form-control-sm" id="relationship_status" name="relationship_status" >
+                                    <option name="relationship_status" value="None">--Select--</option>
+                                    <option name="relationship_status" value="single">Single</option>
+                                    <option name="relationship_status" value="in a relationship">In a relationship</option>
+                                    <option name="relationship_status" value="married">Married</option>
                                   </select>
                                 </div>
                               </div>
@@ -217,9 +248,9 @@
                               <div class="form-group-row">
                                 <div class="col">
                                   <label for="is_smoking">Do Tenant Smoke?</label><br>
-                                  <input type="radio" id="is_smoking" name="is_smoking" value="yes">
+                                  <input type="radio" id="is_smoking" name="is_smoking" value="Yes">
                                   <label for="yes">Yes</label>
-                                  <input type="radio" id="is_smoking" name="is_smoking" value="no">
+                                  <input type="radio" id="is_smoking" name="is_smoking" value="No">
                                   <label for="no">No</label>
                                   </div>
                               </div>
@@ -228,13 +259,13 @@
                               <div class="form-group-row">
                                 <div class="col">
                                   <label for="type_of_household">Type of Household</label>
-                                  <select class="form-control form-control-sm" id="type_of_household" name="type_of_household" required>
+                                  <select class="form-control form-control-sm" id="type_of_household" name="type_of_household" >
                                   <option value="None">--Select--</option>
-                                    <option value="one person">One Person</option>
-                                    <option value="couple">Couple</option>
-                                    <option value="single parent">Single Parent</option>
-                                    <option value="family">Family</option>
-                                    <option value="extended family">Extended Family</option>
+                                    <option name="type_of_household" value="one person">One Person</option>
+                                    <option name="type_of_household" value="couple">Couple</option>
+                                    <option name="type_of_household" value="single parent">Single Parent</option>
+                                    <option name="type_of_household" value="family">Family</option>
+                                    <option name="type_of_household" value="extended family">Extended Family</option>
                                   </select>
                                 </div>
                               </div>
@@ -243,12 +274,12 @@
                               <div class="form-group-row">
                                 <div class="col">
                                   <label for="has_vehicle">Please check if tenant own any of the vehicles:</label><br>
-                                  <input type="checkbox" name="vehicle_type[]" value="car">Car<br>
-                                  <input type="checkbox" name="vehicle_type[]" value="motorcycle">Motorcycle<br>
-                                  <input type="checkbox" name="vehicle_type[]" value="others">Others<br>
+                                  <input type="checkbox" name="has_vehicle" value="car">Car<br>
+                                  <input type="checkbox" name="has_vehicle" value="motorcycle">Motorcycle<br>
+                                  <input type="checkbox" name="has_vehicle" value="others">Others<br>
                                   <div class="d-flex col-sm-12">
                                     <label for="other_vehicle" hidden>If other, please specify:</label><br>
-                                    <input class="form-control form-control-sm" type="text" name="other_vehicle_type" placeholder="" style="display:none;" required><br>
+                                    <input class="form-control form-control-sm" type="text" name="other_vehicle_type" placeholder="" style="display:none;" ><br>
                                   </div>
                                 </div>
                               </div>
@@ -264,7 +295,7 @@
                                 <div class="form-group-row w-100">
                                   <div class="col">
                                     <label for="occupants">Full Name/s</label>
-                                    <textarea class="form-control form-control-lg" id="occupants" name="occupants" cols="100" rows="5"  required></textarea>
+                                    <textarea class="form-control form-control-lg" id="occupants" name="occupants" cols="100" rows="5"  ></textarea>
                                   </div>
                                 </div>
                               </div>
@@ -282,13 +313,13 @@
                               <div class="form-group-row w-50">
                                 <div class="col">
                                   <label for="co_fname">First Name</label>
-                                  <input class="form-control form-control-sm" type="text" id="co_fname" name="co_fname" >
+                                  <input class="form-control form-control-sm" type="text" id="co_applicant_first_name" name="co_applicant_first_name" >
                                 </div>
                               </div>
                               <div class="form-group-row w-50">
                                 <div class="col">
                                   <label for="co_email">Email</label>
-                                  <input class="form-control form-control-sm" type="email" id="co_email" name="co_email" >
+                                  <input class="form-control form-control-sm" type="email" id="co_applicant_email" name="co_applicant_email" >
                                 </div>
                               </div>
                             </div>
@@ -297,13 +328,13 @@
                               <div class="form-group-row w-50">
                                   <div class="col">
                                     <label for="co_lname">Last Name</label>
-                                    <input class="form-control form-control-sm" type="text" id="co_lname" name="co_lname" >
+                                    <input class="form-control form-control-sm" type="text" id="co_applicant_last_name" name="co_applicant_last_name" >
                                   </div>
                               </div>
                               <div class="form-group-row w-50">
                                 <div class="col"> 
                                   <label for="co_num">Contact No.</label>
-                                  <input class="form-control form-control-sm" type="text" id="co_num" name="co_num" >
+                                  <input class="form-control form-control-sm" type="text" id="co_applicant_number" name="co_applicant_number" >
                                   </div>
                               </div>
                             </div>
@@ -320,13 +351,13 @@
                               <div class="form-group-row w-50">
                                 <div class="col">
                                   <label for="emergency_fname">Full Name</label>
-                                  <input class="form-control form-control-sm" type="text" id="emergency_fname" name="emergency_fname" required>
+                                  <input class="form-control form-control-sm" type="text" id="emergency_fname" name="emergency_fname" >
                                 </div>
                               </div>
                               <div class="form-group-row w-50">
                                 <div class="col">
-                                  <label for="emergency_num">Contact No.</label>
-                                  <input class="form-control form-control-sm" type="text" id="emergency_num" name="emergency_num" required>
+                                  <label for="emergency_contact">Contact No.</label>
+                                  <input class="form-control form-control-sm" type="text" id="emergency_contact" name="emergency_contact" >
                                 </div>
                               </div>
                             </div>
@@ -334,7 +365,6 @@
                             <input type="submit" class="btn btn-success btn-sm" value="Save Tenant" name="save" id="save">
                           </div>
                       </div>
-                    </form> 
                   </div>
                 </div>
             </div>
@@ -348,7 +378,7 @@
             });
 
             // Script to show/hide "other_vehicle_type" input field
-            var vehicleTypeCheckboxes = document.querySelectorAll('input[name="vehicle_type[]"]');
+            var vehicleTypeCheckboxes = document.querySelectorAll('input[name="has_vehicle"]');
             var otherVehicleTypeInput = document.querySelector('input[name="other_vehicle_type"]');
             var otherVehicleTypeLabel = document.querySelector('label[for="other_vehicle"]');
 

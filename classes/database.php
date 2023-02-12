@@ -4,7 +4,7 @@ class Database{
     private $host = 'localhost';
     private $username = 'root';
     private $password = '';
-    private $database = 'rms_db';
+    private $database = 'u588864141_rms';
     protected $connection;
 
     function connect(){

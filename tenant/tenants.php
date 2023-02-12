@@ -1,10 +1,3 @@
-tenants (1).php
-Earlier this week
-Wed 9:49 PM
-
-FATIMA DHOEVIA RACQUIZA J. ABDULHAMID uploaded an item
-PHP
-tenants (1).php
 <?php
 
     //resume session here to fetch session values
@@ -74,7 +67,7 @@ tenants (1).php
             </thead>
             <tbody>
             <?php
-              $sql = "SELECT * FROM tenants";
+              $sql = "SELECT * FROM tenant";
               $result = mysqli_query($conn, $sql);
               $i = 1;
               if (mysqli_num_rows($result) > 0){
@@ -101,20 +94,21 @@ tenants (1).php
             </tbody>
         </table>
 
-<script>
-    $('#example').DataTable( {
-  responsive: {
-    breakpoints: [
-      {name: 'bigdesktop', width: Infinity},
-      {name: 'meddesktop', width: 1480},
-      {name: 'smalldesktop', width: 1280},
-      {name: 'medium', width: 1188},
-      {name: 'tabletl', width: 1024},
-      {name: 'btwtabllandp', width: 848},
-      {name: 'tabletp', width: 768},
-      {name: 'mobilel', width: 480},
-      {name: 'mobilep', width: 320}
-    ]
-  }
-} );
-</script>
+        <script>
+            $('#example').DataTable( {
+          responsive: {
+            breakpoints: [
+              {name: 'bigdesktop', width: Infinity},
+              {name: 'meddesktop', width: 1480},
+              {name: 'smalldesktop', width: 1280},
+              {name: 'medium', width: 1188},
+              {name: 'tabletl', width: 1024},
+              {name: 'btwtabllandp', width: 848},
+              {name: 'tabletp', width: 768},
+              {name: 'mobilel', width: 480},
+              {name: 'mobilep', width: 320}
+            ]
+          }
+        } );
+        </script>
+
