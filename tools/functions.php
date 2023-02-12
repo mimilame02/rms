@@ -1,32 +1,37 @@
 <?php
 
 function validate_first_name($POST) {
-  if (!isset($POST['first_name']) || trim($POST['first_name']) == '') {
+   if(!isset($POST['first_name'])){
+      return false;
+  }else if(strlen(trim($POST['first_name']))<1){
       return false;
   }
   return true;
 }
 
 function validate_last_name($POST) {
-  if (!isset($POST['last_name']) || trim($POST['last_name']) == '') {
+   if(!isset($POST['last_name'])){
+      return false;
+  }else if(strlen(trim($POST['last_name']))<1){
       return false;
   }
   return true;
 }
 
 function validate_email($POST) {
-  if (!isset($POST['email']) || trim($POST['email']) == '') {
+   if(!isset($POST['email'])){
       return false;
-  }
-  if (!filter_var($POST['email'], FILTER_VALIDATE_EMAIL)) {
+  }else if(strlen(trim($POST['email']))<1){
       return false;
   }
   return true;
 }
 
 function validate_contact_num($POST) {
-  if (!isset($POST['contact_num']) || trim($POST['contact_num']) =='') {
-    return false;
+   if(!isset($POST['contact_no'])){
+      return false;
+  }else if(strlen(trim($POST['contact_no']))<1){
+      return false;
   }
   return true;
 }
@@ -38,6 +43,14 @@ function validate_add_tenants($POST) {
   }
   return true;
 }
+function validate_update_tenants($POST) {
+   if (!validate_first_name($POST) || !validate_last_name($POST) || !validate_email($POST) ||
+       !validate_contact_num($POST) || !validate_tenant_id($POST)) {
+     return false;
+   }
+   return true;
+ }
+ 
 
 function validate_add_landlord($post) {
   $errors = [];
