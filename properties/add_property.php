@@ -117,9 +117,10 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                                                        
+                                                                <div class="col">        
                                                                     <label for="address">Address</label>
                                                                     <input class="form-control form-control-sm" type="text" id="address" name="address">
+                                                                </div>
                                                                     <div class="col d-flex">
                                                                         <div class="col-sm-5">
                                                                         <label for="city">City</label>
@@ -145,29 +146,33 @@
                                                     Features
                                                 </h3>
                                                 <fieldset>
-                                                    <div class="form-radio">
-                                                        <label for="job" class="label-radio">Description of Features</label>
-                                                        <textarea class="form-control form-control-lg" id="features_description" name="features_description" col="100" row="20"></textarea>
-                                                        <div class="form-flex">
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group-row w-100">
-                                                                        <div class="col">
-                                                                        <p>Check box if features are allowed:</p>
-                                                                            <?php
-                                                                            // Connect to the database and retrieve the list of features
-                                                                            $result = mysqli_query($conn, "SELECT id, feature_name FROM features");
-                                                                            while ($row = mysqli_fetch_assoc($result)) {
-                                                                                echo "
-                                                                                <div class='d-flex col-sm-12'>
-                                                                                    <input type='checkbox' id='feature_" . $row['id'] . "' name='features[]' value='" . $row['id'] . "'>" .
-                                                                                    "<label for='feature_" . $row['id'] . "'>" . $row['feature_name'] . "</label><br>
-                                                                                </div>
-                                                                                ";
-                                                                            }
-                                                                            ?>
+                                                    <div class="col-md-6">
+                                                        <div class="form-radio">
+                                                            <label for="job" class="label-radio">Description of Features</label>
+                                                            <textarea class="form-control form-control-lg" id="features_description" name="features_description" col="100" row="20"></textarea>
+                                                            <div class="form-flex">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group-row w-100">
+                                                                            <div class="col">
+                                                                            <p>Check box if features are allowed:</p>
+                                                                                <?php
+                                                                                // Connect to the database and retrieve the list of features
+                                                                                $result = mysqli_query($conn, "SELECT id, feature_name FROM features");
+                                                                                while ($row = mysqli_fetch_assoc($result)) {
+                                                                                    echo "
+                                                                                    <div class='col d-flex'>
+                                                                                        <div class='form-group-row w-100'>
+                                                                                            <input type='checkbox' id='feature_" . $row['id'] . "' name='features[]' value='" . $row['id'] . "'>" .
+                                                                                            "<label for='feature_" . $row['id'] . "'>" . $row['feature_name'] . "</label><br>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    ";
+                                                                                }
+                                                                                ?>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                    </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </fieldset>
@@ -176,14 +181,16 @@
                                                     Images
                                                 </h3>
                                                 <fieldset>
-                                                    <div class="form-row form-input-flex">
-                                                            <div>
-                                                            <label for="property_picture">Upload a picture of the property:</label>
-                                                            <input class="form-control form-control-lg" type="file" id="property_picture" name="property_picture">
-                                                            </div>
-                                                            <div class="ps-6">
-                                                            <input type="submit" class="btn btn-success btn-sm" value="Save Property" name="save" id="save">
-                                                            </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-row form-input-flex">
+                                                                <div>
+                                                                <label for="property_picture">Upload a picture of the property:</label>
+                                                                <input class="form-control form-control-lg" type="file" id="property_picture" name="property_picture">
+                                                                </div>
+                                                                <div class="ps-6">
+                                                                <input type="submit" class="btn btn-success btn-sm" value="Save Property" name="save" id="save">
+                                                                </div>
+                                                        </div>
                                                     </div>
                                                 </fieldset>
 
