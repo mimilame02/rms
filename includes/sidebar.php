@@ -25,55 +25,55 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/dashboard.php">
+            <a class="nav-link" href="../sample/sample.php">
             <i class='bx bx-home-alt-2 menu-icon' title="Property Units"></i>
               <span class="menu-title">Property Units</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/dashboard.php">
+            <a class="nav-link" href="../sample/sample.php">
             <i class='bx bxs-key menu-icon' title="Leases"></i>
               <span class="menu-title">Lease</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/dashboard.php">
+            <a class="nav-link" href="../sample/sample.php">
             <i class='bx bxs-book-content menu-icon' title="Invoice"></i>
               <span class="menu-title">Invoice</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/dashboard.php">
+            <a class="nav-link" href="../sample/sample.php">
             <i class='bx bxs-objects-vertical-bottom menu-icon' title="Reports"></i>
               <span class="menu-title">Reports</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/dashboard.php">
+            <a class="nav-link" href="../sample/sample.php">
             <i class='bx bxs-rename menu-icon' title="Penalties"></i>
               <span class="menu-title">Penalties</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/dashboard.php">
+            <a class="nav-link" href="../sample/sample.php">
             <i class='bx bx-calendar menu-icon' title="Calendar Events"></i>
               <span class="menu-title">Calendar Events</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/dashboard.php">
+            <a class="nav-link" href="../sample/sample.php">
             <i class='bx bx-user-plus menu-icon' title="Manage Users" ></i>
               <span class="menu-title">Manage Users</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/dashboard.php">
+            <a class="nav-link" href="../sample/sample.php">
             <i class='bx bx-cog menu-icon' title="Settings"></i>
               <span class="menu-title">Settings</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/dashboard.php">
+            <a class="nav-link" href="../sample/sample.php">
             <i class='bx bxs-book-bookmark menu-icon' title="Terms and Condition"></i>
               <span class="menu-title">Terms and Condition</span>
             </a>

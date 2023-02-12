@@ -116,12 +116,12 @@
       events: [
         {
           title: 'All Day Event',
-          start: '2020-02-01'
+          start: '2023-02-01'
         },
         {
           title: 'Conference',
-          start: '2020-02-11',
-          end: '2020-02-13'
+          start: '2023-02-11',
+          end: '2023-02-13'
         },
         {
           title: 'Click for Google',
