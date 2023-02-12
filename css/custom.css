@@ -71,6 +71,10 @@ input#save {
   margin-right: 2rem;
 }
 
+@media screen (max-width: 320px){
+  
+}
+
 /* calendar */
 
 #calendar {
@@ -81,3 +85,5 @@ input#save {
     background-color: #fff;
     -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
     box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2); }
+
+
