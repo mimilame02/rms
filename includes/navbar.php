@@ -1,5 +1,5 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-      <div class="text-center navbar-brand-wrapper align-items-center justify-content-center black-bg">
+      <div class="text-center navbar-brand-wrapper align-items-center justify-content-center black-bg nav">
         <div class="nav-link"> 
           <a class="text-success nav-item" href="#">  
             <img src="../img/apartment-custom.svg" class="menu-icon" alt="Rental Building Icon">
