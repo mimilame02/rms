@@ -17,6 +17,11 @@ h6::first-word {
   font-size: 100%;
   text-transform: uppercase;
 }
+@media (min-width: 992px){
+  h6.text-success.nav-link{
+    display: none;
+  }
+}
 
 .icons {
   font-size: 1.9em;
