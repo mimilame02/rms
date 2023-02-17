@@ -5,9 +5,6 @@
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
           <span class="bx bx-menu"></span>
         </button>
-        <button class="navbar-toggler navbar-toggler-left d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-          <span class="bx bx-menu"></span>
-        </button>
         
         <ul class="navbar-nav navbar-nav-right bs-borderbox">
 
@@ -86,5 +83,8 @@
             </li>
           </div>
         </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="bx bx-menu"></span>
+        </button>
       </div>
     </nav>
