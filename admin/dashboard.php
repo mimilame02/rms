@@ -36,12 +36,12 @@
             <div class="content-wrapper">
               <div class="row">
                 <div class="col-md-12 grid-margin">
-                  <div class="row">
-                    <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                      <h3 class="font-weight-bold">DASHBOARD</h3>
-                      <h6 class="font-weight-normal mb-0">Welcome <span class="text-primary">Pink!</span></h6>
-                    </div>
+                <div class="row">
+                  <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                    <h3 class="font-weight-bold">DASHBOARD</h3>
+                    <h6 class="font-weight-normal mb-0"><?php echo "<div class='text-capitalize'> Welcome, {$_SESSION['user_type']}!</div>" ?></h6>
                   </div>
+                </div>
                 </div>
                 <div class="add-tenant-container">
           <div class="add-tenant-container">
