@@ -43,14 +43,6 @@ function validate_add_tenants($POST) {
   }
   return true;
 }
-function validate_update_tenants($POST) {
-   if (!validate_first_name($POST) || !validate_last_name($POST) || !validate_email($POST) ||
-       !validate_contact_num($POST) || !validate_tenant_id($POST)) {
-     return false;
-   }
-   return true;
- }
- 
 
 function validate_add_landlord($post) {
   $errors = [];

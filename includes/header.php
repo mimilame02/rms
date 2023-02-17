@@ -59,10 +59,11 @@
     <!-- endinject -->
     <!-- Custom js for this page-->
     <script src="../js/dashboard.js"></script>
-
-    <!-- CALENDAR CSS -->
-      <link href='../fullcalendar/packages/core/main.css' rel='stylesheet' />
-      <link href='../fullcalendar/packages/daygrid/main.css' rel='stylesheet' />
+    
+    <!-- Required jQuery first, then Popper.js, and then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 
 
 

@@ -1,6 +1,8 @@
 <?php
 
     $page_title = "";
+    $forgot_password = "";
+    $login = "";
     $dashboard = "";
     $tenant = "";
     $landlord = "";

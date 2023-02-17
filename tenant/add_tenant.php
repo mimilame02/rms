@@ -34,11 +34,21 @@
       }
       $account_obj->date_of_birth = htmlentities($_POST['date_of_birth']);
       $account_obj->has_pet = ' ';
-      if (isset($_POST['has_pet'])) {
-        $sex = $_POST['has_pet'];
-      } else {
-        $sex = 'No';
-      }
+if (isset($_POST['has_pet'])) {
+  $has_pet = $_POST['has_pet'];
+  if ($has_pet === 'No') {
+    // If the user selects "No" for owning a pet, set the values of number_of_pets and type_of_pet to "0" and "None" respectively
+    $account_obj->number_of_pets = 0;
+    $account_obj->type_of_pet = 'None';
+  } else {
+    $account_obj->number_of_pets = isset($_POST['number_of_pets']) ? $_POST['number_of_pets'] : null;
+    $account_obj->type_of_pet = isset($_POST['type_of_pet']) ? $_POST['type_of_pet'] : null;
+  }
+} else {
+  $has_pet = 'No';
+  $account_obj->number_of_pets = 0;
+  $account_obj->type_of_pet = 'None';
+}
       $account_obj->number_of_pets = htmlentities($_POST['number_of_pets']);
       $account_obj->type_of_pet = htmlentities($_POST['type_of_pet']);
       $account_obj->is_smoking = ' ';
@@ -97,23 +107,23 @@
         </div>
       </div>
       <form action="add_tenant.php" method="post">
-        <div class="col-12 grid-margin">
-          <div class="card">
-              <div class="card-body">
+            <div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
                   <h4 class="card-title fw-bolder">Tenant Details</h4>
                       <div class="row g-3">
                           <div class="col-md-6">
                             <div class="form-group-row">
                               <div class="col">
-                              <label for="first_name">First Name</label>
-                              <input class="form-control form-control-sm" type="text" id="first_name" name="first_name" value="" >                              
+                                <label for="first_name">First Name</label>
+                                <input class="form-control form-control-sm" type="text" id="first_name" name="first_name" value="" >                              
                               </div>
                             </div>
                           </div>
                           <?php
                           if(isset($_POST['save']) && !validate_first_name($_POST)){
                           ?>
-                            <span class="form-control-sm text-danger">First name is invalid. Trailing spaces will be ignored.</span>
+                            <span class="text-danger">First name is invalid. Trailing spaces will be ignored.</span>
                           <?php
                               }
                           ?>
@@ -137,7 +147,7 @@
                           <?php
                           if(isset($_POST['save']) && !validate_last_name($_POST)){
                           ?>
-                            <span class="form-control form-control-sm text-danger">Last name is invalid. Trailing spaces will be ignored.</span>
+                            <span class="text-danger">Last name is invalid. Trailing spaces will be ignored.</span>
                           <?php
                               }
                           ?>
@@ -146,11 +156,34 @@
                                 <div class="col d-flex">
                                   <div class="col-sm-5">
                                     <label for="city">City</label>
-                                    <input class="form-control form-control-sm" type="text" id="city" name="city" value="">
+                                    <select class="form-control form-control-sm" type="text" id="city" name="city" value="">
+                                    <option value="none">--Select--</option>
+                                    <?php
+                                    require_once '../classes/reference.class.php';
+                                    $ref_obj = new Reference();
+                                    $ref = $ref_obj->get_City($_POST['filter']);
+                                    foreach($ref as $row){
+                                ?>
+                                        <option value="<?=$row['citymunCode']?>"><?=$row['citymunDesc']?></option>
+                                <?php
+                                    }
+                                    ?>
+                                    </select>
                                     </div>
                                     <div class="col-sm-4">
                                         <label for="provinces">Province</label>
-                                        <input class="form-control form-control-sm" type="text" id="provinces" name="provinces" value="">
+                                        <select class="form-control form-control-sm" type="text" id="provinces" name="provinces" value="">
+                                        <option value="none">--Select--</option>
+                                        <?php
+                                            require_once '../classes/reference.class.php';
+                                            $ref_obj = new Reference();
+                                             $ref = $ref_obj->get_province($_POST['filter']);
+                                             foreach($ref as $row){
+                                                      ?>
+                                                 <option value="<?=$row['provCode']?>"><?=$row['provDesc']?></option>
+                                                     <?php
+                                                       }
+                                              ?>
                                       </select>
                                     </div>
                                     <div class="col-sm-3">
@@ -170,7 +203,7 @@
                             <?php
                             if(isset($_POST['save']) && !validate_email($_POST)){
                             ?>
-                              <span class="form-control-sm text-danger">Email is invalid. Must be valid '@'.</span>
+                              <span class="text-danger">Email is invalid. Trailing spaces will be ignored.</span>
                             <?php
                                 }
                             ?>
@@ -181,7 +214,7 @@
                                 <label for="sex">Sex</label><br>
                                 <input type="radio" id="sex" name="sex" value="Male">
                                 <label for="male">Male</label>
-                                <input type="radio" id="sex" name="sex" value="Female">
+                                <input type="radio" id="sex" name="sex" value=" ">
                                 <label for="female">Female</label>
                                 </div>
                                 <div class="col">
@@ -204,32 +237,32 @@
                             <?php
                             if(isset($_POST['save']) && !validate_contact_num($_POST)){
                             ?>
-                              <span class="form-control-sm text-danger">Contact Number is invalid. Other character [',' '-' '()'] are ignored.</span>
+                              <span class="text-danger">Contact Number is invalid. Trailing spaces will be ignored.</span>
                             <?php
                                 }
                             ?>
                             <div class="col-md-6">
-                              <div class="row">
-                                <div class="col">
-                                  <label for="has_pet">Do Tenant own a pet?</label><br>
-                                  <input type="radio" id="has_pet" name="has_pet" value="Yes">
-                                  <label for="yes">Yes</label>
-                                  <input type="radio" id="has_pet" name="has_pet" value="No">
-                                  <label for="no">No</label>
-                                </div>
-                                <div class="col">
-                                  <label for="number_of_pets">No. of Pets</label>
-                                  <div class="col-sm-12">
-                                    <input class="form-control form-control-sm" type="number" name="number_of_pets" >
-                                  </div>
-                                </div>
-                                <div class="col">
-                                  <label for="type_of_pet">Pet Type:</label>
-                                  <div class="col-sm-12">
-                                  <input class="form-control form-control-md" type="text" id="type_of_pet" name="type_of_pet" >
-                                  </div>
-                                </div>
-                              </div>
+                        <div class="row">
+                        <div class="col">
+                        <label for="has_pet">Do Tenant own a pet?</label><br>
+                        <input type="radio" id="has_pet_yes" name="has_pet" value="Yes">
+                        <label for="has_pet_yes">Yes</label>
+                        <input type="radio" id="has_pet_no" name="has_pet" value="No">
+                      <label for="has_pet_no">No</label>
+                      </div>
+                    <div class="col">
+                               <label for="number_of_pets">No. of Pets</label>
+                    <div class="col-sm-12">
+                        <input class="form-control form-control-sm" type="number" name="number_of_pets" id="number_of_pets">
+                            </div>
+                         </div>
+                  <div class="col">
+                      <label for="type_of_pet">Pet Type:</label>
+                    <div class="col-sm-12">
+                 <input class="form-control form-control-md" type="text" id="type_of_pet" name="type_of_pet">
+                    </div>
+                      </div>
+                        </div>
                             </div>
                             <div class="col-md-6">
                               <div class="form-group-row">
@@ -250,7 +283,7 @@
                                   <label for="is_smoking">Do Tenant Smoke?</label><br>
                                   <input type="radio" id="is_smoking" name="is_smoking" value="Yes">
                                   <label for="yes">Yes</label>
-                                  <input type="radio" id="is_smoking" name="is_smoking" value="No">
+                                  <input type="radio" id="is_smoking" name="is_smoking" value=" ">
                                   <label for="no">No</label>
                                   </div>
                               </div>
@@ -376,6 +409,18 @@
               document.getElementById("set_to_primary").addEventListener("click", function(){
               document.getElementById("status").value = "Primary";
             });
+
+            // Add an event listener to the "has_pet" radio buttons
+             const hasPetRadioButtons = document.getElementsByName("has_pet");
+              hasPetRadioButtons.forEach((radioButton) => {
+              radioButton.addEventListener("click", function() {
+               if (this.value === "No") {
+             // If the user selects "No" for owning a pet, set the values of number_of_pets and type_of_pet to "0" and "None" respectively
+              document.getElementById("number_of_pets").value = "0";
+              document.getElementById("type_of_pet").value = "None";
+      }
+    });
+  });
 
             // Script to show/hide "other_vehicle_type" input field
             var vehicleTypeCheckboxes = document.querySelectorAll('input[name="has_vehicle"]');

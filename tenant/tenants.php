@@ -39,13 +39,13 @@
                         if($_SESSION['user_type'] == 'admin'){ 
                     ?>
           <a href="add_tenant.php" class="btn btn-success btn-icon-text float-right">
-              <i class="bx bx-plus btn-icon-prepend"></i>
               Add Tenant </a>
               <?php
                         }
                     ?>
           </div>
         </div>
+        <div class="row mt-4">
                   <div class="card">
                     <div class="card-body">
                       <div class="table-responsive pt-3">
@@ -93,6 +93,8 @@
             ?>
             </tbody>
         </table>
+            </div>
+            </div>
 
 <script>
     $('#example').DataTable( {

@@ -13,8 +13,8 @@
     //if the above code is false then html below will be displayed
 
     require_once '../tools/variables.php';
-    $page_title = 'RMS | Properties';
-    $properties = 'active';
+    $page_title = 'RMS | Leases';
+    $p_units = 'active';
 
     require_once '../includes/header.php';
     require_once '../includes/dbconfig.php';
@@ -32,14 +32,14 @@
   <div class="content-wrapper">
     <div class="row">
       <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-        <h3 class="font-weight-bolder">PROPERTIES</h3> 
+        <h3 class="font-weight-bolder">LEASES</h3> 
       </div>
       <div class="add-tenant-container">
       <?php
                     if($_SESSION['user_type'] == 'admin'){ 
                 ?>
-      <a href="add_property.php" class="btn btn-success btn-icon-text float-right">
-          Add Property </a>
+      <a href="add_lease.php" class="btn btn-success btn-icon-text float-right">
+          Add Lease</a>
           <?php
                     }
                 ?>
@@ -53,45 +53,35 @@
         <thead>
             <tr>
                      <th>#</th>
-                     <th>Property Name</th>
-                     <th>Location</th>
-                     <th>Landlord</th>
+                     <th>Unit</th>
+                     <th>Type</th>
+                     <th>Rent</th>
+                     <th>Tenant Name</th>
                      <?php
-                            if($_SESSION['user_type'] == 'admin'){ 
-                        ?>
-                        <th>Action</th>
-                        <?php
-                            }
-                        ?>
+                                if($_SESSION['user_type'] == 'admin'){ 
+                            ?>
+                            <th>Action</th>
+                            <?php
+                                }
+                            ?>
             </tr>
         </thead>
         <tbody>
-        <?php
-          $sql = "SELECT property.*, landlord.first_name, landlord.last_name 
-          FROM property 
-          LEFT JOIN landlord ON property.landlord_id = landlord.id";
-          $result = mysqli_query($conn, $sql);
-          $i = 1;
-          if (mysqli_num_rows($result) > 0){
-            while ($row = mysqli_fetch_assoc($result)){
-              echo '
-              <tr>
-                <td>'.$i.'</td>
-                <td>'.$row['property_name'].'</td>
-                <td>'.$row['address'].'</td>
-                <td>'.$row['first_name'].' '.$row['last_name'].'</td>
-                <td>
-                  <div class="action">
-                    <a class="me-2 green" href="view_property.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
-                    <a class="me-2 green" href="edit_property.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
-                    <a class="green" href="delete_property.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
-                  </div>
-                </td>
-              </tr>';
-              $i++;
-            }
-            }
-          ?>
+        <tr>
+        <td>1</td>
+        <td>Pad 1</td>
+        <td>Pad</td>
+        <td>₱ 5000</td>
+        <td>Monica Geller</td>
+        <td>
+                      <div class="action">
+                        <a class="me-2 green" href="view_tenant.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
+                        <a class="me-2 green" href="edit_tenant.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
+                        <a class="green" href="delete_tenant.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
+                      </div>
+                    </td>
+          </tr>
+       
         </tbody>
     </table>
     </div>

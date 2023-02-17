@@ -1,11 +1,9 @@
 <?php
-  $page_title = 'Login';
-  require_once '../includes/header.php';
-  require_once '../includes/dbconfig.php';
-
   session_start();
 
-  
+  $page_title = 'Login';
+  require_once '../includes/dbconfig.php';
+
 
   if(isset($_POST['email']) && isset($_POST['password'])){
     //Sanitizing the inputs of the users. Mandatory to prevent injections!
@@ -30,6 +28,7 @@
         $error = 'Invalid username/password. Try again.';
     }
   }
+  require_once '../includes/header.php';
 ?>
 <body id="sign-up">
     <main class="py-md-4">
@@ -57,17 +56,17 @@
                                         Please enter valid password.
                                     </div>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-12">
                                     <div class="form-check form-check-inline me-0">
-                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                        <label class="form-check-label" for="inlineCheckbox1">Remember me</label>
+                                        <input class="form-check-input" type="checkbox" id="remember-me" name="remember_me" value="1">
+                                        <label class="form-check-label" for="remember-me">Remember me</label>
                                     </div>
                                 </div>
                                 <div class="col-12 pt-2 mb-3">
                                     <input class="btn btn-lg btn-success background-color-green btn-continue btn-font" type="submit" value="Login" name="login">
                                 </div>
                                 <div class="form-check form-check-inline me-0 mt-0">
-                                        <a class="green text-decoration-none text-center" href="forgotpassword.php?reset=yes">Forgot password?</a>
+                                        <a class="green text-decoration-none text-center" href="forgot_pass.php?reset=yes">Forgot password?</a>
                                     </div>
                                 <?php
                                     //Display the error message if there is any.
@@ -84,5 +83,5 @@
         </div>
     </main>
 </body>
-</html>
+
 

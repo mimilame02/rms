@@ -13,7 +13,7 @@
     //if the above code is false then html below will be displayed
 
     require_once '../tools/variables.php';
-    $page_title = 'RMS | Landlords';
+    $page_title = 'RMS | Invoices';
     $tenant = 'active';
 
     require_once '../includes/header.php';
@@ -32,19 +32,11 @@
   <div class="content-wrapper">
     <div class="row">
       <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-        <h3 class="font-weight-bolder">LANDLORD</h3> 
+        <h3 class="font-weight-bolder">INVOICES</h3> 
+        <h6 class="font-weight-normal mb-0">Invoice Listing for the Month of January</h6>
       </div>
       <div class="add-tenant-container">
-      <?php
-                    if($_SESSION['user_type'] == 'admin'){ 
-                ?>
       <div class="add-tenant-container">
-      <a href="add_landlord.php" class="btn btn-success btn-icon-text float-right">
-          Add Landlord
-          </a>
-            <?php
-                    }
-                ?>
               </div>
                 </div>
                   </div>
@@ -56,44 +48,26 @@
         <thead>
             <tr>
                      <th>#</th>
-                     <th>Name</th>
-                     <th>Email</th>
-                     <th>Contact No.</th>
-                     <?php
-                            if($_SESSION['user_type'] == 'admin'){ 
-                        ?>
-                        <th>Action</th>
-                        <?php
-                            }
-                        ?>
+                     <th>Tenant Name</th>
+                     <th>Unit Name</th>
+                     <th>Total Due</th>
+                     <th>Due Date</th>
+                     <th>Status</th>
+                     <th>Action</th>
+                   
             </tr>
         </thead>
         <tbody>
-        <?php
-  $sql = "SELECT * FROM landlord";
-  $result = mysqli_query($conn, $sql);
-  $i = 1;
-  if (mysqli_num_rows($result) > 0){
 
-    while ($row = mysqli_fetch_assoc($result)){
-      echo '
-    <tr>
-      <td>'.$i.'</td>
-      <td>'.$row['last_name'].','.$row['first_name'].'</td>
-      <td>'.$row['email'].'</td>
-      <td>'.$row['contact_no'].'</td>
-        <td>
-          <div class="action">
-             <a class="me-2 green" href="view_landlord.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
-            <a class="me-2 green" href="edit_landlord.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
-            <a class="green" href="delete_landlord.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
-          </div>
-        </td>
-    </tr>';
-    $i++;
-    }
-  }
-?>
+        <tr>
+           <td>1</td>
+            <td>Monica Geller</td>
+            <td>Pad 1</td>
+            <td>₱ 5000</td>
+            <td>2022-01-01</td>
+            <td><button class="show1">PAID</button></td>
+            <td><button class="show2" onclick="redirectTo('show_invoice.php')">DETAILS</button></td>
+          </tr>
         </tbody>
     </table>
 </div>
@@ -101,6 +75,10 @@
 </div>
 </div>
 <script>
+
+function redirectTo(url) {
+  window.location.href = url;
+}
     $('#example').DataTable( {
   responsive: {
     breakpoints: [

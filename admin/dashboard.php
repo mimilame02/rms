@@ -12,128 +12,114 @@
     }
     //if the above code is false then html below will be displayed
 
+  $current_month = date('F', strtotime('now'));
+  $_SESSION['current_month'] = $current_month;
+
+
     require_once '../tools/variables.php';
     $page_title = 'RMS | Admin Dashboard';
     $dashboard = 'active';
 
     require_once '../includes/header.php';
+    
 ?>
 <body>
   <div class="container-scroller">
-    <?php
-      require_once '../includes/navbar.php';
-    ?>
-  <div class="container-fluid page-body-wrapper">
-  <?php
-      require_once '../includes/sidebar.php';
-    ?>
-  <div class="main-panel">
-          <div class="content-wrapper">
-            <div class="row">
-              <div class="col-md-12 grid-margin">
-                <div class="row">
-                  <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                    <h3 class="font-weight-bolder">DASHBOARD</h3>
-                    <h6 class="font-weight-normal mb-0">Welcome,<span class="font-weight-normal mb-0">Pink!</span></h6>
-                  </div>
+      <?php
+        require_once '../includes/navbar.php';
+      ?>
+    <div class="container-fluid page-body-wrapper">
+      <?php
+          require_once '../includes/sidebar.php';
+        ?>
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-md-12 grid-margin">
+              <div class="row">
+                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                  <h3 class="font-weight-bold">DASHBOARD</h3>
+                  <h6 class="font-weight-normal mb-0"><?php echo "<div class='text-capitalize'> Welcome, {$_SESSION['user_type']}!</div>" ?></h6>
                 </div>
               </div>
-              <div class="card-group px-4 ml-4 ">
-                <div class="card w-50 mb-3 rounded mx-3">
-                    <div class="card-body">
-                        <div class="">
-                            <div class="card-title float-right fs-2">0</div>
-                            <i class='bx bx-user cart' style="font-size: 25px;"></i>
-                                <div class="card-text py-3">Total Tenants</div>
-                        </div>
-                      </div>
+            </div>
+          <div class="row">
+            <div class="col-md-6 order-md-2 grid-margin transparent d-flex">
+              <div class="row flex-row">
+                <div class="col-md-6 mb-4 stretch-card transparent">
+                  <div class="card card-tale">
+                    <div class="card-body white-text">
+                      <span class="bx bx-user icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-30 mb-2 ff fs-35 pl-5 fw-bolder">0</p></span>
+                      <p class="mb-1 pt-3">Total Tenants </p>
+                    </div>
                   </div>
-                
-                <div class="card w-50 mb-3 rounded mx-3">
-                    <div class="card-body">
-                        <div class="">
-                            <div class="card-title float-right fs-2">0</div>
-                            <i class='bx bxs-user-rectangle cart two' style="font-size: 25px;"></i>
-                                <div class="card-text py-3">Total Landlords</div>
-                          </div>
-                      </div>
                 </div>
-                
-                <div class="card w-50 mb-3 rounded mx-3">
-                    <div class="card-body">
-                        <div class="">
-                            <div class="card-title float-right fs-2">0</div>
-                            <i class='bx bx-building-house cart three' style="font-size: 25px;"></i>
-                                <div class="card-text py-3">Total Property</div>
-                          </div>
-                      </div>
+                <div class="col-md-6 mb-4 stretch-card transparent">
+                  <div class="card card-dark-blue">
+                    <div class="card-body white-text">
+                      <span class="bx bxs-user-rectangle icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-30 mb-2 ff fs-35 pl-5 fw-bolder">0</p></span>
+                      <p class="mb-1 pt-3">Total Landlords </p>
+                    </div>
+                  </div>
                 </div>
-                
-                <div class="card w-50 mb-3 rounded mx-3">
-                    <div class="card-body">
-                        <div class="">
-                            <div class="card-title float-right fs-2">0</div>
-                            <i class='bx bx-home-alt-2 cart four' style="font-size: 25px;"></i>
-                                <div class="card-text py-3">Total Property</div>
-                          </div>
-                      </div>
+                <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
+                  <div class="card card-light-blue">
+                    <div class="card-body white-text">
+                      <span class="bx bx-building-house icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-30 mb-2 ff fs-35 pl-5 fw-bolder">0</p></span>
+                      <p class="mb-1 pt-3">Total Property </p>
+                    </div>
+                  </div>
                 </div>
-                
+                <div class="col-md-6 stretch-card transparent">
+                  <div class="card card-light-danger">
+                    <div class="card-body white-text">
+                      <span class="bx bx-home-alt-2 icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-30 mb-2 ff fs-35 pl-5 fw-bolder">0</p></span>
+                      <p class="mb-1 pt-3">Total Property Units </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 stretch-card grid-margin grid-margin-md-1 mt-5">
+                  <div class="card card-light-green">
+                    <div class="card-body white-text mb-0 ">
+                      <p class="mb-3 mt-2 fw-bold">TOTAL INCOME</p>
+                      <div class="row">
+                        <h2 class="fw-bolder"> ₱ 0</h2>
+                        <p class="text-white font-weight-500 mb-0">Total income for the month of <?php echo $_SESSION['current_month']; ?> </p>
+                      </div>
+                      <div class="d-flex justify-content-end">
+                        <button type="button" class="view-button">View</button>
+                      </div>
+                    </div>
+                </div>
               </div>
-
-              <div class="card w-50 md-4  px-4 ml-4 rounded mx-3" style="left: 29px;">
-                  <div class="card-body">
-                      <div class="">
-                          <div class="card-title">Calendar</div>
-                          <div class="content">
-                            <div id='calendar'></div>
-                          </div>
-                      </div>
-                  </div>
-                </div>
-            </div>  
-          </div>   
+            </div>
+          </div>
+          <div class="col-md-6 order-md-1 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <div id='calendar'></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-</body>
+    </div>
+  </div>
 
-    <script src="../js/jquery-3.3.1.min.js"></script>
-    <script src="../js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
 
-    <script src='../fullcalendar/packages/core/main.js'></script>
-    <script src='../fullcalendar/packages/interaction/main.js'></script>
-    <script src='../fullcalendar/packages/daygrid/main.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js'></script>
 
     <script>
+
       document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
-
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-      plugins: [ 'interaction', 'dayGrid' ],
-      defaultDate: '2020-02-12',
-      editable: true,
-      eventLimit: true, // allow "more" link when too many events
-      events: [
-        {
-          title: 'All Day Event',
-          start: '2023-02-01'
-        },
-        {
-          title: 'Conference',
-          start: '2023-02-11',
-          end: '2023-02-13'
-        },
-        {
-          title: 'Click for Google',
-          url: 'http://google.com/',
-          start: '2023-02-28'
-        }
-      ]
-    });
-
-    calendar.render();
-  });
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth'
+        });
+        calendar.render();
+      });
 
     </script>
+    
+</body>
 
-    <script src="../js/main.js"></script>

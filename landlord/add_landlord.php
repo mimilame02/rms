@@ -1,6 +1,6 @@
 <?php
   require_once '../tools/functions.php';
-  require_once '../includes/dbconfig.php';
+  require_once '../classes/database.php';
     //resume session here to fetch session values
     session_start();
     /*
@@ -168,7 +168,6 @@
                   <div class="ps-6">
                     <input type="submit" class="btn btn-success btn-sm" value="Save Landlord" name="save" id="save">
                   </div>
-
               </div>
             </form> 
           </div>

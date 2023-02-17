@@ -26,10 +26,10 @@ class Landlord{
         $this->db = new Database();
     }
 
-    function get_tenant_info($account_id=0){
-        $sql = "SELECT * FROM tenant WHERE account_id = :account_id;";
+    function get_tenant_info($id=0){
+        $sql = "SELECT * FROM landlord WHERE id = :id;";
         $query=$this->db->connect()->prepare($sql);
-        $query->bindParam(':account_id', $account_id);
+        $query->bindParam(':id', $id);
         if($query->execute()){
             $data = $query->fetchAll();
         }
