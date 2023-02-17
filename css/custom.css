@@ -13,6 +13,10 @@ img[alt="Rental Building Icon"] {
 h6::first-letter {
   font-size: 150%;
 }
+h6::first-word {
+  font-size: 100%;
+  text-transform: uppercase;
+}
 
 .icons {
   font-size: 1.9em;
