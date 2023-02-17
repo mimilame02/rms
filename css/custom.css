@@ -11,7 +11,7 @@ img[alt="Rental Building Icon"] {
   margin-left: 3px;
 }
 
-@media (min-width: 992px){
+@media (max-width: 992px){
   h6.text-success.nav-link{
     display: none;
   }
