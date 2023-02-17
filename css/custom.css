@@ -10,13 +10,7 @@ img[alt="Rental Building Icon"] {
   position: absolute;
   margin-left: 3px;
 }
-h6::first-letter {
-  font-size: 150%;
-}
-h6::first-word {
-  font-size: 100%;
-  text-transform: uppercase;
-}
+
 @media (min-width: 992px){
   h6.text-success.nav-link{
     display: none;
