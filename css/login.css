@@ -12,6 +12,20 @@ div.sign-in{
   border-radius: 8px;
 
 }
+
+.password-container {
+  position: relative;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+
 form .btn-continue{
   max-width: 100%;
   background-color: #176F73;

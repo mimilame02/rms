@@ -44,16 +44,18 @@
                         <form class="needs-validation mt-3" action="login.php" method="post">
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <input type="text" class="log-control" id="email" placeholder="Email" name="email" required>
+                                    <input type="text" class="log-control text-light" id="email" placeholder="Email" name="email" required>
                                     <div class="invalid-feedback">
                                         Please enter a valid email address.
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <input type="password" class="log-control" id="password" name="password" placeholder="Password" required>
-                                    
+                                    <div class="password-container">
+                                        <input type="password" class="log-control text-light" id="password" name="password" placeholder="Password" required>
+                                        <span class="password-toggle-icon fa fa-eye-slash"></span>
+                                    </div>
                                     <div class="invalid-feedback">
-                                        Please enter valid password.
+                                        Please enter a valid password.
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -82,6 +84,22 @@
             </div>
         </div>
     </main>
+
+        <script>
+            $(function() {
+        $('.password-toggle-icon').click(function() {
+            var input = $(this).prev('input');
+            if (input.attr('type') === 'password') {
+            input.attr('type', 'text');
+            $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+            } else {
+            input.attr('type', 'password');
+            $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+            }
+        });
+        });
+        </script>
+
 </body>
 
 
