@@ -52,7 +52,7 @@
                                 <div class="col-12">
                                     <div class="password-container">
                                         <input type="password" class="log-control text-light" id="password" name="password" placeholder="Password" required>
-                                        <span class="password-toggle-icon fa fa-eye-slash"></span>
+                                        <span class="password-toggle-icon text-light fa fa-eye-slash"></span>
                                     </div>
                                     <div class="invalid-feedback">
                                         Please enter a valid password.
