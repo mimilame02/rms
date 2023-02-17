@@ -3,6 +3,13 @@ img {
   border-style: none;
   border-radius: 20px;
 }
+img[alt="Rental Building Icon"] {
+  font-size: 1rem;
+  left: 0;
+  width: 54px;
+  position: absolute;
+  margin-left: 3px;
+}
 
 .icons {
   font-size: 1.9em;
