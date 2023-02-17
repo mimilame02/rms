@@ -10,6 +10,9 @@ img[alt="Rental Building Icon"] {
   position: absolute;
   margin-left: 3px;
 }
+h6[name="title"]::first-letter {
+  font-size: 150%;
+}
 
 .icons {
   font-size: 1.9em;
