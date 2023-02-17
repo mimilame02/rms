@@ -1,7 +1,11 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center  black-bg">
-        <img src="../img/apartment-custom.svg" alt="Rental Building Icon">
-        <h6 class="text-success nav-link" name="title">Sofiyyah Rentals</h6>
+      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center sidebar sidebar-offcanvas" id="sidebar">
+        <div class="nav-item"> 
+          <a class="text-success nav-link" href="#">  
+            <img src="../img/apartment-custom.svg" class="menu-icon" alt="Rental Building Icon">
+            Sofiyyah Rentals
+          </a>
+        </div> 
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
