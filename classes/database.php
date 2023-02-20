@@ -2,9 +2,9 @@
 
 class Database{
     private $host = 'localhost';
-    private $username = 'root';
-    private $password = '';
-    private $database = 'rms_db';
+    private $username = 'u588864141_rms';
+    private $password = '3qRb#cIS]4q';
+    private $database = 'u588864141_rms';
     protected $connection;
 
     function connect(){
