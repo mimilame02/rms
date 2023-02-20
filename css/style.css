@@ -9631,6 +9631,10 @@ pre code {
   .offset-sm-11 {
     margin-left: 91.66667%;
   }
+  li.nav-item.logout {
+    width: 228.6px;
+    position: fixed!important;
+  }
 }
 
 @media (min-width: 768px) {
@@ -28515,6 +28519,7 @@ div.tagsinput span.tag a {
   transition-duration: 0.45s;
   transition-property: color;
   -webkit-transition-property: color;
+  font-weight: bolder;
 }
 
 .sidebar .nav .nav-item .nav-link i {
@@ -28594,7 +28599,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar .nav .nav-item.active > .nav-link {
-  background-color: #176f73;
+  background-color: #176F73;
   position: relative;
 }
 
@@ -28639,7 +28644,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar .nav:not(.sub-menu) > .nav-item.active {
-  background: #176f73;
+  background: #176F73;
 }
 
 .sidebar .nav.sub-menu {
@@ -28838,7 +28843,8 @@ div.tagsinput span.tag a {
 }
 
 .navbar .navbar-menu-wrapper {
-  background-image: url('../img/Rental.jpg');
+  background: rgb(25,109,73);
+  background: linear-gradient(90deg, rgb(62 102 89 / 94%) 1%, rgb(39 137 101) 14%, rgb(7 159 124) 100%);
   transition: width 0.25s ease;
   -webkit-transition: width 0.25s ease;
   -moz-transition: width 0.25s ease;
@@ -29980,6 +29986,10 @@ div.tagsinput span.tag a {
   .sidebar-icon-only .sidebar .nav .nav-item {
     position: relative;
   }
+
+.sidebar-icon-only .sidebar .nav .nav-item.logout {
+    width: 70px;
+}
   .sidebar-icon-only .sidebar .nav .nav-item .nav-link {
     display: block;
     padding-left: .5rem;
@@ -30094,6 +30104,9 @@ div.tagsinput span.tag a {
   }
   .sidebar-icon-only .main-panel {
     width: calc(100% - 70px);
+  }
+  li.nav-item.logout {
+    width: 228.6px;
   }
 }
 

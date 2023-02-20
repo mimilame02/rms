@@ -78,7 +78,7 @@
               <span class="menu-title">Terms and Condition</span>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item logout">
             <a class="nav-link" href="../login/logout.php">
             <i class='bx bx-log-out menu-icon' title="Logout"></i>
               <span class="menu-title">Logout</span>

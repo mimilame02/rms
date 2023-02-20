@@ -144,11 +144,25 @@ input#save {
 ol.list-group {
   padding-left: 30px;
 }
+li.nav-item.logout {
+  position: absolute;
+  bottom: 0;
+  width: 228.6px;
+}
 
+li.nav-item.logout {
+  position: fixed;
+  bottom: 0;
+  background: white;
+  border-top: solid #176F72 0.1px;
+  padding: 0px 5px 0px 5px;
+  width: calc(100% - 70px);
+}
 
 .card-light-green {
   height: calc(100% + 35px);
-  background-image: url('../img/Rental.jpg');
+  background: rgb(25,109,73);
+  background: linear-gradient(90deg, rgb(22 157 126) 1%, rgb(61 171 131) 14%, rgb(35 216 176) 100%);
   padding-bottom: 2px;
 }
 

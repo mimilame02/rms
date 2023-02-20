@@ -1,5 +1,6 @@
 #sign-up{
-  background-image: url('../img/Rental.jpg');
+  background: rgb(25,109,73);
+  background: linear-gradient(90deg, rgb(22 157 126) 1%, rgb(61 171 131) 14%, rgb(35 216 176) 100%);
 }
 .main-container{
   margin-top: 72px;
@@ -7,10 +8,9 @@
 div.sign-in{
   max-width: 500px;
   padding-top: 1.5rem;
-  background-color: rgba(255,255,255,0.22);
-  box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.3);
+  background-color: rgb(255 255 255 / 20%);
+  box-shadow: 0 1px 1px 1px rgb(0 0 0 / 20%);
   border-radius: 8px;
-
 }
 
 .password-container {
@@ -28,7 +28,7 @@ div.sign-in{
 
 form .btn-continue{
   max-width: 100%;
-  background-color: #176F73;
+  background-color: #106b6f;
 }
 hr:not([size]) {
   height: 0.5px;
@@ -87,7 +87,7 @@ a.green:hover{
 }
 form .btn-continue {
     max-width: 100%;
-    background-color: #176F73;
+    background-color: #087058;
     border-color: #107869;
 }
 @media (min-width: 576px) {
