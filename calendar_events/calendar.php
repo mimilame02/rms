@@ -31,12 +31,12 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row mt-4">
-            <h3 class="font-weight-bold">CALENDAR</h3>
-              <div class="card">
-                  <div class="card-body">
-                    <div id='calendar'></div>
-                  </div>
+            <div class="card-light-blue">
+              <div class="card-body">
+                  <p class="fw-bolder mb-0">CALENDAR</p>
+                  <div id='calendar'></div>
               </div>
+            </div>
           </div>
       </div>
     </div>
@@ -53,4 +53,9 @@
             calendar.render();
         });
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+    <script src="script.js"></script>
 </body>
