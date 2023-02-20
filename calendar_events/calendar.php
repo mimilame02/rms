@@ -31,7 +31,7 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row mt-4">
-            <div class="card-light-blue">
+            <div class="card card-light-blue">
               <div class="card-body">
                   <p class="fw-bolder mb-0">CALENDAR</p>
                   <div id='calendar'></div>
