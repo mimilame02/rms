@@ -34,7 +34,9 @@
             <div class="card card-light-blue">
               <p class="fw-bolder mb-0">CALENDAR</p>
               <div class="card-body">
+                <div class="fs-5 mb-2">
                   <div id='calendar'></div>
+                </div>
                   <button class="btn btn-success float-right"id="add-event-btn">Add Event</button>
               </div>
             </div>
@@ -58,19 +60,22 @@
         $('#add-event-btn').click(function() {
           // Prompt the user for the event title and start/end dates/times
           var title = prompt("Event Title:");
-          var start = moment(prompt("Start Date/Time (YYYY-MM-DD HH:mm):"));
-          var end = moment(prompt("End Date/Time (YYYY-MM-DD HH:mm):"));
-        
-          // Create a new event object
-          var event = {
+
+          // Get the start and end times from the user
+          let startTime = prompt("Enter the start time (YYYY-MM-DD HH:mm):");
+          let endTime = prompt("Enter the end time (YYYY-MM-DD HH:mm):");
+
+          // Create the event object
+          let event = {
             title: title,
-            start: start,
-            end: end
+            start: startTime,
+            end: endTime,
           };
-        
+
           // Add the event to the calendar
           $('#calendar').fullCalendar('renderEvent', event, true);
         });
+
     </script>
 
 </body>

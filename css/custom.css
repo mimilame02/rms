@@ -123,9 +123,9 @@ input#save {
 #calendar {
   max-width: 900px;
   margin: 0 auto; 
-  font-size: 0.5em; }
+  font-size: 0.8em; }
   #calendar .fc-view-container {
-    padding: 30px;
+    padding: 25px;
     background-color: #fff;
     -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
     box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2); }
