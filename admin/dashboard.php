@@ -55,7 +55,7 @@
                       <div class="card card-tale">
                         <div class="card-body white-text">
                           <span class="bx bx-user icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-30 mb-2 ff fs-35 pl-5 fw-bolder">0</p></span>
-                          <p class="mb-1 pt-3">Total Tenants </p>
+                          <p class="mb-1 pt-3 fw-bolder">Total Tenants </p>
                         </div>
                       </div>
                     </div>
@@ -63,7 +63,7 @@
                       <div class="card card-dark-blue">
                         <div class="card-body white-text">
                           <span class="bx bxs-user-rectangle icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-30 mb-2 ff fs-35 pl-5 fw-bolder">0</p></span>
-                          <p class="mb-1 pt-3">Total Landlords </p>
+                          <p class="mb-1 pt-3 fw-bolder">Total Landlords </p>
                         </div>
                       </div>
                     </div>
@@ -71,15 +71,15 @@
                       <div class="card card-light-blue">
                         <div class="card-body white-text">
                           <span class="bx bx-building-house icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-30 mb-2 ff fs-35 pl-5 fw-bolder">0</p></span>
-                          <p class="mb-1 pt-3">Total Property </p>
+                          <p class="mb-1 pt-3 fw-bolder">Total Property </p>
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6 stretch-card transparent">
-                      <div class="card card-light-danger">
+                    <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
+                      <div class="card card-light-blue">
                         <div class="card-body white-text">
                           <span class="bx bx-home-alt-2 icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-30 mb-2 ff fs-35 pl-5 fw-bolder">0</p></span>
-                          <p class="mb-1 pt-3">Total Property Units </p>
+                          <p class="mb-1 pt-3 fw-bolder">Total Property Units </p>
                         </div>
                       </div>
                     </div>
@@ -102,7 +102,10 @@
           <div class="col-md-6 order-md-1 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <div id='calendar'></div>
+                <div class="fw-bolder">
+                  <p class="text-white font-weight-500 mb-0">CALENDAR</p>
+                </div>
+                  <div id='calendar'></div>
               </div>
             </div>
           </div>
