@@ -55,7 +55,7 @@
                       <div class="card card-tale">
                         <div class="card-body white-text">
                           <span class="bx bx-user icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-30 mb-2 ff fs-35 pl-5 fw-bolder">0</p></span>
-                          <p class="mb-1 pt-3 fw-bolder">Total Tenants </p>
+                          <p class="mb-1 pt-3 fw-bold">Total Tenants </p>
                         </div>
                       </div>
                     </div>
@@ -89,7 +89,7 @@
                           <p class="mb-3 mt-2 fw-bold">TOTAL INCOME</p>
                           <div class="row">
                             <h2 class="fw-bolder"> ₱ 0</h2>
-                            <p class="text-white font-weight-500 mb-0">Total income for the month of <?php echo $_SESSION['current_month']; ?> </p>
+                            <p class="text-white font-weight-700 mb-0">Total income for the month of <?php echo $_SESSION['current_month']; ?> </p>
                           </div>
                           <div class="d-flex justify-content-end">
                             <button type="button" class="view-button">View</button>
