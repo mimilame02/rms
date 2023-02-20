@@ -63,7 +63,7 @@
                       <div class="card card-dark-blue">
                         <div class="card-body white-text">
                           <span class="bx bxs-user-rectangle icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-30 mb-2 ff fs-35 pl-5 fw-bolder">0</p></span>
-                          <p class="mb-1 pt-3 fw-bolder">Total Landlords </p>
+                          <p class="mb-1 pt-3 fw-bold">Total Landlords </p>
                         </div>
                       </div>
                     </div>
@@ -71,7 +71,7 @@
                       <div class="card card-light-blue">
                         <div class="card-body white-text">
                           <span class="bx bx-building-house icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-30 mb-2 ff fs-35 pl-5 fw-bolder">0</p></span>
-                          <p class="mb-1 pt-3 fw-bolder">Total Property </p>
+                          <p class="mb-1 pt-3 fw-bold">Total Property </p>
                         </div>
                       </div>
                     </div>
@@ -79,7 +79,7 @@
                       <div class="card card-light-blue">
                         <div class="card-body white-text">
                           <span class="bx bx-home-alt-2 icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-30 mb-2 ff fs-35 pl-5 fw-bolder">0</p></span>
-                          <p class="mb-1 pt-3 fw-bolder">Total Property Units </p>
+                          <p class="mb-1 pt-3 fw-bold">Total Property Units </p>
                         </div>
                       </div>
                     </div>
@@ -100,11 +100,9 @@
                 </div>
               </div>
           <div class="col-md-6 order-md-1 grid-margin stretch-card">
-            <div class="card">
+            <div class="card card-light-blue">
               <div class="card-body">
-                <div class="fw-bolder">
-                  <p class="text-white font-weight-500 mb-0">CALENDAR</p>
-                </div>
+                  <p class="fw-bolder mb-0">CALENDAR</p>
                   <div id='calendar'></div>
               </div>
             </div>
