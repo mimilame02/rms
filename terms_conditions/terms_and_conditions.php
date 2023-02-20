@@ -90,8 +90,8 @@
                                     </label>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary" id="accept-button save" disabled>Submit</button>
-                                <button type="button" class="btn btn-secondary" id="decline-button save">I Do Not Accept</button>
+                                <button type="submit" class="btn btn-primary float-right" id="accept-button save" disabled>Submit</button>
+                                <button type="button" class="btn btn-secondary float-right" id="decline-button save">I Do Not Accept</button>
 
                             </div>
                         </div>

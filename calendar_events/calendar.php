@@ -35,6 +35,7 @@
               <p class="fw-bolder mb-0">CALENDAR</p>
               <div class="card-body">
                   <div id='calendar'></div>
+                  <button class="btn btn-success float-right"id="add-event-btn">Add Event</button>
               </div>
             </div>
           </div>
@@ -53,12 +54,6 @@
             calendar.render();
         });
         
-        $('#calendar').fullCalendar({
-          // other options...
-          eventClick: function(calEvent, jsEvent, view) {
-            // Handle event click here...
-          }
-        });
 
         $('#add-event-btn').click(function() {
           // Prompt the user for the event title and start/end dates/times
