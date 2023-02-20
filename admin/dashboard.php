@@ -99,7 +99,7 @@
                   </div>
                 </div>
               </div>
-          <div class="col-md-6 order-md-1 grid-margin stretch-card">
+          <div class="col-md-6 order-md-1 grid-margin">
             <div class="card card-light-blue">
               <div class="card-body">
                   <p class="fw-bolder mb-0">CALENDAR</p>
