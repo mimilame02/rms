@@ -52,10 +52,30 @@
             });
             calendar.render();
         });
+        
+        $('#calendar').fullCalendar({
+          // other options...
+          eventClick: function(calEvent, jsEvent, view) {
+            // Handle event click here...
+          }
+        });
+
+        $('#add-event-btn').click(function() {
+          // Prompt the user for the event title and start/end dates/times
+          var title = prompt("Event Title:");
+          var start = moment(prompt("Start Date/Time (YYYY-MM-DD HH:mm):"));
+          var end = moment(prompt("End Date/Time (YYYY-MM-DD HH:mm):"));
+        
+          // Create a new event object
+          var event = {
+            title: title,
+            start: start,
+            end: end
+          };
+        
+          // Add the event to the calendar
+          $('#calendar').fullCalendar('renderEvent', event, true);
+        });
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
-    <script src="script.js"></script>
 </body>
