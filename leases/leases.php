@@ -14,7 +14,7 @@
 
     require_once '../tools/variables.php';
     $page_title = 'RMS | Leases';
-    $p_units = 'active';
+    $leases = 'active';
 
     require_once '../includes/header.php';
     require_once '../includes/dbconfig.php';

@@ -93,7 +93,7 @@
         }
       }
 
-      $page_title = 'RMS | Add Tenant';
+      $page_title = 'RMS | Edit Tenant';
       $tenant = 'active';
       require_once '../includes/header.php';
   ?>
@@ -111,7 +111,7 @@
     <div class="content-wrapper">
       <div class="row">
         <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-          <h3 class="font-weight-bolder">ADD TENANT</h3> 
+          <h3 class="font-weight-bolder">EDIT TENANT</h3> 
         </div>
         <div class="add-page-container">
           <div class="col-md-2 d-flex justify-align-between float-right">

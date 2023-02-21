@@ -14,7 +14,7 @@
 
     require_once '../tools/variables.php';
     $page_title = 'RMS | Invoices';
-    $tenant = 'active';
+    $invoices = 'active';
 
     require_once '../includes/header.php';
     require_once '../includes/dbconfig.php';

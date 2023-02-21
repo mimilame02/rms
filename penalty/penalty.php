@@ -13,8 +13,8 @@
     //if the above code is false then html below will be displayed
 
     require_once '../tools/variables.php';
-    $page_title = 'RMS | Penalties';
-    $tenant = 'active';
+    $page_title = 'RMS | Tickets';
+    $tickets = 'active';
 
     require_once '../includes/header.php';
     require_once '../includes/dbconfig.php';
@@ -32,7 +32,7 @@
   <div class="content-wrapper">
     <div class="row">
       <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-        <h3 class="font-weight-bolder">PENALTIES</h3> 
+        <h3 class="font-weight-bolder">TICKETS</h3> 
       </div>
       <div class="add-tenant-container">
       <?php

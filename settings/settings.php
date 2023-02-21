@@ -14,7 +14,7 @@
 
     require_once '../tools/variables.php';
     $page_title = 'RMS | Settings';
-    $landlord = 'active';
+    $settings = 'active';
 
     require_once '../includes/header.php';
 ?>
