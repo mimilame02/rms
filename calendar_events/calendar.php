@@ -18,6 +18,7 @@
 
     require_once '../includes/header.php';
     require_once '../includes/dbconfig.php';
+    require_once 'add_event.php';
 ?>
 <body>
   <div class="container-scroller">
@@ -37,7 +38,7 @@
                 <div class="fs-5 mb-2">
                   <div id='calendar'></div>
                 </div>
-                  <button class="btn btn-success float-right"id="add-event-btn">Add Event</button>
+                  <button class="btn btn-success float-right" id="add-event-btn">Add Event</button>
               </div>
             </div>
           </div>
@@ -46,36 +47,58 @@
   </div>
 
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js'></script>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                events: 'events.php'
-            });
-            calendar.render();
-        });
-        
+      jQuery(document).ready(function($) {
+          const calendarEl = document.getElementById('calendar');
+          const calendar = new FullCalendar.Calendar(calendarEl, {
+              initialView: 'dayGridMonth',
+              events: 'events.php'
+          });
+          calendar.render();
 
-        $('#add-event-btn').click(function() {
-          // Prompt the user for the event title and start/end dates/times
-          var title = prompt("Event Title:");
+          $('#add-event-btn').click(function() {
+              // Initialize the datepicker on the "start" and "end" inputs
+              $('#start, #end').datepicker({
+                  dateFormat: 'yy-mm-dd',
+                  onSelect: function(dateText) {
+                      $(this).val(`${dateText}T14:00:00`); // Assumes a default start time of 2:00 PM
+                  }
+              });
 
-          // Get the start and end times from the user
-          let startTime = prompt("Enter the start time (YYYY-MM-DD HH:mm):");
-          let endTime = prompt("Enter the end time (YYYY-MM-DD HH:mm):");
+              // Open the event form when the "Add Event" button is clicked
+              $('#event-modal').modal('show');
 
-          // Create the event object
-          let event = {
-            title: title,
-            start: startTime,
-            end: endTime,
-          };
+              // Handle form submission
+              $('#event-form').submit(function(event) {
+                  event.preventDefault();
 
-          // Add the event to the calendar
-          $('#calendar').fullCalendar('renderEvent', event, true);
-        });
+                  // Get form values
+                  const title = $('#title').val();
+                  const start = $('#start').val();
+                  const end = $('#end').val();
 
-    </script>
+                  // Create the event object
+                  const eventData = {
+                      title: title,
+                      start: start,
+                      end: end
+                  };
+
+                  // Send the event to the server
+                  $.post('add_event.php', eventData, function(response) {
+                      // If the event was added successfully, render it on the calendar
+                      if (response.status === 'success') {
+                          calendar.addEvent(eventData);
+                          $('#event-modal').modal('hide');
+                      } else {
+                          alert(response.message);
+                      }
+                  }, 'json');
+              });
+          });
+      });
+  </script>
+
 
 </body>

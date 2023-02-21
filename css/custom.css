@@ -250,19 +250,22 @@ ul.no-bullets, li.no-bullets {
 
 /* calendar */
 
-#calendar {
-  max-width: 900px;
-  margin: 0 auto; 
-  font-size: 0.8em; }
-#calendar .fc-view-container {
-  padding: 25px;
-  background-color: #fff;
-  -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
-  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2); }
-.fc .fc-button .fc-icon {
-  font-size: 1.5em;
-  vertical-align: middle;
-  color: #176f73; }
+  #calendar {
+    max-width: 900px;
+    margin: 0 auto; 
+    font-size: 0.75em; }
+  #calendar .fc-view-container {
+    padding: 25px;
+    background-color: #fff;
+    -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2); }
+  .fc .fc-button .fc-icon {
+    font-size: 1.5em;
+    vertical-align: middle;
+    color: #176f73; }
+  td.fc-day.fc-day-tue.fc-day-today.fc-daygrid-day{
+    background-color: rgb(46 147 129 / 15%);
+  }
 
 :root {
   --fc-small-font-size: .85em;
@@ -272,24 +275,24 @@ ul.no-bullets, li.no-bullets {
   --fc-border-color: #ddd;
   --fc-button-text-color: #fff;
   --fc-button-bg-color: #2c3e50;
-  --fc-button-border-color: #2c3e50;
-  --fc-button-hover-bg-color: #1e2b37;
-  --fc-button-hover-border-color: #1a252f;
-  --fc-button-active-bg-color: #1a252f;
-  --fc-button-active-border-color: #151e27;
-  --fc-event-bg-color: #3788d8;
-  --fc-event-border-color: #3788d8;
-  --fc-event-text-color: #fff;
-  --fc-event-selected-overlay-color: rgba(0,0,0,.25);
+  --fc-button-border-color: #879baf6b;
+  --fc-button-hover-bg-color: #2d6465;
+  --fc-button-hover-border-color: #2d6465;
+  --fc-button-active-bg-color: #115845e8;
+  --fc-button-active-border-color: #115845e8;
+  --fc-event-bg-color: #c3d837;
+  --fc-event-border-color: #c3d837;
+  --fc-event-text-color: #01105d;
+  --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.4);
   --fc-more-link-bg-color: #d0d0d0;
   --fc-more-link-text-color: inherit;
   --fc-event-resizer-thickness: 8px;
   --fc-event-resizer-dot-total-width: 8px;
   --fc-event-resizer-dot-border-width: 1px;
   --fc-non-business-color: hsla(0,0%,84%,.3);
-  --fc-bg-event-color: #8fdf82;
+  --fc-bg-event-color: #8be347;
   --fc-bg-event-opacity: 0.3;
-  --fc-highlight-color: rgba(188,232,241,.3);
-  --fc-today-bg-color: rgb(28 180 115 / 15%);
+  --fc-highlight-color: rgba(168, 232, 245, 0.3);
+  --fc-today-bg-color: rgba(28, 180, 114, 0.391);
   --fc-now-indicator-color: red;
 }

@@ -14,71 +14,71 @@
     }
 
     if(isset($_POST['save'])){
-      $account_obj = new Tenant();
-      //sanitize user inputs
-      $account_obj->first_name = htmlentities($_POST['first_name']);
-      $account_obj->last_name = htmlentities($_POST['last_name']);
-      $account_obj->email = htmlentities($_POST['email']);
-      $account_obj->contact_no = htmlentities($_POST['contact_no']);
-      $account_obj->relationship_status = htmlentities($_POST['relationship_status']);
-      $account_obj->type_of_household = htmlentities($_POST['type_of_household']);
-      $account_obj->previous_address = htmlentities($_POST['previous_address']);
-      $account_obj->city = htmlentities($_POST['city']);
-      $account_obj->provinces = htmlentities($_POST['provinces']);
-      $account_obj->zip_code = htmlentities($_POST['zip_code']);
-      $account_obj->sex = ' ';
-      if (isset($_POST['sex'])) {
-        $sex = $_POST['sex'];
-      } else {
-        $sex = 'Female';
-      }
-      $account_obj->date_of_birth = htmlentities($_POST['date_of_birth']);
-      $account_obj->has_pet = ' ';
-if (isset($_POST['has_pet'])) {
-  $has_pet = $_POST['has_pet'];
-  if ($has_pet === 'No') {
-    // If the user selects "No" for owning a pet, set the values of number_of_pets and type_of_pet to "0" and "None" respectively
-    $account_obj->number_of_pets = 0;
-    $account_obj->type_of_pet = 'None';
-  } else {
-    $account_obj->number_of_pets = isset($_POST['number_of_pets']) ? $_POST['number_of_pets'] : null;
-    $account_obj->type_of_pet = isset($_POST['type_of_pet']) ? $_POST['type_of_pet'] : null;
-  }
-} else {
-  $has_pet = 'No';
-  $account_obj->number_of_pets = 0;
-  $account_obj->type_of_pet = 'None';
-}
-      $account_obj->number_of_pets = htmlentities($_POST['number_of_pets']);
-      $account_obj->type_of_pet = htmlentities($_POST['type_of_pet']);
-      $account_obj->is_smoking = ' ';
-      if (isset($_POST['is_smoking'])) {
-        $is_smoking = $_POST['is_smoking'];
-      } else {
-        $is_smoking = 'No';
-      }
-
-      $account_obj->has_vehicle = '';
-        if (isset($_POST['has_vehicle']) && is_array($_POST['has_vehicle'])) {
-            $has_vehicle = implode(',', $_POST['has_vehicle']);
+        $account_obj = new Tenant();
+        //sanitize user inputs
+        $account_obj->first_name = htmlentities($_POST['first_name']);
+        $account_obj->last_name = htmlentities($_POST['last_name']);
+        $account_obj->email = htmlentities($_POST['email']);
+        $account_obj->contact_no = htmlentities($_POST['contact_no']);
+        $account_obj->relationship_status = htmlentities($_POST['relationship_status']);
+        $account_obj->type_of_household = htmlentities($_POST['type_of_household']);
+        $account_obj->previous_address = htmlentities($_POST['previous_address']);
+        $account_obj->city = htmlentities($_POST['city']);
+        $account_obj->provinces = htmlentities($_POST['provinces']);
+        $account_obj->zip_code = htmlentities($_POST['zip_code']);
+        $account_obj->sex = ' ';
+        if (isset($_POST['sex'])) {
+          $sex = $_POST['sex'];
+        } else {
+          $sex = 'Female';
+        }
+        $account_obj->date_of_birth = htmlentities($_POST['date_of_birth']);
+        $account_obj->has_pet = ' ';
+        if (isset($_POST['has_pet'])) {
+          $has_pet = $_POST['has_pet'];
+          if ($has_pet === 'No') {
+            // If the user selects "No" for owning a pet, set the values of number_of_pets and type_of_pet to "0" and "None" respectively
+            $account_obj->number_of_pets = 0;
+            $account_obj->type_of_pet = 'None';
+          } else {
+            $account_obj->number_of_pets = isset($_POST['number_of_pets']) ? $_POST['number_of_pets'] : null;
+            $account_obj->type_of_pet = isset($_POST['type_of_pet']) ? $_POST['type_of_pet'] : null;
+          }
+        } else {
+          $has_pet = 'No';
+          $account_obj->number_of_pets = 0;
+          $account_obj->type_of_pet = 'None';
+        }
+        $account_obj->number_of_pets = htmlentities($_POST['number_of_pets']);
+        $account_obj->type_of_pet = htmlentities($_POST['type_of_pet']);
+        $account_obj->is_smoking = ' ';
+        if (isset($_POST['is_smoking'])) {
+          $is_smoking = $_POST['is_smoking'];
+        } else {
+          $is_smoking = 'No';
         }
 
+        $account_obj->has_vehicle = '';
+          if (isset($_POST['has_vehicle']) && is_array($_POST['has_vehicle'])) {
+              $has_vehicle = implode(',', $_POST['has_vehicle']);
+          }
 
-      $account_obj->occupants = htmlentities($_POST['occupants']);
-      $account_obj->co_applicant_first_name = htmlentities($_POST['co_applicant_first_name']);
-      $account_obj->co_applicant_last_name = htmlentities($_POST['co_applicant_last_name']);
-      $account_obj->co_applicant_email = htmlentities($_POST['co_applicant_email']);
-      $account_obj->co_applicant_contact_no = htmlentities($_POST['co_applicant_number']);
-      
-      $account_obj->emergency_contact_person = htmlentities($_POST['emergency_fname']);
-      $account_obj->emergency_contact_number = htmlentities($_POST['emergency_contact']);
-      if(validate_add_tenants($_POST)){
-        if($account_obj->tenants_add()){  
-            //redirect user to landing page after saving
-            header('location: tenants.php');
-        }
+
+        $account_obj->occupants = htmlentities($_POST['occupants']);
+        $account_obj->co_applicant_first_name = htmlentities($_POST['co_applicant_first_name']);
+        $account_obj->co_applicant_last_name = htmlentities($_POST['co_applicant_last_name']);
+        $account_obj->co_applicant_email = htmlentities($_POST['co_applicant_email']);
+        $account_obj->co_applicant_contact_no = htmlentities($_POST['co_applicant_number']);
+        
+        $account_obj->emergency_contact_person = htmlentities($_POST['emergency_fname']);
+        $account_obj->emergency_contact_number = htmlentities($_POST['emergency_contact']);
+        if(validate_add_tenants($_POST)){
+          if($account_obj->tenants_add()){  
+              //redirect user to landing page after saving
+              header('location: tenants.php');
+          }
+      }
     }
-  }
 
   require_once '../tools/variables.php';
     $page_title = 'RMS | Add Tenant';
