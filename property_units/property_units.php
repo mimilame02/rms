@@ -13,8 +13,8 @@
     //if the above code is false then html below will be displayed
 
     require_once '../tools/variables.php';
-    $page_title = 'RMS | Properties';
-    $properties = 'active';
+    $page_title = 'RMS | Property Units';
+    $p_units = 'active';
 
     require_once '../includes/header.php';
     require_once '../includes/dbconfig.php';
@@ -32,17 +32,17 @@
   <div class="content-wrapper">
     <div class="row">
       <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-        <h3 class="font-weight-bolder">PROPERTIES</h3> 
+        <h3 class="font-weight-bolder">PROPERTY UNITS</h3> 
       </div>
       <div class="add-tenant-container">
-        <?php
-            if($_SESSION['user_type'] == 'admin'){ 
-        ?>
-        <a href="add_property.php" class="btn btn-success btn-icon-text float-right">
-            Add Property </a>
-            <?php
-                }
-            ?>
+      <?php
+                    if($_SESSION['user_type'] == 'admin'){ 
+                ?>
+      <a href="add_property_units.php" class="btn btn-success btn-icon-text float-right">
+          Add Property Unit </a>
+          <?php
+                    }
+                ?>
       </div>
     </div>
     <div class="row mt-4">
@@ -53,9 +53,11 @@
         <thead>
             <tr>
                      <th>#</th>
-                     <th>Property Name</th>
-                     <th>Location</th>
-                     <th>Landlord</th>
+                     <th>Unit</th>
+                     <th>Condition</th>
+                     <th>Rent</th>
+                     <th>Main Property</th>
+                     <th>Status</th>
                      <?php
                             if($_SESSION['user_type'] == 'admin'){ 
                         ?>
@@ -67,19 +69,23 @@
         </thead>
         <tbody>
         <?php
-          $sql = "SELECT property.*, landlord.first_name, landlord.last_name 
-          FROM property 
-          LEFT JOIN landlord ON property.landlord_id = landlord.id";
+          $sql="SELECT pu.*, uc.condition_name, p.property_name 
+          FROM property_units pu 
+          LEFT JOIN unit_condition uc ON pu.unit_condition_id = uc.id 
+          LEFT JOIN property p ON pu.property_id = p.id";
           $result = mysqli_query($conn, $sql);
           $i = 1;
           if (mysqli_num_rows($result) > 0){
             while ($row = mysqli_fetch_assoc($result)){
+              $status = $row['status'] == 'Vacant' ? '<button class="btn btn-success btn-lg">Vacant</button>' : '<button class="btn btn-danger btn-lg">Occupied</button>';
               echo '
               <tr>
                 <td>'.$i.'</td>
+                <td>'.$row['unit_name'].'</td>
+                <td>'.$row['condition_name'].'</td>
+                <td>'.$row['monthly_rent'].'</td>
                 <td>'.$row['property_name'].'</td>
-                <td>'.$row['address'].'</td>
-                <td>'.$row['first_name'].' '.$row['last_name'].'</td>
+                <td>'.$status.'</td>
                 <td>
                   <div class="action">
                     <a class="me-2 green" href="view_property.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
