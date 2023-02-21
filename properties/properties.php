@@ -35,14 +35,14 @@
         <h3 class="font-weight-bolder">PROPERTIES</h3> 
       </div>
       <div class="add-tenant-container">
-      <?php
-                    if($_SESSION['user_type'] == 'admin'){ 
-                ?>
-      <a href="add_property.php" class="btn btn-success btn-icon-text float-right">
-          Add Property </a>
-          <?php
-                    }
-                ?>
+        <?php
+            if($_SESSION['user_type'] == 'admin'){ 
+        ?>
+        <a href="add_property.php" class="btn btn-success btn-icon-text float-right">
+            Add Property </a>
+        <?php
+            }
+        ?>
       </div>
     </div>
     <div class="row mt-4">
