@@ -14,10 +14,11 @@
 
     require_once '../tools/variables.php';
     $page_title = 'RMS | Calendar Events';
-    $tenant = 'active';
+    $calendar_events = 'active';
 
     require_once '../includes/header.php';
     require_once '../includes/dbconfig.php';
+/*     require_once 'add_event.php'; */
 ?>
 <body>
   <div class="container-scroller">
@@ -37,45 +38,98 @@
                 <div class="fs-5 mb-2">
                   <div id='calendar'></div>
                 </div>
-                  <button class="btn btn-success float-right"id="add-event-btn">Add Event</button>
+                  <button class="btn btn-success float-right" id="add-event-btn">Add Event</button>
               </div>
             </div>
           </div>
       </div>
     </div>
   </div>
+  <!-- Add Event Modal -->
+  <div class="modal fade" id="add-event-modal" tabindex="-1" aria-labelledby="add-event-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="add-event-modal-label">Add Event</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="add-event-form">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="event-title">Title</label>
+              <input type="text" class="form-control" id="event-title" name="title">
+            </div>
+            <div class="form-group">
+              <label for="event-start-date">Start Date</label>
+              <input type="date" class="form-control" id="event-start-date" name="start">
+            </div>
+            <div class="form-group">
+              <label for="event-end-date">End Date</label>
+              <input type="date" class="form-control" id="event-end-date" name="end">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js'></script>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                events: 'events.php'
-            });
-            calendar.render();
-        });
-        
+      jQuery(document).ready(function($) {
+          const calendarEl = document.getElementById('calendar');
+          const calendar = new FullCalendar.Calendar(calendarEl, {
+              initialView: 'dayGridMonth',
+              events: 'events.php'
+          });
+          calendar.render();
 
-        $('#add-event-btn').click(function() {
-          // Prompt the user for the event title and start/end dates/times
-          var title = prompt("Event Title:");
+          $('#add-event-btn').click(function() {
+              // Initialize the datepicker on the "start" and "end" inputs
+              $('#start, #end').datepicker({
+                  dateFormat: 'yy-mm-dd',
+                  onSelect: function(dateText) {
+                      $(this).val(`${dateText}T14:00:00`); // Assumes a default start time of 2:00 PM
+                  }
+              });
 
-          // Get the start and end times from the user
-          let startTime = prompt("Enter the start time (YYYY-MM-DD HH:mm):");
-          let endTime = prompt("Enter the end time (YYYY-MM-DD HH:mm):");
+              // Open the event form when the "Add Event" button is clicked
+              $('#event-modal').modal('show');
 
-          // Create the event object
-          let event = {
-            title: title,
-            start: startTime,
-            end: endTime,
-          };
+              // Handle form submission
+              $('#event-form').submit(function(event) {
+                  event.preventDefault();
 
-          // Add the event to the calendar
-          $('#calendar').fullCalendar('renderEvent', event, true);
-        });
+                  // Get form values
+                  const title = $('#title').val();
+                  const start = $('#start').val();
+                  const end = $('#end').val();
 
-    </script>
+                  // Create the event object
+                  const eventData = {
+                      title: title,
+                      start: start,
+                      end: end
+                  };
+
+                  // Send the event to the server
+                  $.post('add_event.php', eventData, function(response) {
+                      // If the event was added successfully, render it on the calendar
+                      if (response.status === 'success') {
+                          calendar.addEvent(eventData);
+                          $('#event-modal').modal('hide');
+                      } else {
+                          alert(response.message);
+                      }
+                  }, 'json');
+              });
+          });
+      });
+  </script>
+
 
 </body>

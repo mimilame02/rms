@@ -50,8 +50,8 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../penalty/penalty.php">
-            <i class='bx bxs-rename menu-icon' title="Penalties"></i>
-              <span class="menu-title">Penalties</span>
+            <i class='bx bxs-rename menu-icon' title="Tickets"></i>
+              <span class="menu-title">Tickets</span>
             </a>
           </li>
           <li class="nav-item">

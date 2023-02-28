@@ -14,7 +14,7 @@
 
     require_once '../tools/variables.php';
     $page_title = 'RMS | Terms and Conditions';
-    $tenant = 'active';
+    $terms_conditions = 'active';
 
     require_once '../includes/header.php';
     require_once '../includes/dbconfig.php';

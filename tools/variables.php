@@ -9,4 +9,12 @@
     $properties="";
     $p_units="";
     $leases="";
+    $invoices="";
+    $reports="";
+    $tickets="";
+    $calendar_events="";
+    $manage_user="";
+    $settings="";
+    $terms_conditions="";
+
 ?>

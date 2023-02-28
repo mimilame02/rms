@@ -13,7 +13,7 @@ img[alt="Rental Building Icon"] {
   bottom: 0px;
 }
 
-@media (max-width: 1024px){
+@media (max-width: 756px){
   span.menu-title{
     display: none;
   }
@@ -152,8 +152,8 @@ li.nav-item.logout {
 
 .card-light-green {
   height: calc(100% + 35px);
-  background: rgb(25,109,73);
-  background: linear-gradient(90deg, rgb(22 157 126) 1%, rgb(61 171 131) 14%, rgb(35 216 176) 100%);
+  background: rgb(8,76,78);
+background: linear-gradient(111deg, rgba(8,76,78,1) 11%, rgba(13,91,94,1) 22%, rgba(23,111,115,1) 38%, rgba(16,115,110,1) 57%, rgba(45,145,119,1) 73%, rgba(80,191,148,1) 89%, rgba(101,228,174,1) 100%);
   padding-bottom: 2px;
 }
 
@@ -162,7 +162,7 @@ li.nav-item.logout {
   padding-bottom: 1px;
 }
 .smaller {
-  height: 38rem;
+  height: 10rem;
 }
 
 .form-check-input-ic{
@@ -246,23 +246,51 @@ ul.no-bullets, li.no-bullets {
   border-radius: 0.625rem;
 }
 
-
+/*Font-size smaller for mobiles, tablets*/
+@media (max-width: 1024px){
+  .fs1 {
+    font-size: 0.78em!important;
+  }
+}
+@media (max-width: 768px){
+  .fs2 {
+    font-size: 0.8em!important;
+  }
+  .col.px-1.fs1.fs2{
+    width: 95px!important;
+    font-size: 0.64em!important;
+  }
+  .col-sm-4.pr-1.fs2 {
+    width: 93px!important;
+    font-size: 0.7em!important;
+  }
+  .col-md-4.pl-1.fs1.fs2{
+    width: 79px!important;
+    font-size: 0.7em!important;
+  }
+}
+.req{
+  color:red;
+}
 
 /* calendar */
 
-#calendar {
-  max-width: 900px;
-  margin: 0 auto; 
-  font-size: 0.8em; }
-#calendar .fc-view-container {
-  padding: 25px;
-  background-color: #fff;
-  -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
-  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2); }
-.fc .fc-button .fc-icon {
-  font-size: 1.5em;
-  vertical-align: middle;
-  color: #176f73; }
+  #calendar {
+    max-width: 900px;
+    margin: 0 auto; 
+    font-size: 0.75em; }
+  #calendar .fc-view-container {
+    padding: 25px;
+    background-color: #fff;
+    -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2); }
+  .fc .fc-button .fc-icon {
+    font-size: 1.5em;
+    vertical-align: middle;
+    color: #176f73; }
+  td.fc-day.fc-day-sun.fc-day-today.fc-daygrid-day {
+    background: rgb(46 112 179 / 10%)!important;
+  }
 
 :root {
   --fc-small-font-size: .85em;
@@ -272,24 +300,24 @@ ul.no-bullets, li.no-bullets {
   --fc-border-color: #ddd;
   --fc-button-text-color: #fff;
   --fc-button-bg-color: #2c3e50;
-  --fc-button-border-color: #2c3e50;
-  --fc-button-hover-bg-color: #1e2b37;
-  --fc-button-hover-border-color: #1a252f;
-  --fc-button-active-bg-color: #1a252f;
-  --fc-button-active-border-color: #151e27;
-  --fc-event-bg-color: #3788d8;
-  --fc-event-border-color: #3788d8;
-  --fc-event-text-color: #fff;
-  --fc-event-selected-overlay-color: rgba(0,0,0,.25);
+  --fc-button-border-color: #879baf6b;
+  --fc-button-hover-bg-color: #2d6465;
+  --fc-button-hover-border-color: #2d6465;
+  --fc-button-active-bg-color: #115845e8;
+  --fc-button-active-border-color: #115845e8;
+  --fc-event-bg-color: #c3d837;
+  --fc-event-border-color: #c3d837;
+  --fc-event-text-color: #01105d;
+  --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.4);
   --fc-more-link-bg-color: #d0d0d0;
   --fc-more-link-text-color: inherit;
   --fc-event-resizer-thickness: 8px;
   --fc-event-resizer-dot-total-width: 8px;
   --fc-event-resizer-dot-border-width: 1px;
   --fc-non-business-color: hsla(0,0%,84%,.3);
-  --fc-bg-event-color: #8fdf82;
+  --fc-bg-event-color: #8be347;
   --fc-bg-event-opacity: 0.3;
-  --fc-highlight-color: rgba(188,232,241,.3);
-  --fc-today-bg-color: rgb(28 180 115 / 15%);
+  --fc-highlight-color: rgba(168, 232, 245, 0.3);
+  --fc-today-bg-color: rgba(28, 180, 114, 0.391);
   --fc-now-indicator-color: red;
 }

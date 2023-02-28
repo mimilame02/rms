@@ -14,7 +14,7 @@
 
     require_once '../tools/variables.php';
     $page_title = 'RMS | Manage Users';
-    $tenant = 'active';
+    $manage_users = 'active';
 
     require_once '../includes/header.php';
     require_once '../includes/dbconfig.php';
@@ -32,7 +32,7 @@
   <div class="content-wrapper">
     <div class="row">
       <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-        <h3 class="font-weight-bolder">MANAGE USER</h3> 
+        <h3 class="font-weight-bolder">MANAGE USERS</h3> 
       </div>
       <div class="add-tenant-container">
       <?php
