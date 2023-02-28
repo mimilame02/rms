@@ -16,7 +16,7 @@
         while($row = mysqli_fetch_assoc($result)){
 
             $_SESSION['logged_id'] = $row['id'];
-            $_SESSION['fullname'] = 'Temporary';
+            $_SESSION['fullname'] = $row['email'];
             $_SESSION['user_type'] = $row['type'];
             //display the appropriate dashboard page for user
             if($_SESSION['user_type'] == 'admin'){

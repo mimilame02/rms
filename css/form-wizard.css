@@ -27,30 +27,30 @@ input.invalid {
 
 /* Make circles that indicate the steps of the form: */
 .step {
+  text-align: center;
+  justify-content: center;
+  display: flex;
   height: 42px;
-  width: 450px;
-  margin: 0 2px;
-  background: rgb(25,109,73);
-  background: linear-gradient(90deg, rgb(96 176 158) 1%, rgb(113 189 161) 14%, rgb(35 216 176) 100%);
+  width: 290px;
+  background: #176f73;
   border: none;
-  display: inline-block;
   opacity: 0.5;
-  color: #123a37d9;
-  text-shadow: -1px 1px 0px #29a48b;
+  color: white;
   font-weight: 700;
+  margin-right: 0.5rem;
 }
 
 /* Mark the active step: */
 .step.active {
   opacity: 1;
-  color: #123a37d9;
-  text-shadow: -1px 1px 0px #29a48b;
+  color: white;
   font-weight: 700;
 }
 
 /* Mark the steps that are finished and valid: */
 .step.finish {
-  background-color: #04AA6D;
+  opacity: 1;
+  background-color: #176f73;
 }
 
 .mar {

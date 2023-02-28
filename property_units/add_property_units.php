@@ -42,10 +42,16 @@
               </div>
             </div>
           </div>
-          <div class="col-12 grid-margin">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title fw-bolder">Property Unit Details</h4>
+        <div class="row g-3">
+                <div class="col-md-12">
+                <div class="form-group-row">
+                   <div class="col">
+                     <h4 class="table-title pt-3">PROPERTY UNIT DETAILS</h4>
+                     <p class="table-title pb-3">Please fill all the required fields before saving the data</p>
+                 </div>
+             </div>
             <form action="add_property_units.php" method="post" class="form-sample">
               <div class="row g-3">
                   <div class="col-md-6">
@@ -129,14 +135,52 @@
                     </div>
                   </div>
 
-                  <div class="col-md-6">
-                            <div class="form-group-row">
-                              <div class="col">
-                                  <label for="property_description">Description of the Property Unit</label>
-                                  <textarea class="form-control form-control-lg" id="property_description" name="property_description" col="100" row="20"></textarea>
-                                </div>
-                              </div>
-                            </div>
+                  <div id="bedroom_fields" style="display:none;">
+                    <div class="col-md-6">
+                      <div class="form-group-row">
+                        <div class="col">
+                          <label for="num_bedrooms">Number of Bedrooms</label>
+                          <input type="number" class="form-control form-control-sm" id="num_bedrooms" name="num_bedrooms">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="bathroom_fields" style="display:none;">
+                    <div class="col-md-6">
+                      <div class="form-group-row">
+                        <div class="col">
+                          <label for="num_bathrooms">Number of Bathrooms</label>
+                          <input type="number" class="form-control form-control-sm" id="num_bathrooms" name="num_bathrooms">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="bedspace_fields" style="display:none;">
+                      <div class="col-md-6">
+                        <div class="form-group-row">
+                          <div class="col">
+                            <label for="max_capacity">Maximum Capacity</label>
+                            <input type="number" class="form-control form-control-sm mb-3" id="max_capacity" name="max_capacity">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group-row">
+                          <div class="col">
+                            <label for="available_for">Available For</label>
+                            <select class="form-control form-control-sm" id="available_for" name="available_for">
+                              <option value="none">--Select--</option>
+                              <option value="all_girls">All Girls</option>
+                              <option value="all_boys">All Boys</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                   
                             <div class="ps-6">
                     <input type="submit" class="btn btn-success btn-sm" value="Save Unit" name="save" id="save">
                   </div>
@@ -148,7 +192,45 @@
   </div>
 </div>
 
+<script>
+  var unitTypeDropdown = document.getElementById("unit_type");
+  
+  var bedroomFields = document.getElementById("bedroom_fields");
+  var bathroomFields = document.getElementById("bathroom_fields");
 
+  unitTypeDropdown.addEventListener("change", function() {
+    if (this.value == "1") { // Change "1" to the ID of the option that should trigger the fields to appear
+      bedroomFields.style.display = "block";
+      bathroomFields.style.display = "block";
+    } else {
+      bedroomFields.style.display = "none";
+      bathroomFields.style.display = "none";
+    }
+  });
+
+
+  var bedspaceFields = document.getElementById("bedspace_fields");
+
+  unitTypeDropdown.addEventListener("change", function() {
+    if (this.value == "2") { // Change "1" to the ID of the option that should trigger the fields to appear
+      bedspaceFields.style.display = "block";
+    } else {
+      bedspaceFields.style.display = "none";
+    }
+  });
+  
+
+  var availableForDropdown = document.getElementById("available_for");
+  availableForDropdown.addEventListener("change", function() {
+    var unitTypeDropdown = document.getElementById("unit_type");
+    if (unitTypeDropdown.value == "2") {
+      bedspaceFields.style.display = "block";
+    } else {
+      bedspaceFields.style.display = "none";
+    }
+  });
+  
+</script>
 
                   
 

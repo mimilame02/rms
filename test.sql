@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 26, 2023 at 07:22 AM
+-- Generation Time: Feb 28, 2023 at 05:05 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `rms_db`
+-- Database: `test`
 --
 
 -- --------------------------------------------------------
@@ -59,6 +59,13 @@ CREATE TABLE `events` (
   `description` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `events`
+--
+
+INSERT INTO `events` (`id`, `title`, `start`, `end`, `description`) VALUES
+(1, '4 units established', '2023-02-27 06:28:34', '2023-02-27 20:59:13', 'Test Event');
+
 -- --------------------------------------------------------
 
 --
@@ -97,14 +104,16 @@ INSERT INTO `features` (`id`, `feature_name`) VALUES
 CREATE TABLE `landlord` (
   `id` int(11) NOT NULL,
   `first_name` varchar(50) NOT NULL,
+  `middle_name` varchar(50) DEFAULT NULL,
   `last_name` varchar(50) NOT NULL,
+  `date_of_birth` date NOT NULL,
   `email` varchar(100) NOT NULL,
   `contact_no` varchar(20) NOT NULL,
   `address` varchar(200) NOT NULL,
-  `city` varchar(50) NOT NULL,
-  `province` varchar(50) NOT NULL,
-  `zip_code` varchar(10) NOT NULL,
-  `identification_document` varchar(100) NOT NULL,
+  `region` varchar(100) NOT NULL,
+  `provinces` varchar(100) NOT NULL,
+  `city` varchar(100) NOT NULL,
+  `identification_document` varchar(100) DEFAULT NULL,
   `emergency_contact_person` varchar(100) NOT NULL,
   `emergency_contact_number` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -113,9 +122,8 @@ CREATE TABLE `landlord` (
 -- Dumping data for table `landlord`
 --
 
-INSERT INTO `landlord` (`id`, `first_name`, `last_name`, `email`, `contact_no`, `address`, `city`, `province`, `zip_code`, `identification_document`, `emergency_contact_person`, `emergency_contact_number`) VALUES
-(3, 'Phoebe', 'Buffay', 'buffay@gmail.com', '09123456789', 'dsdsds', 'dsdsds', 'dsdsds', '7000', '', 'fdfsdfdsf', '09123456789'),
-(4, 'Joey', 'Tribbiani', 'joey@gmail.com', '09297392793', 'dsdsdsd', 'dsdsds', 'dsdsds', '9000', 'dsdsd', 'dsdsds', 'dsdsds');
+INSERT INTO `landlord` (`id`, `first_name`, `middle_name`, `last_name`, `date_of_birth`, `email`, `contact_no`, `address`, `region`, `provinces`, `city`, `identification_document`, `emergency_contact_person`, `emergency_contact_number`) VALUES
+(1, 'Joey', NULL, 'Tribbiani', '0000-00-00', 'joey@gmail.com', '09123456789', 'Test', '09', '0973', '097332', NULL, 'Test', '09123456789');
 
 -- --------------------------------------------------------
 
@@ -143,9 +151,9 @@ CREATE TABLE `property` (
   `property_name` varchar(255) NOT NULL,
   `landlord_id` int(11) NOT NULL,
   `address` varchar(255) NOT NULL,
+  `region` varchar(255) NOT NULL,
+  `provinces` varchar(255) NOT NULL,
   `city` varchar(255) NOT NULL,
-  `province` varchar(255) NOT NULL,
-  `zip_code` varchar(255) NOT NULL,
   `property_description` text NOT NULL,
   `features_description` text NOT NULL,
   `image_path` varchar(255) DEFAULT NULL
@@ -155,9 +163,8 @@ CREATE TABLE `property` (
 -- Dumping data for table `property`
 --
 
-INSERT INTO `property` (`id`, `property_name`, `landlord_id`, `address`, `city`, `province`, `zip_code`, `property_description`, `features_description`, `image_path`) VALUES
-(1, 'Sofiyy', 3, 'Upper Calarian', 'Zamboanga City', 'Zamboanga Del Sur', '7000', 'frrrrt', 'trtrtrt', NULL),
-(10, 'Sakinah', 4, 'Talon-Talon', 'Zamboanga City', '', '7000', 'fg', 'gfgfg', NULL);
+INSERT INTO `property` (`id`, `property_name`, `landlord_id`, `address`, `region`, `provinces`, `city`, `property_description`, `features_description`, `image_path`) VALUES
+(1, 'Joey Rentals', 1, 'Baliwasan', '09', '0973', '097332', '4 Rooms for Bedspacers\r\n1 Commercial Building', 'car parking\r\nmotorcycle parking\r\nallow pets\r\ngarden\r\nlaundry\r\n', NULL);
 
 -- --------------------------------------------------------
 
@@ -178,19 +185,9 @@ CREATE TABLE `property_features` (
 INSERT INTO `property_features` (`id`, `property_id`, `feature_id`) VALUES
 (1, 1, 1),
 (2, 1, 2),
-(3, 1, 3),
-(4, 1, 9),
-(5, 2, 1),
-(6, 2, 2),
-(7, 2, 3),
-(8, 2, 9),
-(9, 3, 1),
-(10, 3, 3),
-(11, 4, 1),
-(12, 4, 8),
-(13, 5, 3),
-(14, 5, 8),
-(15, 10, 11);
+(3, 1, 6),
+(4, 1, 10),
+(5, 1, 11);
 
 -- --------------------------------------------------------
 
@@ -215,7 +212,7 @@ CREATE TABLE `property_units` (
 --
 
 INSERT INTO `property_units` (`id`, `unit_name`, `property_id`, `property_name`, `unit_type_id`, `description`, `monthly_rent`, `unit_condition_id`, `status`) VALUES
-(1, 'Pad 1', 1, '', 1, 'fggfdsgfdgf', '5000.00', 3, 'Vacant');
+(1, 'Pad 1', 1, 'Joey Rentals', 1, 'Test', '5000.00', 1, 'Vacant');
 
 -- --------------------------------------------------------
 
@@ -2038,31 +2035,36 @@ INSERT INTO `refregion` (`id`, `psgcCode`, `regDesc`, `regCode`) VALUES
 
 CREATE TABLE `tenant` (
   `id` int(11) NOT NULL,
-  `first_name` varchar(255) NOT NULL,
-  `middle_name` varchar(255) DEFAULT NULL,
-  `last_name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `contact_no` varchar(255) NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `middle_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `contact_no` varchar(20) NOT NULL,
   `relationship_status` varchar(100) NOT NULL,
   `type_of_household` varchar(100) NOT NULL,
-  `previous_address` varchar(255) NOT NULL,
+  `previous_address` varchar(200) NOT NULL,
   `region` varchar(255) NOT NULL,
   `provinces` varchar(255) NOT NULL,
   `city` varchar(255) NOT NULL,
-  `sex` varchar(100) DEFAULT NULL,
+  `sex` varchar(50) DEFAULT NULL,
   `date_of_birth` date NOT NULL,
   `has_pet` varchar(100) NOT NULL,
   `number_of_pets` int(11) DEFAULT NULL,
-  `type_of_pet` varchar(255) DEFAULT NULL,
-  `is_smoking` varchar(100) NOT NULL,
-  `has_vehicle` varchar(100) DEFAULT NULL,
-  `vehicle_specification` varchar(255) DEFAULT NULL,
-  `occupants` varchar(100) DEFAULT NULL,
-  `co_applicant_first_name` varchar(255) DEFAULT NULL,
-  `co_applicant_last_name` varchar(255) DEFAULT NULL,
-  `co_applicant_email` varchar(255) DEFAULT NULL,
-  `co_applicant_contact_no` varchar(255) DEFAULT NULL,
-  `status` varchar(100) DEFAULT NULL,
+  `type_of_pet` varchar(50) DEFAULT NULL,
+  `is_smoking` varchar(10) NOT NULL,
+  `has_vehicle` varchar(10) DEFAULT NULL,
+  `vehicle_specification` varchar(50) DEFAULT NULL,
+  `occupants` varchar(255) DEFAULT NULL,
+  `spouse_first_name` varchar(50) DEFAULT NULL,
+  `spouse_last_name` varchar(50) DEFAULT NULL,
+  `spouse_email` varchar(100) DEFAULT NULL,
+  `spouse_num` varchar(20) DEFAULT NULL,
+  `co_applicant_first_name` varchar(50) DEFAULT NULL,
+  `co_applicant_mid_name` varchar(50) DEFAULT NULL,
+  `co_applicant_last_name` varchar(50) DEFAULT NULL,
+  `co_applicant_email` varchar(100) DEFAULT NULL,
+  `co_applicant_contact_no` varchar(20) DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL,
   `emergency_contact_person` varchar(100) NOT NULL,
   `emergency_contact_number` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -2071,12 +2073,10 @@ CREATE TABLE `tenant` (
 -- Dumping data for table `tenant`
 --
 
-INSERT INTO `tenant` (`id`, `first_name`, `middle_name`, `last_name`, `email`, `contact_no`, `relationship_status`, `type_of_household`, `previous_address`, `region`, `provinces`, `city`, `sex`, `date_of_birth`, `has_pet`, `number_of_pets`, `type_of_pet`, `is_smoking`, `has_vehicle`, `vehicle_specification`, `occupants`, `co_applicant_first_name`, `co_applicant_last_name`, `co_applicant_email`, `co_applicant_contact_no`, `status`, `emergency_contact_person`, `emergency_contact_number`) VALUES
-(19, 'Monica', NULL, 'Geller', 'monica@gmail.com', '09296837000', 'None', 'None', '', '', 'none', 'none', ' ', '0000-00-00', ' ', 0, '', ' ', '', NULL, '', '', '', '', '', NULL, '', ''),
-(20, 'mi', NULL, 'ming', 'miming@gmail.com', '091236-44620', 'single', 'couple', 'n/a', '', '0257', '012806', 'Female', '2023-02-14', 'No', NULL, NULL, ' ', 'others', NULL, 'n/a', 'n/a', 'n/a', 'no@gmail.com', 'n/a', NULL, 'n/a', '0936-23*66'),
-(21, 'try', NULL, 'try', 'try@gmail.com', '0912454-232', 'single', 'one person', 'n/a', '', '', '072208', ' ', '2023-02-26', ' ', 0, 'None', ' ', '', NULL, '', '', '', '', '', NULL, 'try try', '0613484-2326'),
-(22, 'try', 'ewre', 'ming', 'miming@gmail.com', '091236-44620', 'single', 'one person', 'n/a', '01', 'none', 'none', 'Male', '2023-02-16', ' ', 0, 'None', ' ', '', NULL, '', '', '', '', '', NULL, 'efef', '03659'),
-(23, 'try', 'ewre', 'ming', 'miming@gmail.com', '091236-44620', 'single', 'one person', 'n/a', '01', '0129', '012903', 'Female', '2023-03-03', ' ', 0, 'None', ' ', '', NULL, '', '', '', '', '', NULL, 'try try', '0613484-2326');
+INSERT INTO `tenant` (`id`, `first_name`, `middle_name`, `last_name`, `email`, `contact_no`, `relationship_status`, `type_of_household`, `previous_address`, `region`, `provinces`, `city`, `sex`, `date_of_birth`, `has_pet`, `number_of_pets`, `type_of_pet`, `is_smoking`, `has_vehicle`, `vehicle_specification`, `occupants`, `spouse_first_name`, `spouse_last_name`, `spouse_email`, `spouse_num`, `co_applicant_first_name`, `co_applicant_mid_name`, `co_applicant_last_name`, `co_applicant_email`, `co_applicant_contact_no`, `status`, `emergency_contact_person`, `emergency_contact_number`) VALUES
+(1, 'Monica', NULL, 'Geller', 'geller@outlook.com', '09123456789', 'single', 'one person', 'Boalan', '09', '0973', '097332', 'Female', '1999-04-15', 'Yes', 1, 'cat', 'No', 'others', 'tricycle', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Test', '09123456789'),
+(2, 'try', '', 'try', 'try@gmail.com', '091236-44620', 'married', 'couple', 'n/a', '09', '0973', '097332', 'Male', '2000-12-08', 'No', 0, 'None', 'No', 'car', '', 'fdgzd fhfgjx', 'tryer', 'tryi', 'miming@gmail.com', '2929-595', 'tyief', NULL, 'grrrrh', 'miming@gmail.com', '5848450', NULL, 'trye yuyjhg', '7899-592'),
+(25, 'gsdgsd', '', 'dfsdf', 'fdd@gmail.com', '091236-44620', 'single', 'one person', 'n/a', '02', '0231', '023105', 'Female', '1950-11-13', 'No', 0, 'None', 'No', 'others', '', '', '', '', '', '', '', NULL, '', '', '', NULL, 'sdsafa avfdsgsf', '09453776');
 
 -- --------------------------------------------------------
 
@@ -2228,7 +2228,7 @@ ALTER TABLE `account`
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `features`
@@ -2240,7 +2240,7 @@ ALTER TABLE `features`
 -- AUTO_INCREMENT for table `landlord`
 --
 ALTER TABLE `landlord`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `password_reset_tokens`
@@ -2288,7 +2288,7 @@ ALTER TABLE `refregion`
 -- AUTO_INCREMENT for table `tenant`
 --
 ALTER TABLE `tenant`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Constraints for dumped tables

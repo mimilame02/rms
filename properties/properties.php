@@ -40,9 +40,9 @@
         ?>
         <a href="add_property.php" class="btn btn-success btn-icon-text float-right">
             Add Property </a>
-        <?php
-            }
-        ?>
+            <?php
+                }
+            ?>
       </div>
     </div>
     <div class="row mt-4">

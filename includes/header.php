@@ -73,4 +73,5 @@
 
 
     <title><?php echo $page_title; ?></title>
+    <link rel="icon" href="../img/logo.png" type="image/icon type">
 </head>

@@ -11,23 +11,34 @@ class Reference{
         $this->db = new Database();
     }
     
-    function get_province(){
-      $sql = "SELECT * FROM refprovince;";
+    function get_region(){
+      $sql = "SELECT * FROM refregion;";
       $query=$this->db->connect()->prepare($sql);
       if($query->execute()){
           $data = $query->fetchAll();
       }
       return $data;
   }
-
-  function get_City($province_code){
-    $sql = "SELECT * FROM refcitymun;";
+  
+  function get_province($regCode){
+    $sql = "SELECT * FROM refprovince WHERE regCode = :regCode ORDER BY provDesc ASC;";
     $query=$this->db->connect()->prepare($sql);
+    $query->bindParam(':regCode', $regCode);
     if($query->execute()){
         $data = $query->fetchAll();
     }
     return $data;
-}
+  }
+  function get_City($provCode){
+    $sql = "SELECT * FROM refcitymun WHERE provCode = :provCode ORDER BY citymunDesc ASC;";
+    $query=$this->db->connect()->prepare($sql);
+    $query->bindParam(':provCode', $provCode);
+    if($query->execute()){
+        $data = $query->fetchAll();
+    }
+    return $data;
+  }
+
 
 function get_main_pro(){
   $sql = "SELECT * FROM property;";
