@@ -7,8 +7,7 @@ package.json
 
 /includes/dbconfig.php
 
-/classes/database.php
 
-git add .gitignore
-git commit -m "Add .gitignore file"
+
+
 
