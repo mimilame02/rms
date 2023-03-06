@@ -1,0 +1,14 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Set the merge driver for files with the .docx extension
+*.docx merge=word
+
+# Treat all files in the scripts directory as binary
+scripts/* binary
+
+# Set the encoding for files with the .csv extension
+*.csv text eol=LF encoding=utf-8
+
+# Ignore files and directories that match the patterns in .gitignore
+.gitignore export-ignore
