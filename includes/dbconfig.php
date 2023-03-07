@@ -8,7 +8,7 @@ $dbname = 'u588864141_rms';
 /* $host = 'localhost';
 $user = 'root';
 $password = '';
-$dbname = 'rms_db'; */
+$dbname = 'test'; */
 
 
 
