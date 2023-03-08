@@ -1,6 +1,4 @@
 <?php
-// Start the session
-session_start();
 
 // Check if "remember me" cookie is set
 if(isset($_COOKIE["remember_me"])) {

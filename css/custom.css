@@ -465,9 +465,9 @@ ul.no-bullets, li.no-bullets {
     width: 6rem!important;
   }
   button.btn {
-    height: 20px!important;
+    height: 25px!important;
     font-size: 8px!important;
-    width: 6rem!important;
+    width: 7rem!important;
     padding: 4px!important;
   }
   span.bx.d-flex.flex-row.flex-wrap.justify-content-between.align-items-center {
@@ -515,7 +515,31 @@ ul.no-bullets, li.no-bullets {
     padding-left: 0px;
     padding-right: 0px;
   }
-
+  h2.fw-bold.text-center.green {
+    font-size: 2.93rem!important;
+  }
+  input[name=login] {
+    font-size: 10px!important;
+    padding: 0px!important;
+    width: 15rem!important;
+    height: 3rem!important;
+  }
+  label[for=remember-me] {
+    font-size: 9px!important;
+  }
+  button#set_to_primary {
+    font-size: 6px!important;
+    padding: 0px!important;
+  }
+  i.bx.bx-plus.btn-icon-prepend {
+    font-size: 7px!important;
+  }
+  input[type="radio"], input[type="checkbox"] {
+    box-sizing: border-box;
+    padding: 0;
+    width: 7px;
+    height: 8px;
+  }
 
 
 }

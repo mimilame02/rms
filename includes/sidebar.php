@@ -56,7 +56,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../penalty/penalty.php">
+            <a class="nav-link" href="../tickets/tickets.php">
             <i class='bx bxs-rename menu-icon' title="Tickets"></i>
               <span class="menu-title">Tickets</span>
             </a>
