@@ -47,15 +47,6 @@
     <script src="../js/hoverable-collapse.js"></script>
     <script src="../js/template.js"></script>
 
-    <script src="../package-lock.json"></script>
-    <script src="../package.json"></script>
-    <script>
-        fetch('package.json')
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error(error));
-    </script>
-
     <!-- Calendar -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
 
@@ -66,6 +57,8 @@
 
 
 
-    <title><?php echo $page_title; ?></title>
+    <title><?php require_once '../tools/variables.php';
+    echo $page_title; 
+    ?></title>
     <link rel="icon" href="../img/logo.png" type="image/icon type">
 </head>

@@ -605,7 +605,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="ps-6">
+                  <div class="pt-3">
                     <input type="submit" class="btn btn-success btn-sm" value="Save Tenant" name="save" id="save">
                   </div>
                 </div>

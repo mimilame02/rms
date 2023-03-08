@@ -68,7 +68,7 @@
                                     <input class="btn btn-lg btn-success background-color-green btn-continue btn-font" type="submit" value="Login" name="login">
                                 </div>
                                 <div class="form-check form-check-inline me-0 mt-0">
-                                        <a class="green text-decoration-none text-center" href="forgot_pass.php?reset=yes">Forgot password?</a>
+                                        <a class="green text-decoration-none text-center" href="email_verify.php?reset=yes">Forgot password?</a>
                                     </div>
                                 <?php
                                     //Display the error message if there is any.

@@ -14,34 +14,20 @@
         header('location: ../login/login.php');
      }
 
-     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['step'])){
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['step'])){
       $properties_obj = new Properties();
         //sanitize user inputs
       $properties_obj->property_name = htmlentities($_POST['property_name']);
+      $properties_obj->property_description = htmlentities($_POST['property_description']);
+      $properties_obj->num_of_floors = htmlentities($_POST['num_of_floors']);
       $properties_obj->landlord_id = htmlentities($_POST['landlord']);
       $properties_obj->region = $_POST['region'];
       $properties_obj->provinces = $_POST['provinces'];
       $properties_obj->city = $_POST['city'];
       $properties_obj->barangay = $_POST['barangay'];
       $properties_obj->street = $_POST['street'];
-      $properties_obj->property_description = htmlentities($_POST['property_description']);
       $properties_obj->features_description = htmlentities($_POST['features_description']);
-
-      if (isset($_FILES['image_path'])) {
-        $image = $_FILES['image_path']['name'];
-        $target = "../img/" . basename($image);
-
-        if (move_uploaded_file($_FILES['image_path']['tmp_name'], $target)) {
-            $properties_obj->image_path = $_FILES['image_path']['name'];
-        } else {
-            // handle file upload error
-            $msg = "Error uploading file";
-        }
-      }else{
-        // handle missing file error
-        $msg = "Missing file upload";
-      }
-         // Insert the features data into the property_features table
+        // Insert the features data into the property_features table
         if (isset($_POST['features'])) {
           $features = $_POST['features'];
           $selected_features = array();
@@ -60,20 +46,34 @@
           // Set the features property of the account object to the selected features JSON string
           $properties_obj->features = $features_json;
         }
+      if (isset($_FILES['image_path'])) {
+        $image = $_FILES['image_path']['name'];
+        $target = "../img/" . basename($image);
 
+        if (move_uploaded_file($_FILES['image_path']['tmp_name'], $target)) {
+            $properties_obj->image_path = $_FILES['image_path']['name'];
+        } else {
+            // handle file upload error
+            $msg = "Error uploading file";
+        }
+      }else{
+        // handle missing file error
+        $msg = "Missing file upload";
+      }
+        
         
 
-              // Add product to database
-           /*  if(validate_add_landlord($_POST)){ */
-              if ($properties_obj->properties_add()) {
-                header('Location: properties.php');                
-                exit; // always exit after redirecting
-            } else {
-                // handle product add error
-                $msg = "Error adding property";
-            }
+            // Add product to database
+          /*  if(validate_add_landlord($_POST)){ */
+            if ($properties_obj->properties_add()) {
+              header('Location: properties.php');                
+              exit; // always exit after redirecting
+          } else {
+              // handle product add error
+              $msg = "Error adding property";
+          }
           
-        }
+    }
        
         
 
@@ -134,6 +134,15 @@
                             <label for="property_description">Description of the Property</label>
                             <textarea class="form-control form-control-lg" id="property_description" name="property_description"></textarea>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group-row">
+                        <div class="col">
+                          <label for="num_of_floors">Number of Floors</label>
+                          <input class="form-control form-control-sm req" type="number" id="num_of_floors" name="num_of_floors" min="1" max="100">
                         </div>
                       </div>
                     </div>

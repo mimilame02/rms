@@ -38,53 +38,22 @@
                 <div class="fs-5 mb-2">
                   <div id='calendar'></div>
                 </div>
-                  <button class="btn btn-success float-right" id="add-event-btn">Add Event</button>
               </div>
             </div>
           </div>
       </div>
     </div>
   </div>
-  <!-- Add Event Modal -->
-  <div class="modal fade" id="add-event-modal" tabindex="-1" aria-labelledby="add-event-modal-label" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="add-event-modal-label">Add Event</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form id="add-event-form">
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="event-title">Title</label>
-              <input type="text" class="form-control" id="event-title" name="title">
-            </div>
-            <div class="form-group">
-              <label for="event-start-date">Start Date</label>
-              <input type="date" class="form-control" id="event-start-date" name="start">
-            </div>
-            <div class="form-group">
-              <label for="event-end-date">End Date</label>
-              <input type="date" class="form-control" id="event-end-date" name="end">
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+ 
 
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js'></script>
 
     <script>
       jQuery(document).ready(function($) {
           const calendarEl = document.getElementById('calendar');
           const calendar = new FullCalendar.Calendar(calendarEl, {
               initialView: 'dayGridMonth',
-              events: 'events.php'
+              events: 'add_event.php'
           });
           calendar.render();
 

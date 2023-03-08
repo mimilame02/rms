@@ -229,23 +229,37 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group-row">
+                    <div class="col-md-12 d-flex">
+                      <div class="form-group-row w-50">
                         <div class="col">
-                          <label for="emergency_contact_person">Full Name <?php if(isset($_POST['save']) && !validate_full_name($_POST)){?> <label class="text-danger">*</label> <?php }?></label>
-                          <input class="form-control form-control-sm" type="text" id="emergency_contact_person" name="emergency_contact_person" >
+                          <label for="emergency_contact_person">Full Name
+                          <?php
+                              if(isset($_POST['save']) && !validate_full_name($_POST)){
+                              ?>
+                                <span class="text-danger">*</span>
+                              <?php
+                                  }
+                              ?>
+                          </label>
+                          <input required class="form-control form-control-sm" type="text" id="emergency_contact_person" name="emergency_contact_person">
+                        </div>
+                      </div>
+                      <div class="form-group-row w-50">
+                        <div class="col">
+                          <label for="emergency_contact_number">Contact No.
+                          <?php
+                              if(isset($_POST['save']) && !validate_econtact_no($_POST)){
+                              ?>
+                                <span class="text-danger">*</span>
+                              <?php
+                                  }
+                              ?>
+                          </label>
+                          <input required class="form-control form-control-sm" type="text" id="emergency_contact_number" name="emergency_contact_number">
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group-row">
-                        <div class="col">
-                          <label for="emergency_contact_number">Contact No. <?php if(isset($_POST['save']) && !validate_econtact_no($_POST)){?> <label class="text-danger">*</label> <?php }?></label>
-                          <input class="form-control form-control-sm" type="text" id="emergency_contact_number" name="emergency_contact_number" >
-                        </div>
-                      </div>
-                    </div>
-                    <div class="ps-6">
+                    <div class="pt-3">
                       <input type="submit" class="btn btn-success btn-sm" value="Save" name="save" id="save">
                     </div>
                 </div>

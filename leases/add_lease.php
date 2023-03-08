@@ -134,7 +134,7 @@
                         </div>
                       </div>
                     </div>
-                    <button type="submit" class="btn btn-primary float-right mr-2">Save Lease</button>
+                    <input type="submit" class="btn btn-primary float-right mr-2" name="save">Save Lease</input>
                 </div>
               </div>
             </div>

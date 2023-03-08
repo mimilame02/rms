@@ -58,6 +58,26 @@ class Account{
         }
         return $data;
     }
+    function account_reset($account_id, $new_password) {
+        $sql = "UPDATE account SET password = :password WHERE email = :email";
+        $query = $this->db->connect()->prepare($sql);
+        $query->bindParam(':password', $new_password);
+        $query->bindParam(':account_id', $account_id);
+        return $query->execute();
+    }
+    function get_account_info_by_email($email) {
+        $query = "SELECT * FROM account WHERE BINARY email = :email";
+        $stmt = $this->db->connect()->prepare($query);
+        $stmt->bindParam(':email', $email);
+        if ($stmt->execute()) {
+            $data = $stmt->fetchAll();
+            return $data;
+        } else {
+            return false;
+        }
+    }
+    
+    
 
 }
 

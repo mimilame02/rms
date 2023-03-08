@@ -253,7 +253,6 @@ ul.no-bullets, li.no-bullets {
 
 .bs-borderbox {
   box-sizing: border-box;
-  background-color: #639ea10d;
   border-radius: 0.625rem;
 }
 
@@ -262,7 +261,21 @@ ul.no-bullets, li.no-bullets {
   .fs1 {
     font-size: 0.78em!important;
   }
+  .modal .modal-dialog .modal-content .modal-header {
+    padding: 10px 25px!important;
+  }
+  .modal .modal-dialog .modal-content .modal-body {
+    padding: 16px 16px!important;
+  }
+  .modal-header .close {
+    padding: 2rem 1rem!important;
+    margin: -23px -23px -23px auto!important;
+  }
+  h2.fw-bolder {
+    font-size: 25px!important;
+  }
 }
+
 @media (max-width: 768px){
   .fs2 {
     font-size: 0.8em!important;
@@ -289,7 +302,7 @@ ul.no-bullets, li.no-bullets {
   #calendar {
     max-width: 900px;
     margin: 0 auto; 
-    font-size: 0.75em; }
+    font-size: 0.75em!important; }
   #calendar .fc-view-container {
     padding: 25px;
     background-color: #fff;
@@ -331,4 +344,178 @@ ul.no-bullets, li.no-bullets {
   --fc-highlight-color: rgba(168, 232, 245, 0.3)!important;
   --fc-today-bg-color: rgb(46 112 179 / 10%)!important;
   --fc-now-indicator-color: red;
+}
+
+
+@media screen and (max-width: 768px) {
+  /* smaller font size for screens up to 768px wide */
+  * {
+    font-size: 10px!important;
+  }
+  h3, .h3 {
+    font-size: 1.5rem!important;
+  }
+  .bx {
+    font-size: 2rem!important;
+  }
+  .bx.bx-caret-left {
+    font-size: 12px!important;
+  }
+  a.btn {
+    font-size: 11px!important;
+  }
+  input.form-control.form-control-sm {
+    font-size: 10px!important;
+    height: 30px!important;
+  }
+  select.form-select.form-select-sm {
+    font-size: 10px!important;
+    height: 27px!important;
+    padding: 0px 5px 0px 10px;
+  }
+  label {
+    font-size: 12px!important;
+  }
+  input[type=file] {
+    font-size: 9px!important;
+    width: 100%;
+    height: 15px;
+    padding: 7px;
+  }
+  input#identification_document {
+    padding: 4px;
+    font-size: 10px!important;
+    height: 25px!important;
+  }
+  select.form-select.form-select-sm {
+    font-size: 8px!important;
+    height: 22px!important;
+  }
+  select {
+    font-size: 9px!important;
+    height: 27px!important;
+  }
+  input.btn {
+    height: 27px!important;
+    font-size: 10px!important;
+    width: 7rem!important;
+    margin-top: 12px;
+  }
+  .table-title {
+    font-size: 16px!important;
+  }
+  p.fs-30.mb-2.ff.fs-35.pl-5.fw-bolder {
+    font-size: 25px!important;
+  }
+  h2.fw-bolder {
+    font-size: 25px!important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  /* even smaller font size for screens up to 480px wide (typical smartphone size) */
+  * {
+    font-size: 10px!important;
+  }
+  .bx {
+    font-size: 2rem!important;
+  }
+  h3, .h3 {
+    font-size: 1.5rem!important;
+  }
+  a.btn {
+    font-size: 9px!important;
+  }
+  input.form-control.form-control-sm {
+    font-size: 8px!important;
+    height: 20px!important;
+  }
+  select.form-select.form-select-sm {
+    font-size: 8px!important;
+    height: 22px!important;
+  }
+  select {
+    font-size: 6.7px!important;
+    height: 20px!important;
+  }
+  label {
+    font-size: 8px!important;
+  }
+  .col-sm-12.col-md-6 {
+    width: 50%;
+  }
+  div.dataTables_wrapper div.dataTables_filter input {
+    width: 8rem;
+  }
+  .bx.bx-caret-left {
+    font-size: 10px!important;
+  }
+  .navbar .navbar-menu-wrapper .navbar-nav .nav-item.nav-profile img {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    vertical-align: middle;
+  }
+  div.text-light.px-2 {
+    display: contents;
+  }
+  input.btn {
+    height: 20px!important;
+    font-size: 8px!important;
+    width: 6rem!important;
+  }
+  button.btn {
+    height: 20px!important;
+    font-size: 8px!important;
+    width: 6rem!important;
+    padding: 4px!important;
+  }
+  span.bx.d-flex.flex-row.flex-wrap.justify-content-between.align-items-center {
+    font-size: 3rem!important;
+  }
+  .fs-30 {
+    font-size: 30px !important;
+  }
+  .step {
+    height: 25px!important;
+    width: 240px!important;
+    font-size: 8px!important;
+    margin-right: 3px!important;
+  }
+  input[type=file] {
+    font-size: 6px!important;
+    width: 70%;
+    height: 15px;
+    padding: 5px;
+  }
+  input#identification_document {
+    padding: 3px;
+    font-size: 6px!important;
+    height: 16px!important;
+  }
+  .table td,
+  .table th {
+    font-size: 9px!important; /* set the desired font size */
+  }
+  .table-title {
+    font-size: 10px!important;
+  }
+  div#example_info {
+    font-size: 7px!important;
+  }
+  div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+    justify-content: center !important;
+    font-size: 8px!important;
+  }
+  .col-sm-12.col-md-5 {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .col-sm-12.col-md-7 {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+
+
 }
