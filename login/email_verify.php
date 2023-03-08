@@ -63,7 +63,7 @@ if (isset($_POST['email'])) {
                         </div>
                         <div class="row mt-3">
                             <p class="text-center ff">
-                                Go back to  <a class="ff fw-bold" href="login.php"> Login</a>
+                                Go back to  <a class="ff fw-bold" href="login.php">  Login</a>
                             </p>
                         </div>
                     </div>
