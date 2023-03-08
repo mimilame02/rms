@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 06, 2023 at 02:05 AM
+-- Generation Time: Mar 08, 2023 at 12:55 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `account` (
   `id` int(11) NOT NULL,
+  `username` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   `type` varchar(100) NOT NULL,
@@ -40,10 +41,10 @@ CREATE TABLE `account` (
 -- Dumping data for table `account`
 --
 
-INSERT INTO `account` (`id`, `email`, `password`, `type`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin', 'admin', '2023-02-04 10:55:17', '2023-02-04 10:55:17'),
-(3, 'kent', 'kent', 'admin', '2023-02-04 11:28:02', '2023-02-04 11:28:02'),
-(4, 'rose', 'rose', 'tenant', '2023-02-04 11:40:03', '2023-02-04 11:40:03');
+INSERT INTO `account` (`id`, `username`, `email`, `password`, `type`, `created_at`, `updated_at`) VALUES
+(1, 'Admin', 'admin@gmail.com', 'admin', 'admin', '2023-02-04 10:55:17', '2023-03-08 11:07:30'),
+(2, 'Landlord', 'landlord@gmail.com', 'landlord', 'landlord', '2023-02-04 11:28:02', '2023-03-08 11:07:30'),
+(3, 'Tenant', 'tenant@gmail.com', 'tenant', 'tenant', '2023-02-04 11:40:03', '2023-03-08 11:07:30');
 
 -- --------------------------------------------------------
 
@@ -122,7 +123,6 @@ CREATE TABLE `landlord` (
 INSERT INTO `landlord` (`id`, `first_name`, `middle_name`, `last_name`, `date_of_birth`, `email`, `contact_no`, `address`, `region`, `provinces`, `city`, `identification_document`, `emergency_contact_person`, `emergency_contact_number`) VALUES
 (1, 'Joey', NULL, 'Tribbiani', '0000-00-00', 'joey@gmail.com', '09123456789', 'Test', '09', '0973', '097332', '', 'Test', '09123456789'),
 (8, 'try', '', 'try', '2000-12-14', 'try@gmail.com', '091236-44620', 'n/a', '11', '1123', '112314', '', 'trye yuyjhg', '062959'),
-(16, 'steffi', '', 'fgdf', '2000-02-12', 'miming@gmail.com', '0912454-232', 'n/a', '16', '1602', '160210', 'none', 'dfsgsdgd gdsg', '154ttgtg6g5r'),
 (17, 'steffi', '', 'ming', '2000-05-20', 'miming@gmail.com', '0923-2959', 'n/a', '06', '0604', '060412', 'none', 'dfsgsdgd gdsg', '09453776');
 
 -- --------------------------------------------------------
@@ -143,6 +143,13 @@ CREATE TABLE `lease` (
   `one_month_advance` decimal(10,2) NOT NULL,
   `property_picture` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `lease`
+--
+
+INSERT INTO `lease` (`id`, `property_unit_name`, `monthly_rent`, `tenant_name`, `lease_start`, `lease_end`, `rent_paid`, `one_month_deposit`, `one_month_advance`, `property_picture`) VALUES
+(1, 'Pad 1', '5000.00', 'try try', '2023-01-10', '2023-04-10', '10000.00', '5000.00', '5000.00', '');
 
 -- --------------------------------------------------------
 
@@ -168,13 +175,14 @@ CREATE TABLE `password_reset_tokens` (
 CREATE TABLE `properties` (
   `id` int(11) NOT NULL,
   `property_name` varchar(100) NOT NULL,
+  `property_description` text NOT NULL,
+  `num_of_floors` int(50) NOT NULL,
   `landlord_id` int(11) NOT NULL,
   `region` varchar(100) NOT NULL,
   `provinces` varchar(100) NOT NULL,
   `city` varchar(100) NOT NULL,
   `barangay` varchar(100) NOT NULL,
   `street` varchar(100) NOT NULL,
-  `property_description` text NOT NULL,
   `features_description` text NOT NULL,
   `features` varchar(100) NOT NULL,
   `image_path` varchar(255) DEFAULT NULL
@@ -184,8 +192,8 @@ CREATE TABLE `properties` (
 -- Dumping data for table `properties`
 --
 
-INSERT INTO `properties` (`id`, `property_name`, `landlord_id`, `region`, `provinces`, `city`, `barangay`, `street`, `property_description`, `features_description`, `features`, `image_path`) VALUES
-(1, 'Joey Rentals', 1, '09', '0973', '097332', 'Tugbungan', 'try', '4 Rooms for Bedspacers\r\n1 Commercial Building', 'car parking\r\nmotorcycle parking\r\nallow pets\r\ngarden\r\nlaundry\r\n', '', NULL);
+INSERT INTO `properties` (`id`, `property_name`, `property_description`, `num_of_floors`, `landlord_id`, `region`, `provinces`, `city`, `barangay`, `street`, `features_description`, `features`, `image_path`) VALUES
+(1, 'Joey Rentals', '4 Rooms for Bedspacers\r\n1 Commercial Building', 2, 1, '09', '0973', '097332', 'Tugbungan', 'try', 'car parking\r\nmotorcycle parking\r\nallow pets\r\ngarden\r\nlaundry\r\n', '0', NULL);
 
 -- --------------------------------------------------------
 
@@ -44382,7 +44390,7 @@ ALTER TABLE `landlord`
 -- AUTO_INCREMENT for table `lease`
 --
 ALTER TABLE `lease`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `password_reset_tokens`
@@ -44394,7 +44402,7 @@ ALTER TABLE `password_reset_tokens`
 -- AUTO_INCREMENT for table `properties`
 --
 ALTER TABLE `properties`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `property_features`
@@ -44406,7 +44414,7 @@ ALTER TABLE `property_features`
 -- AUTO_INCREMENT for table `property_units`
 --
 ALTER TABLE `property_units`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `refbrgy`
