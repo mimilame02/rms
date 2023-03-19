@@ -49,7 +49,9 @@ img[alt="Rental Building Icon"] {
 }
 
 .icons {
-  font-size: 1.9em;
+  font-size: 35px;
+  padding-bottom: 0px;
+  padding-top: 20px;
 }
 .mb-4 {
   font-weight: bold;
@@ -483,6 +485,9 @@ a.bx.bx-caret-left:hover {
   }
   .fs-30 {
     font-size: 30px !important;
+  }
+  .fs-45 {
+    font-size: 45px !important;
   }
   .table-title {
     font-size: 16px!important;

@@ -86,7 +86,7 @@
                     <div class="col-md-6 mb-4 stretch-card transparent">
                       <div class="card card-tale">
                         <div class="card-body white-text">
-                          <span class="bx bx-user icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-30 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalTenants; ?></p></span>
+                          <span class="bx bx-user icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-45 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalTenants; ?></p></span>
                           <p class="mb-1 pt-3 fw-bolder">Total Tenants </p>
                         </div>
                       </div>
@@ -94,7 +94,7 @@
                     <div class="col-md-6 mb-4 stretch-card transparent">
                       <div class="card card-dark-blue">
                         <div class="card-body white-text">
-                          <span class="bx bxs-user-rectangle icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-30 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalLandlords; ?></p></span>
+                          <span class="bx bxs-user-rectangle icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-45 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalLandlords; ?></p></span>
                           <p class="mb-1 pt-3 fw-bolder">Total Landlords </p>
                         </div>
                       </div>
@@ -102,7 +102,7 @@
                     <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
                       <div class="card card-light-blue">
                         <div class="card-body white-text">
-                          <span class="bx bx-building-house icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-30 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalProperties; ?></p></span>
+                          <span class="bx bx-building-house icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-45 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalProperties; ?></p></span>
                           <p class="mb-1 pt-3 fw-bolder">Total Property </p>
                         </div>
                       </div>
@@ -110,7 +110,7 @@
                     <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
                       <div class="card card-light-blue">
                         <div class="card-body white-text">
-                          <span class="bx bx-home-alt-2 icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-30 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalPropertyUnits; ?></p></span>
+                          <span class="bx bx-home-alt-2 icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-45 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalPropertyUnits; ?></p></span>
                           <p class="mb-1 pt-3 fw-bolder">Total Property Units </p>
                         </div>
                       </div>
