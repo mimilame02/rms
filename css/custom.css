@@ -231,7 +231,7 @@ li.nav-item.logout {
 }
 
 .card-light-green {
-  height: calc(100% + 35px);
+  height: calc(100% + 10px);
   background: rgb(8,76,78);
 background: linear-gradient(111deg, rgba(8,76,78,1) 11%, rgba(13,91,94,1) 22%, rgba(23,111,115,1) 38%, rgba(16,115,110,1) 57%, rgba(45,145,119,1) 73%, rgba(80,191,148,1) 89%, rgba(101,228,174,1) 100%);
   padding-bottom: 2px;

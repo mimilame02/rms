@@ -115,8 +115,8 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-12 stretch-card grid-margin grid-margin-md-1 mt-5">
-                      <div class="card card-light-green">
+                    <div class="col-md-12 stretch-card mt-5">
+                      <div class="card px-3 card-light-green">
                         <div class="card-body  text-white mb-0 ">
                           <p class="fs-5 mb-3 mt-2 fw-bolder">TOTAL INCOME</p>
                           <div class="row">
