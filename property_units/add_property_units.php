@@ -40,10 +40,8 @@
 
     $property_units_obj->monthly_rent = isset($_POST['monthly_rent']) ? $_POST['monthly_rent'] : 2500;
     
-    if (isset($_POST['monthly_rent'])) {
-      $property_units_obj->one_month_deposit = $_POST['one_month_deposit'];
-      $property_units_obj->one_month_advance = $_POST['one_month_advance'];
-    }
+    $property_units_obj->one_month_deposit = $_POST['one_month_deposit'];
+    $property_units_obj->one_month_advance = $_POST['one_month_advance'];
 
   
     if ($property_units_obj->property_unit_add()) {
@@ -187,12 +185,12 @@
                       </div>
                     </div>
                   </div>
-                  <div class="d-flex pt-3 pl-5">
+                  <div class="d-flex pt-3">
                     <div id="room_fields">
                       <div class="col-md-12">
                         <div class="form-group-row">
                           <div class="p-2">
-                            <label for="num_rooms" class="fs-7">Number of Rooms</label>
+                            <label for="num_rooms" class="">Number of Rooms</label>
                             <input type="number" class="form-control form-control-sm" id="num_rooms" name="num_rooms" min="1" max="100" value="<?php echo  isset($_POST['num_rooms']) ? $_POST['num_rooms'] : 1; ?>">
                           </div>
                         </div>
@@ -202,7 +200,7 @@
                       <div class="col-md-12">
                         <div class="form-group-row">
                           <div class="p-2">
-                            <label for="num_bathrooms" class="fs-7">Number of Bathrooms</label>
+                            <label for="num_bathrooms" class="">Number of Bathrooms</label>
                             <input type="number" class="form-control form-control-sm" id="num_bathrooms" name="num_bathrooms" min="1" max="100" value="<?php echo  isset($_POST['num_bathrooms']) ? $_POST['num_bathrooms'] : 1; ?>">
                           </div>
                         </div>
@@ -214,7 +212,7 @@
                     <div class="form-group-row">
                       <div class="col">
                         <label for="unit_condition">Unit Condition</label><span class="req"> *</span>
-                        <select class="form-control form-control-sm" placeholder="" id="unit_condition" name="unit_condition" required>
+                        <select class="form-control form-control-sm" placeholder="" id="unit_condition" name="unit_condition" onchange="updateUnitTypePicture()">
                           <option value="none">--Select--</option>
                           <?php
                           require_once '../classes/reference.class.php';
@@ -222,19 +220,15 @@
                           $ref = $ref_obj->get_unit_con();
                           foreach($ref as $row){
                           ?>
-                          <option value="<?=$row['id']?>"><?=$row['condition_name']?></option>
+                          <option value="<?=$row['id']?>" data-img="<?=$row['unit_type_picture']?>"><?=$row['condition_name']?></option>
                           <?php
+                          // Set the value of $row['unit_type_picture']
+                          $row['unit_type_picture'] = json_decode($row['unit_type_picture'])[0];
                           }
                           ?>
                         </select>
-                        <div class="image-container mx-auto pb-3">
-                          <img id="unit_type_picture" src="<?php 
-                          require_once '../classes/reference.class.php';
-                          $ref_obj = new Reference();
-                          $ref = $ref_obj->get_unit_type_picture($unit_condition_id);
-                          if (isset($unit_condition_id)) {
-                            echo '../img/' .$unit_condition_id;
-                          } ?>" alt="Unit Condition Picture" height="250px" width="250px">
+                        <div class="image-container mb-3">
+                        <img id="unit_type_picture" src="../img/unit_conditions/<?php echo isset($ref[0]['unit_type_picture']) && $ref[0]['unit_type_picture'] !== '' ? $ref[0]['unit_type_picture'] : 'placeholder.png'; ?>" alt="Unit Condition Picture" height="150px" width="100%">
                         </div>
                       </div>
                     </div>
@@ -279,14 +273,6 @@
 
 <script>
 $(document).ready(function() {
-  // Update uploaded image when unit condition is selected
-  $('#unit_condition').on('change', function() {
-    var unitConditionId = $(this).val();
-    var imageUrl = '<?php echo $property_units_obj->get_unit_type_picture(":unit_condition_id"); ?>'.replace(':unit_condition_id', unitConditionId);
-    $('#uploaded-image').attr('src', imageUrl);
-    $('.image-container').show();
-  });
-
   // Set deposit and advance fields to match monthly rent
   $("#monthly_rent").on("change", function() {
     var monthlyRent = parseFloat($(this).val());
@@ -294,48 +280,18 @@ $(document).ready(function() {
   }).trigger("change"); // Set the initial values of the deposit and advance fields based on the default value of the monthly_rent field
 });
 
+function updateUnitTypePicture() {
+  const unitConditionSelect = document.getElementById('unit_condition');
+  const unitTypePictureImg = document.getElementById('unit_type_picture');
 
+  const selectedOption = unitConditionSelect.options[unitConditionSelect.selectedIndex];
+  const unitTypePicture = selectedOption.dataset.img;
 
-var selectElem = document.getElementById("status");
-selectElem.addEventListener("change", function() {
-  var selectedOption = selectElem.options[selectElem.selectedIndex];
-  var className = "";
-  if (selectedOption.value === "Vacant") {
-    className = "text-success";
-  } else if (selectedOption.value === "Occupied") {
-    className = "text-danger";
-  } else if (selectedOption.value === "Unavailable") {
-    className = "text-secondary";
-  }
-  selectElem.className = "form-control form-control-sm " + className;
-});
-
-// Find the select element
-var selectElem = document.getElementById('unit_condition');
-
-// Find the image element
-var imgElem = document.getElementById('unit_type_picture');
-
-// Check if the img tag has a valid src attribute and carries a unit condition ID
-var unitConditionId = get_unit_con();
-if (imgElem.getAttribute('src') !== null && imgElem.getAttribute('src') !== '' && unitConditionId !== null) {
-  // Fetch the image and show the container when the image is loaded
-  imgElem.onload = function() {
-    // Add the col-md-6 class to the select element
-    selectElem.classList.add('col-md-6');
-
-    // Remove the d-none class from the image container
-    var imageContainer = document.querySelector('.image-container');
-    imageContainer.classList.remove('d-none');
-  }
-
-  // Call the get_unit_type_picture() function to get the URL of the image
-  var imageUrl = '<?php echo $ref_obj->get_unit_type_picture("' + unitConditionId + '"); ?>';
-
-  // Set the img src attribute to the image URL
-  imgElem.setAttribute('src', '../img/' + imageUrl);
+  unitTypePictureImg.src = unitTypePicture ? "../img/unit_conditions/" + unitTypePicture : "../img/unit_conditions/placeholder.png";
+  
 }
 
+document.getElementById('unit_condition').addEventListener('change', updateUnitTypePicture);
 
 
 </script>
