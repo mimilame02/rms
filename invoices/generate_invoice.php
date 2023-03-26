@@ -125,10 +125,12 @@
                         <label for="tenant_name">Tenant Name</label>
                         <input type="text" name="tenant_name" class="form-control" id="tenant_name" placeholder="(default)"
                         <?php
-                        if (isset($_POST["lease_unit_id"])) {
-                          $lease_unit_id = $_POST['lease_unit_id'];
-                          $result = mysqli_query($conn, "SELECT tenant.id, tenant.last_name, tenant.first_name FROM lease JOIN tenant ON lease.tenant_id = tenant.id WHERE lease.id = $lease_unit_id");
-                        
+                            // Get lease units based on selected property unit
+                            if(isset($_POST['property_unit'])) {
+                              $property_unit_id = $_POST['property_unit'];
+                              $lease_units = $ref_obj->get_lease_units_by_id($property_unit_id);
+                              }
+                              
                           $row = mysqli_fetch_assoc($result);
                         
                           if ($row) {
