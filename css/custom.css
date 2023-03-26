@@ -13,6 +13,7 @@
 :root.root {
   /* Use the CSS custom properties here */
   font-size: var(--fs-7);
+  font-size: var(--fs-8);
   font-weight: var(--fw-600);
 }
 
@@ -22,9 +23,22 @@
 }
 
 /* Use the .fs-8 class to set the font size */
+@media (max-width: 920px) {
 .fs-8 {
-  font-size: var(--fs-8) !important;
+  font-size: 8px !important;
 }
+input#fixed_bills {
+  height: 8px!important;
+}
+}
+@media (min-width: 1200px) {
+  .fs-8 {
+    font-size: 13px !important;
+  }
+  input#fixed_bills {
+    height: 12px!important;
+  }
+  }
 
 
 img {
@@ -117,7 +131,37 @@ input {
   justify-content: center!important;
   display: flex!important;
 }
+input#payment_date {
+  height: 15px;
+}
+button.btn.btn-outline-secondary.form-control-sm.btn-secondary.text-dark {
+  height: 15px;
+  padding: 7px;
+}
+select#status {
+  height: 15px;
+  padding: 2px;
+  border-radius: 8px;
+}
+button.btn.btn-outline-light.form-control-sm {
+  height: 15px;
+  padding: 8px;
+}
 
+span.dtr-data {
+  margin-inline: 25px!important;
+}
+
+.cardbox {
+  word-wrap: break-word;
+  background-color: #ffffff;
+  border-radius: 1rem;
+  /* margin: 3px auto 0px auto!important; */
+  padding-top: 3px;
+  padding-bottom: 20px;
+  /* width: 328px; */
+  border: 1px groove #aaaaaa4d;
+}
 .card-d {
   word-wrap: break-word;
   background-color: #b2b2b20d;
@@ -138,7 +182,7 @@ input {
     padding-left: 9%;
   }
   .image-container.pb-3 {
-    margin-left: 7%;
+    /* margin-left: 1%; */
     margin-right: 15%;
   }
 }
@@ -268,6 +312,10 @@ background: linear-gradient(111deg, rgba(8,76,78,1) 11%, rgba(13,91,94,1) 22%, r
 }
 .smaller {
   height: 10rem;
+}
+
+input#fixed_bills {
+  height: 10px;
 }
 
 .form-check-input-ic{

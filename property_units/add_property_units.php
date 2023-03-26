@@ -288,7 +288,6 @@ function updateUnitTypePicture() {
   const unitTypePicture = selectedOption.dataset.img;
 
   unitTypePictureImg.src = unitTypePicture ? "../img/unit_conditions/" + unitTypePicture : "../img/unit_conditions/placeholder.png";
-  
 }
 
 document.getElementById('unit_condition').addEventListener('change', updateUnitTypePicture);

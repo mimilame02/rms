@@ -36,13 +36,13 @@
       </div>
       <div class="add-tenant-container">
       <?php
-                    if($_SESSION['user_type'] == 'admin'){ 
-                ?>
+          if($_SESSION['user_type'] == 'admin'){ 
+      ?>
       <a href="add_lease.php" class="btn btn-success btn-icon-text float-right">
           Add Lease</a>
           <?php
-                    }
-                ?>
+              }
+          ?>
       </div>
     </div>
     <div class="row mt-4">
@@ -50,60 +50,75 @@
                 <div class="card-body">
                   <div class="table-responsive pt-3">
                   <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-        <thead>
-            <tr>
-                     <th>#</th>
-                     <th>Unit</th>
-                     <th>Floor</th>
-                     <th>Tenant Name</th>
-                     <th>Type</th>
-                     <th>Rent</th>
-                     <th>Status</th>
-                     <?php
-                                if($_SESSION['user_type'] == 'admin'){ 
-                            ?>
-                            <th>Action</th>
-                            <?php
+                  <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Unit</th>
+                        <th>Floor</th>
+                        <th>Type</th>
+                        <th>Rent</th>
+                        <th>Tenant Name</th>
+                        <th>Status</th>
+                        <th>Lease Contract</th>
+                        <?php
+                            if($_SESSION['user_type'] == 'admin'){ 
+                        ?>
+                        <th>Action</th>
+                        <?php
+                            }
+                        ?>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $sql = "SELECT lease.*, property_units.unit_no, unit_type.type_name, property_units.monthly_rent, property_units.floor_level, tenant.first_name, tenant.last_name
+                    FROM lease
+                    LEFT JOIN property_units ON lease.property_unit_id = property_units.id
+                    LEFT JOIN unit_type ON property_units.unit_type_id = unit_type.id
+                    RIGHT JOIN tenant ON lease.tenant_id = tenant.id 
+                    WHERE tenant_id=tenant.id";
+                    $result = mysqli_query($conn, $sql);
+                    $i = 1;
+                    if (mysqli_num_rows($result) > 0){
+                        while ($row = mysqli_fetch_assoc($result)){
+                            // Determine lease status based on lease end date
+                            $status = '';
+                            if ($row['status'] == 'Occupied') {
+                                if (strtotime($row['lease_end']) >= time()) {
+                                    $status = '<button class="btn btn-warning btn-lg p-2">Occupied until '.$row['lease_end'].'</button>';
+                                } else {
+                                    $status = '<button class="btn btn-danger btn-lg p-2">Occupied (expired lease)</button>';
                                 }
-                            ?>
-            </tr>
-        </thead>
-        <tbody>
-        <?php
-          $sql=" SELECT lease.*, property_units.unit_no, unit_type.type_name, property_units.monthly_rent, property_units.floor_level, tenant.first_name, tenant.last_name, property_units.status
-           FROM lease
-           LEFT JOIN property_units ON lease.property_unit_id = property_units.id
-           LEFT JOIN unit_type ON lease.property_unit_id = unit_type.id
-           RIGHT JOIN tenant ON lease.tenant_id = tenant.id 
-           WHERE tenant_id=tenant.id";
-          $result = mysqli_query($conn, $sql);
-          $i = 1;
-          if (mysqli_num_rows($result) > 0){
-            while ($row = mysqli_fetch_assoc($result)){
-              $status = $row['status'] == 'Vacant' ? '<button class="btn btn-success btn-lg p-2">Vacant</button>' : ($row['status'] == 'Occupied' ? '<button class="btn btn-danger btn-lg p-2">Occupied</button>' :  ($row['status'] == 'Unavailable' ? '<button class="btn btn-secondary btn-lg p-2">Unavailable</button>' : '')); 
+                            } elseif ($row['status'] == 'Vacant') {
+                                $vacant_date = date('F j, Y', strtotime($row['lease_end'] . ' + 7 days'));
+                                $status = '<button class="btn btn-success btn-lg p-2">Vacant after '.$vacant_date.'</button>';
+                            } elseif ($row['status'] == 'Unavailable') {
+                                $status = '<button class="btn btn-secondary btn-lg p-2">Unavailable</button>';
+                            }
 
-              echo '
-              <tr>
-                <td>'.$i.'</td>
-                <td>'.$row['unit_no'].'</td>
-                <td>'.$row['floor_level'].'</td>
-                <td>'.$row['last_name'].','.$row['first_name'].'</td>
-                <td>'.$row['type_name'].'</td>
-                <td>'.$row['monthly_rent'].'</td>
-                <td class="cust">'.$status.'</td>
-                <td>
-                  <div class="action">
-                    <a class="me-2 green" href="view_lease.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
-                    <a class="me-2 green" href="edit_lease.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
-                    <a class="green action-delete" href="delete_lease.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
-                  </div>
-                </td>
-              </tr>';
-              $i++;
-            }
-            }
-          ?>
-        </tbody>
+                                echo '
+                                <tr>
+                                    <td>'.$i.'</td>
+                                    <td>'.$row['unit_no'].'</td>
+                                    <td>'.$row['floor_level'].'</td>
+                                    <td>'.$row['type_name'].'</td>
+                                    <td>'.$row['monthly_rent'].'</td>
+                                    <td>'.$row['last_name'].','.$row['first_name'].'</td>
+                                    <td class="cust">'.$status.'</td>
+                                    <td>'.$row['lease_start'].' - '.$row['lease_end'].'</td>
+                                    <td>
+                                        <div class="action">
+                                            <a class="me-2 green" href="view_lease.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
+                                            <a class="me-2 green" href="edit_lease.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
+                                            <a class="green action-delete" href="delete_lease.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>';
+                                $i++;
+                            }
+                        }
+                    ?>
+                </tbody>
     </table>
     </div>
     </div>

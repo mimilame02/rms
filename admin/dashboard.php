@@ -40,7 +40,7 @@
     $currentMonth = date('d-m-Y');
 
     // Query the database for rent payments made in the current month
-    $sql = "SELECT SUM(rent_paid) as total_income FROM invoice WHERE MONTH(payment_date) = MONTH('$currentMonth') AND YEAR(payment_date) = YEAR('$currentMonth')";
+    $sql = "SELECT SUM(amount_paid) as total_income FROM invoice WHERE MONTH(payment_date) = MONTH('$currentMonth') AND YEAR(payment_date) = YEAR('$currentMonth' AND status = 'Paid')";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
 

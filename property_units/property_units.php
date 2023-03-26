@@ -50,58 +50,56 @@
                 <div class="card-body">
                   <div class="table-responsive pt-3">
                   <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-        <thead>
-            <tr>
-                     <th>#</th>
-                     <th>Unit</th>
-                     <th>Floor</th>
-                     <th>Condition</th>
-                     <th>Rent</th>
-                     <th>Main Property</th>
-                     <th>Status</th>
-                     <?php
-                            if($_SESSION['user_type'] == 'admin'){ 
-                        ?>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Main Property</th>
+                      <th>Units</th>
+                      <th>Floors</th>
+                      <th>Condition</th>
+                      <th>Rent</th>
+                      <th>Status</th>
+                      <?php if($_SESSION['user_type'] == 'admin'){ ?>
                         <th>Action</th>
-                        <?php
-                            }
-                        ?>
-            </tr>
-        </thead>
-        <tbody>
-        <?php
-          $sql="SELECT pu.*, uc.condition_name, p.property_name 
-          FROM property_units pu 
-          LEFT JOIN unit_condition uc ON pu.unit_condition_id = uc.id 
-          LEFT JOIN properties p ON pu.property_id = p.id";
-          $result = mysqli_query($conn, $sql);
-          $i = 1;
-          if (mysqli_num_rows($result) > 0){
-            while ($row = mysqli_fetch_assoc($result)){
-              $status = $row['status'] == 'Vacant' ? '<button class="btn btn-success btn-lg p-2">Vacant</button>' : ($row['status'] == 'Occupied' ? '<button class="btn btn-danger btn-lg p-2">Occupied</button>' :  ($row['status'] == 'Unavailable' ? '<button class="btn btn-secondary btn-lg p-2">Unavailable</button>' : '')); 
+                      <?php } ?>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                      $sql="SELECT pu.*, uc.condition_name, p.property_name, COUNT(property_units.id) AS unit_count 
+                      FROM property_units pu 
+                      LEFT JOIN unit_condition uc ON pu.unit_condition_id = uc.id 
+                      LEFT JOIN properties p ON pu.property_id = p.id
+                      LEFT JOIN property_units ON property_units.property_id = p.id
+                      GROUP BY p.id, pu.id";
+                      $result = mysqli_query($conn, $sql);
+                      $i = 1;
+                      if (mysqli_num_rows($result) > 0){
+                        while ($row = mysqli_fetch_assoc($result)){
+                          $status = $row['status'] == 'Vacant' ? '<button class="btn btn-success btn-lg p-2">Vacant</button>' : ($row['status'] == 'Occupied' ? '<button class="btn btn-danger btn-lg p-2">Occupied</button>' :  ($row['status'] == 'Unavailable' ? '<button class="btn btn-secondary btn-lg p-2">Unavailable</button>' : '')); 
 
-              echo '
-              <tr>
-                <td>'.$i.'</td>
-                <td>'.$row['unit_no'].'</td>
-                <td>'.$row['floor_level'].'</td>
-                <td>'.$row['condition_name'].'</td>
-                <td>'.$row['monthly_rent'].'</td>
-                <td>'.$row['property_name'].'</td>
-                <td class="cust">'.$status.'</td>
-                <td>
-                  <div class="action">
-                    <a class="me-2 green" href="view_property_units.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
-                    <a class="me-2 green" href="edit_property_units.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
-                    <a class="green action-delete" href="delete_property_units.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
-                  </div>
-                </td>
-              </tr>';
-              $i++;
-            }
-            }
-          ?>
-        </tbody>
+                          echo '
+                          <tr>
+                            <td>'.$i.'</td>
+                            <td>'.$row['property_name'].'</td>
+                            <td>'.$row['unit_count'].'</td>
+                            <td>'.$row['floor_level'].'</td>
+                            <td>'.$row['condition_name'].'</td>
+                            <td>'.$row['monthly_rent'].'</td>
+                            <td class="cust">'.$status.'</td>
+                            <td>
+                              <div class="action">
+                                <a class="me-2 green" href="view_property_units.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
+                                <a class="me-2 green" href="edit_property_units.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
+                                <a class="green action-delete" href="delete_property_units.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
+                              </div>
+                            </td>
+                          </tr>';
+                          $i++;
+                        }
+                      }
+                    ?>
+                  </tbody>
     </table>
     </div>
     </div>

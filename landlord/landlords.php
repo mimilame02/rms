@@ -53,48 +53,48 @@
                 <div class="card-body">
                   <div class="table-responsive pt-3">
                   <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-        <thead>
-            <tr>
-                     <th>#</th>
-                     <th>Name</th>
-                     <th>Email</th>
-                     <th>Contact No.</th>
-                     <?php
-                            if($_SESSION['user_type'] == 'admin'){ 
-                        ?>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Contact No.</th>
+                      <th>Assigned</th>
+                      <?php if($_SESSION['user_type'] == 'admin'){ ?>
                         <th>Action</th>
-                        <?php
-                            }
-                        ?>
-            </tr>
-        </thead>
-        <tbody>
-        <?php
-  $sql = "SELECT * FROM landlord";
-  $result = mysqli_query($conn, $sql);
-  $i = 1;
-  if (mysqli_num_rows($result) > 0){
-
-    while ($row = mysqli_fetch_assoc($result)){
-      echo '
-    <tr>
-      <td>'.$i.'</td>
-      <td>'.$row['last_name'].','.$row['first_name'].'</td>
-      <td>'.$row['email'].'</td>
-      <td>'.$row['contact_no'].'</td>
-        <td>
-          <div class="action">
-             <a class="me-2 green" href="view_landlord.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
-            <a class="me-2 green" href="edit_landlord.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
-            <a class="green action-delete" href="delete_landlord.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
-          </div>
-        </td>
-    </tr>';
-    $i++;
-    }
-  }
-?>
-        </tbody>
+                      <?php } ?>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                      $sql = "SELECT landlord.*, COUNT(DISTINCT properties.id) AS property_count, COUNT(property_units.id) AS unit_count FROM landlord
+                      LEFT JOIN properties ON properties.landlord_id = landlord.id
+                      LEFT JOIN property_units ON property_units.property_id = properties.id
+                      GROUP BY landlord.id";
+                      $result = mysqli_query($conn, $sql);
+                      $i = 1;
+                      if (mysqli_num_rows($result) > 0){
+                        while ($row = mysqli_fetch_assoc($result)){
+                          echo '
+                          <tr>
+                            <td>'.$i.'</td>
+                            <td>'.$row['last_name'].', '.$row['first_name'].'</td>
+                            <td>'.$row['email'].'</td>
+                            <td>'.$row['contact_no'].'</td>
+                            <td>Properties: '.$row['property_count'].'<br><br>Units: '.$row['unit_count'].'</td>
+                            <td>
+                              <div class="action">
+                                <a class="me-2 green" href="view_landlord.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
+                                <a class="me-2 green" href="edit_landlord.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
+                                <a class="green action-delete" href="delete_landlord.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
+                              </div>
+                            </td>
+                          </tr>';
+                          $i++;
+                        }
+                      }
+                    ?>
+                  </tbody>
     </table>
 </div>
 </div>

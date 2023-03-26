@@ -23,12 +23,13 @@
 
     // Fetch the invoice data for the given month
     $sql = "SELECT tenant.id as tenant_id, CONCAT(tenant.first_name, ' ', tenant.last_name) as tenant_name, invoice.lease_unit_id, 
-            invoice.monthly_rent, (invoice.electricity + invoice.water) as monthly_bills, penalty.amount as penalty_amount, (invoice.rent_paid - invoice.monthly_rent - (invoice.electricity + invoice.water)) as balance, (invoice.monthly_rent + (invoice.electricity + invoice.water) + penalty.amount + (invoice.rent_paid - invoice.monthly_rent - (invoice.electricity + invoice.water))) as total_due, invoice.rent_paid, invoice.status
-            FROM invoice
-            JOIN tenant ON invoice.tenant_id = tenant.id
-            JOIN lease ON invoice.lease_unit_id = lease.id
-            JOIN penalty ON invoice.penalty_id = penalty.id
-            WHERE YEAR(invoice_date) = ? AND MONTH(invoice_date) = ?";
+    invoice.monthly_rent, invoice.electricity, invoice.water, penalty.amount as penalty_amount, (invoice.amount_paid - invoice.monthly_rent - (invoice.electricity + invoice.water)) as balance, invoice.total_due, invoice.amount_paid, invoice.rent_due_date, invoice.status, invoice.payment_date, invoice.fixed_bills, invoice.monthly_bills
+    FROM invoice
+    JOIN tenant ON invoice.tenant_id = tenant.id
+    JOIN lease ON invoice.lease_unit_id = lease.id
+    JOIN penalty ON invoice.penalty_id = penalty.id
+    WHERE YEAR(rent_due_date) = ? AND MONTH(rent_due_date) = ?";
+
     
     // Prepare and bind the statement
     $query = $conn->prepare($sql);
@@ -38,23 +39,31 @@
     $query->execute();
 
     // Bind the result variables
-    $query->bind_result($tenant_id, $tenant_name, $lease_unit_id, $monthly_rent, $monthly_bills, $penalty_amount, $balance, $total_due, $rent_paid, $status);
+    $query->bind_result($tenant_id, $tenant_name, $lease_unit_id, $monthly_rent, $electricity, $water, $penalty_amount, $balance, $total_due, $amount_paid, $rent_due_date, $status, $payment_date, $fixed_bills, $monthly_bills);
+
 
     // Fetch the data
     while ($query->fetch()) {
       $invoice[] = [
-        'tenant_id' => $tenant_id,
-        'tenant_name' => $tenant_name,
-        'unit_name' => $lease_unit_id,
-        'rent' => $monthly_rent,
-        'monthly_bills' => $monthly_bills,
-        'penalty' => $penalty_amount,
-        'balance' => $balance,
-        'total_due' => $total_due,
-        'rent_paid' => $rent_paid,
-        'status' => $status
+          'tenant_id' => $tenant_id,
+          'tenant_name' => $tenant_name,
+          'unit_name' => $lease_unit_id,
+          'rent' => $monthly_rent,
+          'electricity' => $electricity,
+          'water' => $water,
+          'penalty' => $penalty_amount,
+          'balance' => $balance,
+          'total_due' => $total_due,
+          'rent_due_date' => $rent_due_date,
+          'amount_paid' => $amount_paid,
+          'status' => $status,
+          'payment_date' => $payment_date,
+          'fixed_bills' => $fixed_bills,
+          'monthly_bills' => $monthly_bills
       ];
-    }
+  }
+  
+    
 
   // Close the statement
   $query->close();
@@ -89,51 +98,69 @@
           <div class="card-body">
             <div class="table-responsive pt-3">
               <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Tenant Name</th>
-                    <th>Unit Name</th>
-                    <th>Rent</th>
-                    <th>Monthly Bills</th>
-                    <th>Penalty</th>
-                    <th>Balance</th>
-                    <th>Total Due</th>
-                    <th>Amount Paid</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                        
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                  $i = 1;
-                  if (count($invoice) > 0) {
-                    foreach ($invoice as $invoice_data) {
-                      echo '
-                        <tr>
-                          <td>' . $i . '</td>
-                          <td>' . $invoice_data['tenant_name'] . '</td>
-                          <td>' . $invoice_data['unit_name'] . '</td>
-                          <td>' . $invoice_data['rent'] . '</td>
-                          <td>' . $invoice_data['monthly_bills'] . '</td>
-                          <td>' . $invoice_data['penalty'] . '</td>
-                          <td>' . $invoice_data['balance'] . '</td>
-                          <td>' . $invoice_data['total_due'] . '</td>
-                          <td>' . $invoice_data['rent_paid'] . '</td>
-                          <td>' . $invoice_data['status'] . '</td>
-                          <td><button class="show3" onclick="redirectTo(\'invoice_details.php?tenant_id=' . $invoice_data['tenant_id'] . '\')">Show Details</button></td>
-                        </tr>';
-                      $i++;
-                    }
-                  } else {
-                    echo '
-                      <tr>
-                        <td colspan="11">No records found.</td>
-                      </tr>';
-                  }
-                  ?>
-                </tbody>
+              <thead>
+    <tr>
+        <th>#</th>
+        <th>Tenant Name</th>
+        <th>Unit Name</th>
+        <th>Rent</th>
+        <th>Monthly Bills</th>
+        <th>Penalty</th>
+        <th>Total Due</th>
+        <th>Rent Due Date</th>
+        <th>Amount Paid</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+</thead>
+<tbody>
+    <?php
+$sql = "SELECT invoice.id, property_units.unit_no, CONCAT(tenant.first_name, ' ', tenant.last_name) as tenant_name, invoice.monthly_rent, invoice.rent_due_date, invoice.electricity, invoice.water, invoice.penalty_id, IFNULL(penalty.amount, 0) AS penalty, invoice.total_due, invoice.amount_paid, invoice.balance, invoice.status, invoice.fixed_bills, invoice.monthly_bills, invoice.tenant_id
+FROM invoice
+INNER JOIN lease ON lease.id = invoice.lease_unit_id
+INNER JOIN property_units ON property_units.id = lease.property_unit_id
+INNER JOIN tenant ON tenant.id = invoice.tenant_id
+LEFT JOIN penalty ON penalty.id = invoice.penalty_id
+ORDER BY invoice.id DESC";
+
+    $result = mysqli_query($conn, $sql);
+    $i = 1;
+    if (mysqli_num_rows($result) > 0) {
+        while ($invoice_data = mysqli_fetch_assoc($result)) {
+            $invoice_data['monthly_bills'] = "";
+            if ($invoice_data['fixed_bills']) {
+                $invoice_data['monthly_bills'] .= "Electricity: ₱" . $invoice_data['electricity'] . "<br><br>";
+                $invoice_data['monthly_bills'] .= "Water: ₱" . $invoice_data['water'] . "<br><br>";
+                $invoice_data['monthly_bills'] .= "(Fixed)";
+            } else {
+                $invoice_data['monthly_bills'] .= "Electricity: ₱" . $invoice_data['electricity'] . "<br><br>";
+                $invoice_data['monthly_bills'] .= "Water: ₱" . $invoice_data['water'] . "<br><br>";
+            }
+
+            echo '
+            <tr>
+                <td>' . $i . '</td>
+                <td>' . $invoice_data['tenant_name'] . '</td>
+                <td>' . $invoice_data['unit_no'] . '</td>
+                <td>' . $invoice_data['monthly_rent'] . '</td>
+                <td>' . $invoice_data['monthly_bills'] . ($invoice_data['fixed_bills'] ? ' (Fixed)' : '') . '</td>
+                <td>' . $invoice_data['penalty'] . '</td>
+                <td>' . $invoice_data['total_due'] . '</td>
+                <td>' . $invoice_data['rent_due_date'] . '</td>
+                <td>' . $invoice_data['amount_paid'] . '</td>
+                <td>' . $invoice_data['status'] . '</td>
+                <td><button class="show3" onclick="redirectTo(\'invoice_details.php?tenant_id=' . $invoice_data['tenant_id'] . '\')">Show Details</button></td>
+            </tr>';
+            $i++;
+        }
+    } else {
+        echo '
+        <tr>
+            <td colspan="11">No records found.</td>
+        </tr>';
+    }
+    ?>
+</tbody>
               </table>
             </div>
           </div>
@@ -141,6 +168,9 @@
       </div>
 
 <script>
+function redirectTo(url) {
+    window.location.href = url;
+}
 // Initialize DataTables
 $('#example').DataTable({
   responsive: {

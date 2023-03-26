@@ -16,6 +16,7 @@ class Leases{
     public $one_month_advance;
     public $electricity;
     public $water;
+    public $status;
 
     protected $db;
 
@@ -54,8 +55,8 @@ class Leases{
 
     function lease_add() {
         // attempt insert query execution
-        $sql = "INSERT INTO lease (property_unit_id, monthly_rent, tenant_id, lease_start, lease_end, lease_doc, one_month_deposit, one_month_advance, electricity, water) 
-        VALUES (:property_unit_id, :monthly_rent, :tenant_id, :lease_start, :lease_end, :lease_doc, :one_month_deposit, :one_month_advance, :electricity, :water)";
+        $sql = "INSERT INTO lease (property_unit_id, monthly_rent, tenant_id, lease_start, lease_end, lease_doc, one_month_deposit, one_month_advance, electricity, water, status) 
+        VALUES (:property_unit_id, :monthly_rent, :tenant_id, :lease_start, :lease_end, :lease_doc, :one_month_deposit, :one_month_advance, :electricity, :water, :status)";
     
         $query=$this->db->connect()->prepare($sql);
         $query->bindParam(':property_unit_id', $this->property_unit_id);
@@ -68,6 +69,7 @@ class Leases{
         $query->bindParam(':one_month_advance', $this->one_month_advance);
         $query->bindParam(':electricity', $this->electricity);
         $query->bindParam(':water', $this->water);
+        $query->bindParam(':status', $this->status);
 
 
         if($query->execute()){
@@ -89,7 +91,7 @@ class Leases{
         }
       }
     function fetch_all_leases(){
-        $sql = "SELECT * FROM lease;";
+        $sql = "SELECT lease.*, tenant.first_name, tenant.last_name FROM lease INNER JOIN tenant ON lease.tenant_id = tenant.id";
         $query = $this->db->connect()->prepare($sql);
         if ($query->execute()) {
             $data = $query->fetchAll();

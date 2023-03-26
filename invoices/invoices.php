@@ -43,46 +43,49 @@
           <div class="card-body">
             <div class="table-responsive pt-3">
               <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                <thead>
+              <thead>
                   <tr>
-                    <th>#</th>
-                    <th>Year</th>
-                    <th>Month</th>
-                    <th>No. of Invoices</th>
-                    <th>Action</th>
-                          
+                      <th>#</th>
+                      <th>Year</th>
+                      <th>Month</th>
+                      <th>No. of Invoices</th>
+                      <th>Total Due</th>
+                      <th>Action</th>
                   </tr>
-                </thead>
-                <tbody>
+              </thead>
+              <tbody>
                   <?php 
                   // Fetch the invoice data
-                  $sql = "SELECT YEAR(payment_date) as year, MONTH(payment_date) as month, COUNT(*) as num_invoices
+                  $sql = "SELECT YEAR(rent_due_date) as year, MONTH(rent_due_date) as month, COUNT(*) as num_invoices, SUM(total_due) as total_due
                           FROM invoice
-                          GROUP BY YEAR(payment_date), MONTH(payment_date)
-                          ORDER BY YEAR(payment_date) DESC, MONTH(payment_date) DESC";
+                          GROUP BY YEAR(rent_due_date), MONTH(rent_due_date)
+                          ORDER BY YEAR(rent_due_date) DESC, MONTH(rent_due_date) DESC";
 
                   $result = mysqli_query($conn, $sql);
                   $i = 1;
                   if (mysqli_num_rows($result) > 0) {
-                    while ($row = mysqli_fetch_assoc($result)) {
-                      echo '
-                        <tr>
-                          <td>'.$i.'</td>
-                          <td>'.$row['year'].'</td>
-                          <td>'.date('F', mktime(0, 0, 0, $row['month'], 1)).'</td>
-                          <td>'.$row['num_invoices'].'</td>
-                          <td><button class="show3" onclick="redirectTo(\'monthly_invoice.php?year='.$row['year'].'&month='.$row['month'].'\')">Show All</button></td>
-                        </tr>';
-                      $i++;
-                    }
+                      while ($row = mysqli_fetch_assoc($result)) {
+                          echo '
+                          <tr>
+                              <td>'.$i.'</td>
+                              <td>'.$row['year'].'</td>
+                              <td>'.date('F', mktime(0, 0, 0, $row['month'], 1)).'</td>
+                              <td>'.$row['num_invoices'].'</td>
+                              <td>'.$row['total_due'].'</td>
+                              <td>
+                                  <button class="show3" onclick="redirectTo(\'monthly_invoice.php?year='.$row['year'].'&month='.$row['month'].'\')">Show All</button>
+                              </td>
+                          </tr>';
+                          $i++;
+                      }
                   } else {
-                    echo '
+                      echo '
                       <tr>
-                        <td colspan="5">No records found.</td>
+                          <td colspan="6">No records found.</td>
                       </tr>';
                   }
                   ?>
-                </tbody>
+              </tbody>
               </table>
             </div>
           </div>

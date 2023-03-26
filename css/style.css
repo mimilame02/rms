@@ -11589,7 +11589,7 @@ fieldset:disabled .wizard > .actions a,
 
 .btn-outline-light:hover {
   color: #212529;
-  background-color: #f8f9fa;
+  background-color: #bec0c3;
   border-color: #f8f9fa;
 }
 
@@ -18970,7 +18970,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .text-muted, .preview-list .preview-item .preview-item-content p .content-category, .email-wrapper .mail-sidebar .menu-bar .profile-list-item a .user .u-designation, .email-wrapper .mail-list-container .mail-list .content .message_text, .email-wrapper .mail-list-container .mail-list .details .date {
-  color: #737F8B !important;
+  color: #a0a0a07a !important;
 }
 
 .text-black-50 {

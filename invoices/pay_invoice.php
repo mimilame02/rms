@@ -48,11 +48,10 @@
                   <tr>
                     <th>#</th>
                     <th>Tenant Name</th>
-                    <th>Unit Name</th>
-                    <th>monthly_Rent</th>
+                    <th>Unit No.</th>
+                    <th>Monthly Rent</th>
                     <th>Monthly Bills</th>
                     <th>Penalty</th>
-                    <th>Balance</th>
                     <th>Total Due</th>
                     <th>Action</th>
                   </tr>
@@ -60,11 +59,12 @@
                 <tbody>
                   <?php 
                   // Fetch the invoice data
-                  $sql = "SELECT tenant.id as tenant_id, CONCAT(tenant.first_name, ' ', tenant.last_name) as tenant_name, invoice.lease_unit_id, 
-                  invoice.monthly_rent, (invoice.electricity + invoice.water) as monthly_bills, penalty.amount as penalty_amount, (invoice.rent_paid - invoice.monthly_rent - (invoice.electricity + invoice.water)) as balance, (invoice.monthly_rent + (invoice.electricity + invoice.water) + penalty.amount + (invoice.rent_paid - invoice.monthly_rent - (invoice.electricity + invoice.water))) as total_due
+                  $sql = "SELECT tenant.id as tenant_id, CONCAT(tenant.first_name, ' ', tenant.last_name) as tenant_name, invoice.lease_unit_id, property_units.id as property_unit_id, 
+                  invoice.monthly_rent, (invoice.electricity + invoice.water) as monthly_bills, penalty.amount as penalty_amount, invoice.total_due
                   FROM invoice
                   JOIN tenant ON invoice.tenant_id = tenant.id
                   JOIN lease ON invoice.lease_unit_id = lease.id
+                  JOIN property_units ON property_units.id = property_unit_id
                   JOIN penalty ON invoice.penalty_id = penalty.id";
 
                   $result = mysqli_query($conn, $sql);
@@ -75,11 +75,10 @@
                         <tr>
                           <td>'.$i.'</td>
                           <td>'.$row['tenant_name'].'</td>
-                          <td>'.$row['lease_unit_id'].'</td>
+                          <td>'.$row['property_unit_id'].'</td>
                           <td>'.$row['monthly_rent'].'</td>
                           <td>'.$row['monthly_bills'].'</td>
                           <td>'.$row['penalty_amount'].'</td>
-                          <td>'.$row['balance'].'</td>
                           <td>'.$row['total_due'].'</td>
                           <td><button class="show2" onclick="redirectTo(\'show_invoice.php?tenant_id='.$row['tenant_id'].'\')">PAY NOW</button></td>
                         </tr>';

@@ -50,49 +50,49 @@
                 <div class="card-body">
                   <div class="table-responsive pt-3">
                   <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-        <thead>
-            <tr>
-                     <th>#</th>
-                     <th>Property Name</th>
-                     <th>Location</th>
-                     <th>Landlord</th>
-                     <?php
-                            if($_SESSION['user_type'] == 'admin'){ 
-                        ?>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Property Name</th>
+                      <th>Units</th>
+                      <th>Location</th>
+                      <th>Landlord</th>
+                      <?php if($_SESSION['user_type'] == 'admin'){ ?>
                         <th>Action</th>
-                        <?php
-                            }
-                        ?>
-            </tr>
-        </thead>
-        <tbody>
-        <?php
-          $sql = "SELECT properties.*, landlord.first_name, landlord.last_name 
-          FROM properties 
-          LEFT JOIN landlord ON properties.landlord_id = landlord.id";
-          $result = mysqli_query($conn, $sql);
-          $i = 1;
-          if (mysqli_num_rows($result) > 0){
-            while ($row = mysqli_fetch_assoc($result)){
-              echo '
-              <tr>
-                <td>'.$i.'</td>
-                <td>'.$row['property_name'].'</td>
-                <td>'.$row['barangay'].'</td>
-                <td>'.$row['first_name'].' '.$row['last_name'].'</td>
-                <td>
-                  <div class="action">
-                    <a class="me-2 green" href="view_properties.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
-                    <a class="me-2 green" href="edit_properties.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
-                    <a class="green action-delete" href="delete_properties.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
-                  </div>
-                </td>
-              </tr>';
-              $i++;
-            }
-            }
-          ?>
-        </tbody>
+                      <?php } ?>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                      $sql = "SELECT properties.*, landlord.first_name, landlord.last_name, COUNT(property_units.id) AS unit_count
+                      FROM properties 
+                      LEFT JOIN landlord ON properties.landlord_id = landlord.id
+                      LEFT JOIN property_units ON property_units.property_id = properties.id
+                      GROUP BY properties.id";
+                      $result = mysqli_query($conn, $sql);
+                      $i = 1;
+                      if (mysqli_num_rows($result) > 0){
+                        while ($row = mysqli_fetch_assoc($result)){
+                          echo '
+                          <tr>
+                            <td>'.$i.'</td>
+                            <td>'.$row['property_name'].'</td>
+                            <td>'.$row['unit_count'].'</td>
+                            <td>'.$row['barangay'].'</td>
+                            <td>'.$row['first_name'].' '.$row['last_name'].'</td>
+                            <td>
+                              <div class="action">
+                                <a class="me-2 green" href="view_properties.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
+                                <a class="me-2 green" href="edit_properties.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
+                                <a class="green action-delete" href="delete_properties.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
+                              </div>
+                            </td>
+                          </tr>';
+                          $i++;
+                        }
+                      }
+                    ?>
+                  </tbody>
     </table>
     </div>
     </div>

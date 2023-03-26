@@ -51,48 +51,56 @@
                     <div class="card-body">
                       <div class="table-responsive pt-3">
                       <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-            <thead>
-                <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Contact No.</th>
-                        <?php
-                                if($_SESSION['user_type'] == 'admin'){ 
-                            ?>
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Contact No.</th>
+                          <th>Leases</th>
+                          <th>Contract Dates</th>
+                          <th>Floor No.</th>
+                          <?php if($_SESSION['user_type'] == 'admin'){ ?>
                             <th>Action</th>
-                            <?php
-                                }
-                            ?>
-                </tr>
-            </thead>
-            <tbody>
-            <?php
-              $sql = "SELECT * FROM tenant";
-              $result = mysqli_query($conn, $sql);
-              $i = 1;
-              if (mysqli_num_rows($result) > 0){
-
-                while ($row = mysqli_fetch_assoc($result)){
-                  echo '
-                <tr>
-                  <td>'.$i.'</td>
-                  <td>'.$row['last_name'].','.$row['first_name'].'</td>
-                  <td>'.$row['email'].'</td>
-                  <td>'.$row['contact_no'].'</td>
-                    <td>
-                      <div class="action">
-                        <a class="me-2 green" href="view_tenant.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
-                        <a class="me-2 green" href="edit_tenant.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
-                        <a class="green action-delete" href="delete_tenant.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
-                      </div>
-                    </td>
-                </tr>';
-                $i++;
-                }
-              }
-            ?>
-            </tbody>
+                          <?php } ?>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <?php
+                        $sql = "SELECT tenant.*, COUNT(lease.id) AS lease_count, 
+                                DATE_FORMAT(MIN(lease.lease_start), '%M %d, %Y') AS lease_start,
+                                DATE_FORMAT(MAX(lease.lease_end), '%M %d, %Y') AS lease_end,
+                                property_units.floor_level 
+                                FROM tenant
+                                LEFT JOIN lease ON lease.tenant_id = tenant.id 
+                                LEFT JOIN property_units ON property_units.id = lease.property_unit_id 
+                                GROUP BY tenant.id";
+                        $result = mysqli_query($conn, $sql);
+                        $i = 1;
+                        if (mysqli_num_rows($result) > 0){
+                            while ($row = mysqli_fetch_assoc($result)){
+                                echo '
+                                <tr>
+                                    <td>'.$i.'</td>
+                                    <td>'.$row['last_name'].', '.$row['first_name'].'</td>
+                                    <td>'.$row['email'].'</td>
+                                    <td>'.$row['contact_no'].'</td>
+                                    <td>'.$row['lease_count'].'</td>
+                                    <td>'.$row['lease_start'].' to '.$row['lease_end'].'</td>
+                                    <td>'.$row['floor_level'].'</td>
+                                    <td>
+                                      <div class="action">
+                                        <a class="me-2 green" href="view_tenant.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
+                                        <a class="me-2 green" href="edit_tenant.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
+                                        <a class="green action-delete" href="delete_tenant.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
+                                      </div>
+                                    </td>
+                                </tr>';
+                                $i++;
+                            }
+                        }
+                        ?>
+                      </tbody>
         </table>
             </div>
             </div>

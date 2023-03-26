@@ -384,10 +384,10 @@
                                 }
                             ?>
                         </label><br>
-                        <input type="radio" id="is_smoking" name="is_smoking" value="Yes">
-                        <label for="yes">Yes</label>
-                        <input type="radio" id="is_smoking" name="is_smoking" value="No">
-                        <label for="no">No</label>
+                        <input type="radio" id="is_smoking_yes" name="is_smoking" value="Yes">
+                        <label for="is_smoking_yes">Yes</label>
+                        <input type="radio" id="is_smoking_no" name="is_smoking" value="No">
+                        <label for="is_smoking_no">No</label>
                       </div>
                     </div>
                   </div>
