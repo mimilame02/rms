@@ -20,12 +20,18 @@ if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] != 'admin') {
 $db = new Database();
 $lease = new Leases($db);
 $penalty = new Penalty($db);
+$invoice = new Invoice();
 
 // Fetch all leases
-$all_leases = $lease->fetch_all_leases();
+$all_leases = $lease->lease_fetch($lease_unit_id);
 
 // Fetch all penalty
 $penalty_data = $penalty->show();
+
+print_r($_POST);
+print_r($lease_data);
+print_r($invoice);
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $invoice = new Invoice();
@@ -35,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Fetch lease unit data based on lease_unit_id using the existing lease_fetch function
         $lease_data = $lease->lease_fetch($lease_unit_id);
-
 
         // Return the data as JSON
         echo json_encode($lease_data);
@@ -73,12 +78,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $invoice->fixed_bills = isset($_POST['fixed_bills']) && $_POST['fixed_bills'] == 'on' ? 1 : 0;
 
       if ($invoice->fixed_bills == 1 && !empty($lease_data['electricity']) && !empty($lease_data['water'])) {
-        $invoice->electricity = $lease_data['electricity'];
-        $invoice->water = $lease_data['water'];
-      } else {
-          $invoice->electricity = isset($_POST['electricity']) ? $_POST['electricity'] : 0;
-          $invoice->water = isset($_POST['water']) ? $_POST['water'] : 0;
-      }
+        $invoice->electricity = $lease_data['electricity'] ?? 0;
+        $invoice->water = $lease_data['water'] ?? 0;
+    } else {
+        $invoice->electricity = $_POST['electricity'];
+        $invoice->water = $_POST['water'];
+    }
+    
       
       if ($invoice->fixed_bills == 1) {
           $invoice->monthly_bills = [
@@ -142,7 +148,7 @@ require_once '../includes/header.php';
           <div class="col-12 col-xl-8 mb-4 mb-xl-0">
             <h3 class="font-weight-bolder">GENERATE INVOICE</h3> 
           </div>
-          <form action="generate_invoice.php" method="post" onsubmit="calculateTotal();">
+          <form action="generate_invoice.php" method="post" onchange="calculateTotal();">
             <div class="row g-3">
               <div class="col-md-6 grid-margin">
                 <div class="card">
@@ -171,7 +177,7 @@ require_once '../includes/header.php';
                       <div class="col-md-12 pl-0">
                         <div class="form-group">
                           <label for="property_unit">Property Unit No.</label><span class="req"> *</span>
-                          <select class="form-control form-control-sm mb-3 req" id="property_unit" name="property_unit" onchange="updateRent()">
+                          <select class="form-control form-control-sm mb-3 req" id="property_unit" name="property_unit" onchange="filterLeaseUnits()">
                               <option class="col-md-6" value="" disabled selected>Select Unit No.</option>
                               <?php
                                   // Connect to the database and retrieve the list of properties and property units using SQL JOIN
@@ -182,11 +188,6 @@ require_once '../includes/header.php';
                                       ORDER BY p.property_name;");
                                   while ($row = mysqli_fetch_assoc($result)) {
                                       echo "<option value='" . $row['id'] . "' data-rent='" . $row['monthly_rent'] . "' data-deposit='" . $row['one_month_deposit'] . "' data-advance='" . $row['one_month_advance'] . "'data-property='" . $row['property_id'] . "'>" . $row['unit_no'] . "</option>";
-
-                                      $property_id = $row['property_id'];
-                                      $rent = $row['monthly_rent'];
-                                      $deposit = $row['one_month_deposit'];
-                                      $advance = $row['one_month_advance'];
                                   }
                               ?>
                           </select>
@@ -199,7 +200,7 @@ require_once '../includes/header.php';
                             <option value="">-- Select --</option>
                             <?php
                               foreach ($all_leases as $lease) {
-                                echo "<option value='" . $lease['id'] . "' data-property-unit='" . $lease['property_unit_id'] . "' data-tenant_id = '" . $lease['tenant_id'] . "' data-tenant_first_name = '" . $lease['first_name'] . "' data-tenant_last_name = '" . $lease['last_name'] . "' data-rent = '" . $lease['monthly_rent'] . "' data-deposit = '" . $lease['one_month_deposit'] . "' data-advance = '" . $lease['one_month_advance'] . "' data-electricity = '" . $lease['electricity'] . "' data-water = '" . $lease['water'] . "'> Lease # " . $lease['id'] . "</option>";
+                                echo "<option value='" . $lease['id'] . "' data-property-unit='" . $lease['property_unit_id'] . "' data-tenant_id = '" . $lease['tenant_id'] . "' data-tenant_first_name = '" . $lease['first_name'] . "' data-tenant_last_name = '" . $lease['last_name'] . "' data-rent = '" . $lease['monthly_rent'] . "' data-deposit = '" . $lease['one_month_deposit'] . "' data-advance = '" . $lease['one_month_advance'] . "' data-electricity = '" . $lease['electricity'] . "' data-water = '" . $lease['water'] . "' data-lease_start= '" . $lease['lease_start'] . "'> Lease # " . $lease['id'] . "</option>";
 
                             }
                             
@@ -218,8 +219,8 @@ require_once '../includes/header.php';
                       </div>    
                       <div class="col-md-12 pl-0">
                         <div class="form-group">
-                          <label for="rent_due_date">Rent Due Date</label>
-                          <input type="date" name="rent_due_date" class="form-control" id="rent_due_date" placeholder="(default)" required>
+                          <label for="rent_due_dates_container">Rent Due Date</label>
+                          <input type="date" name="rent_due_date" class="form-control" id="rent_due_dates_container" placeholder="(default)" required>
                         </div>
                       </div>
                       <div class="col-md-12 pl-0">
@@ -238,6 +239,7 @@ require_once '../includes/header.php';
                   </div>
                 </div>
               </div>
+              <input type="hidden" id="current_invoice_number" name="current_invoice_number" value="1">
               <div class="col-md-6 grid-margin stretch-card d-block">
                 <div class="cardbox mb-4">
                   <div class="card-body">
@@ -252,7 +254,7 @@ require_once '../includes/header.php';
                   <h4 class="card-title">Billing
                     <!-- Create a CheckBox if bills for water and electricity is fixed before fetching from lease table default values on updateFields()  -->
                     <div class="d-flex float-right" style=" font-size: var(--fs-8);">
-                      <input class="checkmark req" type="checkbox" id="fixed_bills" onchange="updateFields()">
+                      <input class="checkmark req" type="checkbox" id="fixed_bills">
                       <label class="pl-2 mb-0 text-break fs-8" for="fixed_bills">
                       Fixed Bills (Electricity and Water)
                       </label>
@@ -264,11 +266,11 @@ require_once '../includes/header.php';
                   </div>
                   <div class="form-group">
                     <label for="electricity">Electricity</label>
-                    <input type="number" name="electricity" class="form-control" id="electricity" placeholder="(default)" disabled>
+                    <input type="number" name="electricity" class="form-control" id="electricity" placeholder="(default)" step="0.01" disabled>
                   </div>
                   <div class="form-group">
                     <label for="water">Water</label>
-                    <input type="number" name="water" class="form-control" id="water" placeholder="(default)" disabled>
+                    <input type="number" name="water" class="form-control" id="water" placeholder="(default)" step="0.01" disabled>
                   </div>
                   <div class="form-group">
                     <label for="penalty">Penalty</label>
@@ -276,7 +278,7 @@ require_once '../includes/header.php';
                       <select name="penalty" id="penalty" class="form-select form-control col-md-6" onchange="updatePenalty()">
                         <option value="">-- Select --</option>
                         <?php foreach ($penalty_data as $penalties): ?>
-                        <option value="<?php echo $penalties['id']; ?>" data-description="<?php echo $penalties['description']; ?>"><?php echo "₱ " . $penalties['amount']; ?></option>
+                        <option value="<?php echo $penalties['id']; ?>" data-penalty_amount="<?php echo $penalties['amount']; ?>" data-description="<?php echo $penalties['description']; ?>"><?php echo "₱ " . $penalties['amount']; ?></option>
                         <?php endforeach; ?> 
                       </select>
                       <p type="text" id="penaltyDescription" class="form-control h-auto ml-2 d-none" readonly></p>
@@ -285,11 +287,11 @@ require_once '../includes/header.php';
                   <div id="fixed-bill-fields" style="display: none;">
                     <div class="form-group">
                       <label for="num_of_invoices">Number of Invoices:</label>
-                      <input type="number"  class="form-control col-md-6" id="num_of_invoices" name="num_of_invoices" placeholder="">
+                      <input type="number"  class="form-control col-md-6" id="num_of_invoices" name="num_of_invoices" onchange=" generateMonthlyBills()" placeholder=""  min="1" value="1">
                     </div>
                     <div class="form-group">
                       <label for="interval_in_months">Interval in Months</label>
-                      <input type="number"  class="form-control col-md-6" id="interval_in_months" name="interval_in_months" placeholder="invoices per month">
+                      <input type="number"  class="form-control col-md-6" id="interval_in_months" name="interval_in_months" placeholder="invoices per month"  min="1" value="1">
                     </div>
                   </div>
                   <div class="row">
@@ -300,15 +302,28 @@ require_once '../includes/header.php';
                 </div>
               </div>
             </div>  
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+document.getElementById('fixed_bills').addEventListener('change', function () {
+    var num_of_invoices = document.getElementById('num_of_invoices');
+    var interval_in_months = document.getElementById('interval_in_months');
+
+    if (this.checked) {
+        num_of_invoices.style.display = 'inline';
+        interval_in_months.style.display = 'inline';
+    } else {
+        num_of_invoices.style.display = 'none';
+        interval_in_months.style.display = 'none';
+    }
+});
+
+
 function updateFields() {
     const leaseUnitId = document.getElementById("lease_unit_id");
     const selectedOption = leaseUnitId.options[leaseUnitId.selectedIndex];
@@ -324,11 +339,8 @@ function updateFields() {
     const selectedLeaseOption = leaseUnitSelect.options[leaseUnitSelect.selectedIndex];
     const electricity = parseFloat(selectedLeaseOption.getAttribute("data-electricity"));
     const water = parseFloat(selectedLeaseOption.getAttribute("data-water"));
-    const fixedBillsCheckbox = document.getElementById("fixed_bills");
-    const fixedBillFields = document.getElementById("fixed-bill-fields");
 
     document.getElementById("tenant_name").value = tenantId;
-    document.getElementById("tenant_name").setAttribute("data-tenant_id", tenantId);
   
     // Set the tenant's full name for display purposes only (if needed)
     document.getElementById("tenant_display_name").textContent = tenantFirstName + ' ' + tenantLastName;
@@ -338,24 +350,89 @@ function updateFields() {
     document.getElementById("hidden_one_month_deposit").value = deposit;
     document.getElementById("hidden_one_month_advance").value = advance;
 
+    // Call the handleFixedBills function
+    handleFixedBills(electricity, water);
 
-    if (fixedBillsCheckbox.checked) {
-        document.getElementById("electricity").value = electricity;
-        document.getElementById("water").value = water;
+    // Update rent due date input
+    const currentInvoiceNumber = parseInt(document.getElementById('current_invoice_number').value);
+    const numOfInvoices = parseInt(document.getElementById('num_of_invoices').value);
+    const selectedLease = leaseUnitSelect.options[leaseUnitSelect.selectedIndex];
+    const rentDueDatesContainer = document.getElementById('rent_due_dates_container');
+
+
+    if (numOfInvoices && selectedLease.lease_start) {
+      const leaseStartDate = new Date(selectedLease.lease_start);
+      const nextRentDueDate = new Date(leaseStartDate);
+
+      nextRentDueDate.setMonth(nextRentDueDate.getMonth() + (numOfInvoices * currentInvoiceNumber));
+
+      const formattedRentDueDate = nextRentDueDate.toISOString().split('T')[0];
+      rentDueDatesContainer.min = leaseStartDate.toISOString().split('T')[0];
+      rentDueDatesContainer.value = formattedRentDueDate;
     } else {
-        document.getElementById("electricity").removeAttribute("disabled");
-        document.getElementById("water").removeAttribute("disabled");
+      rentDueDatesContainer.value = '';
     }
+    
+}
 
-    // Add the following code at the end of the updateFields() function:
-    if (fixedBillsCheckbox.checked && electricity !== 0 && water !== 0) {
-        fixedBillFields.style.display = "block";
-    } else {
-        fixedBillFields.style.display = "none";
-        fixedBillsCheckbox.checked = false;
-    }
+// Generate monthly bill array values
+const intervalInMonths = parseInt(document.getElementById('interval_in_months').value);
+const monthlyBills = generateMonthlyBills(numOfInvoices, intervalInMonths);
 
+// Reset the current invoice number when a new lease is selected
+document.getElementById('current_invoice_number').value = '1';
+
+document.getElementById('fixed_bills').addEventListener('change', function () {
+  const leaseUnitSelect = document.getElementById("lease_unit_id");
+  const selectedLeaseOption = leaseUnitSelect.options[leaseUnitSelect.selectedIndex];
+  const electricity = parseFloat(selectedLeaseOption.getAttribute("data-electricity"));
+  const water = parseFloat(selectedLeaseOption.getAttribute("data-water"));
   
+  handleFixedBills(electricity, water);
+});
+
+
+function handleFixedBills(electricity, water) {
+  const fixedBillsCheckbox = document.getElementById("fixed_bills");
+  const fixedBillFields = document.getElementById("fixed-bill-fields");
+
+  if (electricity !== 0 && water !== 0) {
+      fixedBillFields.style.display = "block";
+      fixedBillsCheckbox.checked = true;
+
+      if (fixedBillsCheckbox.checked) {
+          document.getElementById("electricity").value = electricity;
+          document.getElementById("water").value = water;
+          document.getElementById("electricity").setAttribute("disabled", "disabled");
+          document.getElementById("water").setAttribute("disabled", "disabled");
+      } else {
+          document.getElementById("electricity").value = "";
+          document.getElementById("water").value = "";
+          document.getElementById("electricity").removeAttribute("disabled");
+          document.getElementById("water").removeAttribute("disabled");
+      }
+  } else {
+      fixedBillFields.style.display = "none";
+      fixedBillsCheckbox.checked = false;
+  }
+  calculateTotal();
+
+}
+document.getElementById("hidden_monthly_rent").addEventListener('input', calculateTotal);
+document.getElementById("electricity").addEventListener('input', calculateTotal);
+document.getElementById("water").addEventListener('input', calculateTotal);
+document.getElementById("penalty").addEventListener('input', calculateTotal);
+
+
+function generateMonthlyBills(numOfInvoices, intervalInMonths) {
+  const monthlyBills = [];
+
+  for (let i = 1; i <= numOfInvoices; i++) {
+    const billMonth = i * intervalInMonths;
+    monthlyBills.push(billMonth);
+  }
+
+  return monthlyBills;
 }
 
 
@@ -384,17 +461,18 @@ function calculateTotal() {
 
     const penalty = document.getElementById("penalty");
     const selectedPenalty = penalty.options[penalty.selectedIndex];
-    const penaltyAmount = parseFloat(selectedPenalty.value) || 0;
+    const penaltyAmount = parseFloat(selectedPenalty.getAttribute('data-penalty_amount')) || 0;
 
     const total = rent + electricity + water + penaltyAmount;
     document.getElementById("total_due").value = total;
+
+    updatePenalty(); // Call the updatePenalty function after calculating the total amount
+
+    // Increment the current invoice number
+    const currentInvoiceNumberInput = document.getElementById('current_invoice_number');
+    const incrementedInvoiceNumber = parseInt(currentInvoiceNumberInput.value) + 1;
+    currentInvoiceNumberInput.value = incrementedInvoiceNumber;
 }
-
-document.getElementById("hidden_monthly_rent").addEventListener('input', calculateTotal);
-document.getElementById("electricity").addEventListener('input', calculateTotal);
-document.getElementById("water").addEventListener('input', calculateTotal);
-document.getElementById("penalty").addEventListener('change', calculateTotal);
-
 
 
 function filterPropertyUnits() {
@@ -435,6 +513,5 @@ $("#property_unit").on("change", function() {
     updateRent();
 });
 
- 
 
 </script>

@@ -104,7 +104,7 @@
                                     <td>'.$row['type_name'].'</td>
                                     <td>'.$row['monthly_rent'].'</td>
                                     <td>'.$row['last_name'].','.$row['first_name'].'</td>
-                                    <td class="cust">'.$status.'</td>
+                                    <td>'.$status.'</td>
                                     <td>'.$row['lease_start'].' - '.$row['lease_end'].'</td>
                                     <td>
                                         <div class="action">

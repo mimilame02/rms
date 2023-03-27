@@ -90,14 +90,6 @@ class Leases{
             return false;
         }
       }
-    function fetch_all_leases(){
-        $sql = "SELECT lease.*, tenant.first_name, tenant.last_name FROM lease INNER JOIN tenant ON lease.tenant_id = tenant.id";
-        $query = $this->db->connect()->prepare($sql);
-        if ($query->execute()) {
-            $data = $query->fetchAll();
-        }
-        return $data;
-    }
 
 
 }

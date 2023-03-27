@@ -82,6 +82,32 @@ class Properties{
         }	
     }
 
+    function properties_edit() {
+        // attempt insert query execution
+        $sql = "UPDATE properties SET property_name=:property_name, property_description=:property_description, num_of_floors=:num_of_floors, landlord_id=:landlord_id, region=:region, provinces=:provinces, city=:city, barangay=:barangay, street=:street, features_description=:features_description, features=:features, image_path=:image_path, floor_plan=:floor_plan WHERE id=:id;";
+    
+        $query=$this->db->connect()->prepare($sql);
+        $query->bindParam(':property_name', $this->property_name);
+        $query->bindParam(':property_description', $this->property_description);
+        $query->bindParam(':num_of_floors', $this->num_of_floors);
+        $query->bindParam(':landlord_id', $this->landlord_id);
+        $query->bindParam(':region', $this->region);        
+        $query->bindParam(':provinces', $this->provinces);
+        $query->bindParam(':city', $this->city);
+        $query->bindParam(':barangay', $this->barangay);
+        $query->bindParam(':street', $this->street);
+        $query->bindParam(':features_description', $this->features_description);
+        $query->bindParam(':features', $this->features);
+        $query->bindParam(':image_path', $this->image_path);
+        $query->bindParam(':floor_plan', $this->floor_plan);
+        $query->bindParam(':id', $this->id);
+        if($query->execute()){
+            return true;
+        }
+        else{
+            return false;
+        }	
+    }
     function properties_delete($record_id){
         $sql = "DELETE FROM properties WHERE id = :id;";
         $query=$this->db->connect()->prepare($sql);

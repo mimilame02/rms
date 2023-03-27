@@ -63,6 +63,14 @@ class Reference{
       }
       return $data;
     }
+    function get_brgay(){
+      $sql = "SELECT * FROM refbrgy;";
+      $query=$this->db->connect()->prepare($sql);
+      if($query->execute()){
+          $data = $query->fetchAll();
+      }
+      return $data;
+    }
   
   
   function get_main_pro(){

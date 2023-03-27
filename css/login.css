@@ -159,7 +159,8 @@
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   }
   .container-fluid.d-flex.align-items-md-center.justify-content-md-center {
-    padding-top: 7rem;
+    margin-top: 15%;
+    margin-bottom: 15%;
   }
   
   .btn.btn-lg.btn-success.background-color-green.btn-continue.btn-font {

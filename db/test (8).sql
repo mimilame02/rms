@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2023 at 08:03 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Mar 28, 2023 at 01:08 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -26,8 +26,6 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `account`
 --
--- Creation: Mar 26, 2023 at 08:50 AM
---
 
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE IF NOT EXISTS `account` (
@@ -39,11 +37,7 @@ CREATE TABLE IF NOT EXISTS `account` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `account`:
---
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `account`
@@ -59,8 +53,6 @@ INSERT INTO `account` (`id`, `username`, `email`, `password`, `type`, `created_a
 --
 -- Table structure for table `events`
 --
--- Creation: Mar 26, 2023 at 08:50 AM
---
 
 DROP TABLE IF EXISTS `events`;
 CREATE TABLE IF NOT EXISTS `events` (
@@ -70,18 +62,12 @@ CREATE TABLE IF NOT EXISTS `events` (
   `end` datetime DEFAULT NULL,
   `description` text DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `events`:
---
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `features`
---
--- Creation: Mar 26, 2023 at 08:50 AM
 --
 
 DROP TABLE IF EXISTS `features`;
@@ -89,11 +75,7 @@ CREATE TABLE IF NOT EXISTS `features` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `feature_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `features`:
---
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `features`
@@ -114,9 +96,6 @@ INSERT INTO `features` (`id`, `feature_name`) VALUES
 
 --
 -- Table structure for table `invoice`
---
--- Creation: Mar 26, 2023 at 08:50 AM
--- Last update: Mar 26, 2023 at 12:58 PM
 --
 
 DROP TABLE IF EXISTS `invoice`;
@@ -148,36 +127,12 @@ CREATE TABLE IF NOT EXISTS `invoice` (
   KEY `property_id` (`property_id`),
   KEY `penalty_id` (`penalty_id`),
   KEY `property_unit_id` (`property_unit_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `invoice`:
---   `lease_unit_id`
---       `lease` -> `id`
---   `tenant_id`
---       `tenant` -> `id`
---   `property_id`
---       `properties` -> `id`
---   `penalty_id`
---       `penalty` -> `id`
---   `property_unit_id`
---       `property_units` -> `id`
---
-
---
--- Dumping data for table `invoice`
---
-
-INSERT INTO `invoice` (`id`, `lease_unit_id`, `tenant_id`, `property_id`, `property_unit_id`, `monthly_rent`, `rent_due_date`, `electricity`, `water`, `one_month_deposit`, `one_month_advance`, `penalty_id`, `total_due`, `amount_paid`, `balance`, `status`, `payment_date`, `fixed_bills`, `monthly_bills`, `created_at`, `updated_at`) VALUES
-(18, 17, 1, 34, 20, '2500.00', '2023-03-26', '780.00', '540.00', '2500.00', '2500.00', 0, '3820.00', '0.00', '0.00', 'Unpaid', '0000-00-00', 0, NULL, '2023-03-26 12:58:34', '2023-03-26 12:58:34'),
-(19, 17, 1, 34, 20, '2500.00', '2023-03-26', '780.00', '540.00', '2500.00', '2500.00', 0, '3820.00', '0.00', '0.00', 'Unpaid', '0000-00-00', 0, NULL, '2023-03-26 12:58:34', '2023-03-26 12:58:34');
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `landlord`
---
--- Creation: Mar 26, 2023 at 08:50 AM
 --
 
 DROP TABLE IF EXISTS `landlord`;
@@ -197,11 +152,7 @@ CREATE TABLE IF NOT EXISTS `landlord` (
   `emergency_contact_person` varchar(100) NOT NULL,
   `emergency_contact_number` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `landlord`:
---
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `landlord`
@@ -214,8 +165,6 @@ INSERT INTO `landlord` (`id`, `first_name`, `middle_name`, `last_name`, `date_of
 
 --
 -- Table structure for table `lease`
---
--- Creation: Mar 26, 2023 at 08:50 AM
 --
 
 DROP TABLE IF EXISTS `lease`;
@@ -235,15 +184,7 @@ CREATE TABLE IF NOT EXISTS `lease` (
   PRIMARY KEY (`id`),
   KEY `property_unit_id` (`property_unit_id`),
   KEY `tenant_id` (`tenant_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `lease`:
---   `tenant_id`
---       `tenant` -> `id`
---   `property_unit_id`
---       `property_units` -> `id`
---
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `lease`
@@ -251,14 +192,13 @@ CREATE TABLE IF NOT EXISTS `lease` (
 
 INSERT INTO `lease` (`id`, `property_unit_id`, `monthly_rent`, `tenant_id`, `lease_start`, `lease_end`, `lease_doc`, `one_month_deposit`, `one_month_advance`, `electricity`, `water`, `status`) VALUES
 (17, 20, '2500.00', 1, '2023-03-01', '2023-06-01', 'lease_contract.png', '2500.00', '2500.00', '780.00', '540.00', 'Occupied'),
-(18, 23, '2500.00', 2, '2023-03-26', '2023-06-26', 'Jackson_Rooming_House_Tampa.jpg', '2500.00', '2500.00', '750.00', '564.00', 'Occupied');
+(18, 23, '2500.00', 2, '2023-03-26', '2023-06-26', 'Jackson_Rooming_House_Tampa.jpg', '2500.00', '2500.00', '750.00', '564.00', 'Occupied'),
+(19, 22, '5000.00', 1, '2023-03-28', '2023-06-28', '2a50ed194a0182b002a3a3fd2070c4fa.jpg', '5000.00', '5000.00', '0.00', '0.00', 'Occupied');
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `password_reset_tokens`
---
--- Creation: Mar 26, 2023 at 08:50 AM
 --
 
 DROP TABLE IF EXISTS `password_reset_tokens`;
@@ -271,20 +211,12 @@ CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `fk_user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `password_reset_tokens`:
---   `user_id`
---       `account` -> `id`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `penalty`
---
--- Creation: Mar 26, 2023 at 08:50 AM
 --
 
 DROP TABLE IF EXISTS `penalty`;
@@ -296,11 +228,7 @@ CREATE TABLE IF NOT EXISTS `penalty` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `penalty`:
---
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `penalty`
@@ -324,8 +252,6 @@ INSERT INTO `penalty` (`id`, `name`, `amount`, `description`, `created_at`, `upd
 --
 -- Table structure for table `properties`
 --
--- Creation: Mar 26, 2023 at 08:50 AM
---
 
 DROP TABLE IF EXISTS `properties`;
 CREATE TABLE IF NOT EXISTS `properties` (
@@ -345,13 +271,7 @@ CREATE TABLE IF NOT EXISTS `properties` (
   `floor_plan` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `landlord_id` (`landlord_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `properties`:
---   `landlord_id`
---       `landlord` -> `id`
---
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `properties`
@@ -365,8 +285,6 @@ INSERT INTO `properties` (`id`, `property_name`, `property_description`, `num_of
 
 --
 -- Table structure for table `property_units`
---
--- Creation: Mar 26, 2023 at 08:50 AM
 --
 
 DROP TABLE IF EXISTS `property_units`;
@@ -388,17 +306,7 @@ CREATE TABLE IF NOT EXISTS `property_units` (
   KEY `fk_property_id` (`property_id`),
   KEY `fk_unit_type_id` (`unit_type_id`),
   KEY `fk_unit_condition_id` (`unit_condition_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `property_units`:
---   `property_id`
---       `properties` -> `id`
---   `unit_condition_id`
---       `unit_condition` -> `id`
---   `unit_type_id`
---       `unit_type` -> `id`
---
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `property_units`
@@ -415,9 +323,6 @@ INSERT INTO `property_units` (`id`, `property_id`, `unit_type_id`, `unit_no`, `f
 --
 -- Table structure for table `refbrgy`
 --
--- Creation: Mar 26, 2023 at 08:50 AM
--- Last update: Mar 26, 2023 at 08:50 AM
---
 
 DROP TABLE IF EXISTS `refbrgy`;
 CREATE TABLE IF NOT EXISTS `refbrgy` (
@@ -428,11 +333,7 @@ CREATE TABLE IF NOT EXISTS `refbrgy` (
   `provCode` varchar(255) DEFAULT NULL,
   `citymunCode` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=42030 DEFAULT CHARSET=utf8;
-
---
--- RELATIONSHIPS FOR TABLE `refbrgy`:
---
+) ENGINE=MyISAM AUTO_INCREMENT=42030 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `refbrgy`
@@ -42522,9 +42423,6 @@ INSERT INTO `refbrgy` (`id`, `brgyCode`, `brgyDesc`, `regCode`, `provCode`, `cit
 --
 -- Table structure for table `refcitymun`
 --
--- Creation: Mar 26, 2023 at 08:50 AM
--- Last update: Mar 26, 2023 at 08:50 AM
---
 
 DROP TABLE IF EXISTS `refcitymun`;
 CREATE TABLE IF NOT EXISTS `refcitymun` (
@@ -42535,11 +42433,7 @@ CREATE TABLE IF NOT EXISTS `refcitymun` (
   `provCode` varchar(255) DEFAULT NULL,
   `citymunCode` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1648 DEFAULT CHARSET=utf8;
-
---
--- RELATIONSHIPS FOR TABLE `refcitymun`:
---
+) ENGINE=MyISAM AUTO_INCREMENT=1648 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `refcitymun`
@@ -44200,9 +44094,6 @@ INSERT INTO `refcitymun` (`id`, `psgcCode`, `citymunDesc`, `regDesc`, `provCode`
 --
 -- Table structure for table `refprovince`
 --
--- Creation: Mar 26, 2023 at 08:50 AM
--- Last update: Mar 26, 2023 at 08:50 AM
---
 
 DROP TABLE IF EXISTS `refprovince`;
 CREATE TABLE IF NOT EXISTS `refprovince` (
@@ -44212,11 +44103,7 @@ CREATE TABLE IF NOT EXISTS `refprovince` (
   `regCode` varchar(255) DEFAULT NULL,
   `provCode` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
-
---
--- RELATIONSHIPS FOR TABLE `refprovince`:
---
+) ENGINE=MyISAM AUTO_INCREMENT=89 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `refprovince`
@@ -44317,9 +44204,6 @@ INSERT INTO `refprovince` (`id`, `psgcCode`, `provDesc`, `regCode`, `provCode`) 
 --
 -- Table structure for table `refregion`
 --
--- Creation: Mar 26, 2023 at 08:50 AM
--- Last update: Mar 26, 2023 at 08:50 AM
---
 
 DROP TABLE IF EXISTS `refregion`;
 CREATE TABLE IF NOT EXISTS `refregion` (
@@ -44328,11 +44212,7 @@ CREATE TABLE IF NOT EXISTS `refregion` (
   `regDesc` text DEFAULT NULL,
   `regCode` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
-
---
--- RELATIONSHIPS FOR TABLE `refregion`:
---
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `refregion`
@@ -44361,8 +44241,6 @@ INSERT INTO `refregion` (`id`, `psgcCode`, `regDesc`, `regCode`) VALUES
 
 --
 -- Table structure for table `tenant`
---
--- Creation: Mar 26, 2023 at 08:50 AM
 --
 
 DROP TABLE IF EXISTS `tenant`;
@@ -44396,11 +44274,7 @@ CREATE TABLE IF NOT EXISTS `tenant` (
   `emergency_contact_person` varchar(100) NOT NULL,
   `emergency_contact_number` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `tenant`:
---
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tenant`
@@ -44415,8 +44289,6 @@ INSERT INTO `tenant` (`id`, `first_name`, `middle_name`, `last_name`, `email`, `
 --
 -- Table structure for table `unit_condition`
 --
--- Creation: Mar 26, 2023 at 08:50 AM
---
 
 DROP TABLE IF EXISTS `unit_condition`;
 CREATE TABLE IF NOT EXISTS `unit_condition` (
@@ -44424,11 +44296,7 @@ CREATE TABLE IF NOT EXISTS `unit_condition` (
   `condition_name` varchar(50) NOT NULL,
   `unit_type_picture` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `unit_condition`:
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `unit_condition`
@@ -44445,19 +44313,13 @@ INSERT INTO `unit_condition` (`id`, `condition_name`, `unit_type_picture`) VALUE
 --
 -- Table structure for table `unit_type`
 --
--- Creation: Mar 26, 2023 at 08:50 AM
---
 
 DROP TABLE IF EXISTS `unit_type`;
 CREATE TABLE IF NOT EXISTS `unit_type` (
   `id` int(11) NOT NULL,
   `type_name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `unit_type`:
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `unit_type`

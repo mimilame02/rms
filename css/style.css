@@ -11387,14 +11387,14 @@ fieldset:disabled .wizard > .actions a,
 }
 
 .btn-outline-primary {
-  color: #4B49AC;
-  border-color: #4B49AC;
+  color: #176F73;
+  border-color: #176F73;
 }
 
 .btn-outline-primary:hover {
   color: #fff;
-  background-color: #4B49AC;
-  border-color: #4B49AC;
+  background-color: #176F73;
+  border-color: #176F73;
 }
 
 .btn-outline-primary:focus, .btn-outline-primary.focus {
@@ -11402,15 +11402,15 @@ fieldset:disabled .wizard > .actions a,
 }
 
 .btn-outline-primary.disabled, .btn-outline-primary:disabled {
-  color: #4B49AC;
+  color: #176F73;
   background-color: transparent;
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled):active, .btn-outline-primary:not(:disabled):not(.disabled).active,
 .show > .btn-outline-primary.dropdown-toggle {
   color: #fff;
-  background-color: #4B49AC;
-  border-color: #4B49AC;
+  background-color: #176F73;
+  border-color: #176F73;
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled):active:focus, .btn-outline-primary:not(:disabled):not(.disabled).active:focus,
@@ -11589,7 +11589,7 @@ fieldset:disabled .wizard > .actions a,
 
 .btn-outline-light:hover {
   color: #212529;
-  background-color: #bec0c3;
+  background-color: #f8f9fa;
   border-color: #f8f9fa;
 }
 
@@ -13850,8 +13850,9 @@ input[type="button"].btn-block {
 .card-header {
   padding: 0.75rem 1.25rem;
   margin-bottom: 0;
-  background-color: rgba(0, 0, 0, 0.03);
+  background-color: #176F73;
   border-bottom: 1px solid #e3e3e3;
+  color: white;
 }
 
 .card-header:first-child {
@@ -18970,7 +18971,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .text-muted, .preview-list .preview-item .preview-item-content p .content-category, .email-wrapper .mail-sidebar .menu-bar .profile-list-item a .user .u-designation, .email-wrapper .mail-list-container .mail-list .content .message_text, .email-wrapper .mail-list-container .mail-list .details .date {
-  color: #a0a0a07a !important;
+  color: #737F8B !important;
 }
 
 .text-black-50 {
@@ -26148,6 +26149,8 @@ body.avgrund-active {
 .dataTables_wrapper .dataTable .btn, .dataTables_wrapper .dataTable .fc button, .fc .dataTables_wrapper .dataTable button, .dataTables_wrapper .dataTable .ajax-upload-dragdrop .ajax-file-upload, .ajax-upload-dragdrop .dataTables_wrapper .dataTable .ajax-file-upload, .dataTables_wrapper .dataTable .swal2-modal .swal2-buttonswrapper .swal2-styled, .swal2-modal .swal2-buttonswrapper .dataTables_wrapper .dataTable .swal2-styled, .dataTables_wrapper .dataTable .wizard > .actions a, .wizard > .actions .dataTables_wrapper .dataTable a {
   padding: 0.1rem 1rem;
   vertical-align: top;
+  display: flex;
+  margin: auto;
 }
 
 .dataTables_wrapper .dataTable .btn i, .dataTables_wrapper .dataTable .fc button i, .fc .dataTables_wrapper .dataTable button i, .dataTables_wrapper .dataTable .ajax-upload-dragdrop .ajax-file-upload i, .ajax-upload-dragdrop .dataTables_wrapper .dataTable .ajax-file-upload i, .dataTables_wrapper .dataTable .swal2-modal .swal2-buttonswrapper .swal2-styled i, .swal2-modal .swal2-buttonswrapper .dataTables_wrapper .dataTable .swal2-styled i, .dataTables_wrapper .dataTable .wizard > .actions a i, .wizard > .actions .dataTables_wrapper .dataTable a i {

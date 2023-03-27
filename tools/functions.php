@@ -127,6 +127,16 @@ function validate_city($POST){
   return true;
 }
 
+function validate_brgy($POST){
+  if(!isset($POST['barangay'])){
+      return false;
+  }else if(strcmp($POST['barangay'], 'None') == 0){
+      return false;
+  }
+  return true;
+}
+
+
 function validate_sex($POST){
    if(!isset($POST['sex'])){
       return false;
@@ -200,6 +210,87 @@ function validate_full_name($POST) {
    }
  }
  
+ function validate_property_name($POST) {
+  // Trim the input and Strip HTML tags
+  $propertyName = strip_tags(trim($POST['property_name']));
+
+  // Limit the length
+  $max_length = 100;
+  if (strlen($propertyName) > $max_length) {
+      return false;
+  }
+
+  // Check for invalid characters
+  if (preg_match('/[^A-Za-z0-9\-_.,\s]/', $propertyName)) {
+      // Returns false if the string contains anything other than allowed characters.
+      return false;
+  }
+
+  return true;
+}
+
+function validate_street($POST){
+  // Remove all non-letter, non-digit characters from the input using a regular expression
+$letters_digits = preg_replace('/[^a-zA-Z0-9]/', '', $POST['street']);
+
+// Check if the input contains only letters and digits using a regular expression
+if (preg_match('/^[a-zA-Z0-9]+$/', $letters_digits)) {
+ // If the input contains only letters and digits, return the sanitized input
+ return true;
+} else {
+ // If the input contains non-letter, non-digit characters, return false
+ return false;
+}
+}
+
+function validate_landlord_id($POST) {
+  if(!isset($POST['landlord'])){
+    return false;
+  }else if(strcmp($POST['landlord'], 'None') == 0){
+      return false;
+  }
+  return true;
+}
+
+function validate_property_description($POST) {
+  $max_length = 500; // Set the maximum length
+  $description = $POST['property_description'];
+  return strlen($description) <= $max_length;
+}
+
+function validate_features_description($POST) {
+  $max_length = 500; // Set the maximum length
+  $features_description = $POST['features_description'];
+  return strlen($features_description) <= $max_length;
+}
+
+function validate_features($POST) {
+  $features = $POST['features'];
+  return !empty($features);
+}
+
+function validate_num_of_floors($POST) {
+  $num_of_floors = $POST['num_of_floors'];
+  return is_numeric($num_of_floors) && $num_of_floors > 0;
+}
+
+/* function validate_image_path($FILES) {
+  // Validate if the uploaded file is an image
+  $image_path = $FILES['image_path'];
+  $image_info = getimagesize($image_path['tmp_name']);
+  return $image_info !== false;
+}
+
+function validate_floor_plan($FILES) {
+  // Validate if the uploaded file is an image
+  $floor_plan = $FILES['floor_plan'];
+  $image_info = getimagesize($floor_plan['tmp_name']);
+  return $image_info !== false;
+} */
+
+
+
+
 
 
 
@@ -219,6 +310,23 @@ function validate_add_landlord($post) {
   return true;
 }
 
+function validate_add_properties($post) {
+  if (!validate_property_name($post) ||
+      !validate_property_description($post) ||
+      !validate_num_of_floors($post) ||
+      !validate_landlord_id($post) ||
+      !validate_region($post) ||
+      !validate_prov($post) ||
+      !validate_city($post) ||
+      !validate_brgy($post) ||
+      !validate_street($post) ||
+      !validate_features_description($post) ||
+      !validate_features($post)
+  ) {
+      return false;
+  }
+  return true;
+}
 
 
 ?>
