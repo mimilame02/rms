@@ -36,13 +36,11 @@ $query->bind_param("i", $invoices);
 $query->execute();
 
 // Bind the result variables
-$query->bind_result($id, $lease_unit_id, $property_name, $tenant_name, $rent_due_date, $amount_paid, $rent, $electricity, $water, $penalty_amount, $total_due, $email, $contact_no, $payment_date, $one_month_advance, $balance, $status, $total);
-
-
+$query->bind_result($id, $lease_unit_id, $property_name, $tenant_name, $rent_due_date, $amount_paid, $rent, $electricity, $water, $penalty_amount, $total_due, $email, $contact_no, $payment_date, $one_month_advance, $balance, $status);
 
 // Fetch the data
-while ($query->fetch()) {
-    $invoice[] = [
+if ($query->fetch()) {
+    $invoice = [
         'invoice_id' => $id,
         'property_name' => $property_name,
         'tenant_name' => $tenant_name,
@@ -59,10 +57,10 @@ while ($query->fetch()) {
         'one_month_advance' => $one_month_advance,
         'payment_date' => $payment_date,
         'balance' => $balance,
-        'status' => $status,
-        'total' => $total
+        'status' => $status
     ];
 }
+
 
     //if the above code is false then html below will be displayed
     require_once '../tools/variables.php';
