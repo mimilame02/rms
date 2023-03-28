@@ -44,8 +44,13 @@
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
 
-    // Get the total income for the current month
-    $totalIncome = $row['total_income'];
+  // Get the total income for the current month
+  $currentmonth = date('m');
+  $currentyear = date('Y');
+  $result = mysqli_query($conn, "SELECT SUM(total_due) AS total_income FROM invoice WHERE status='Paid' AND MONTH(date) = $currentmonth AND YEAR(date) = $currentyear");
+  $row = mysqli_fetch_assoc($result);
+  $totalIncome = $row['total_income'];
+
 
 
     require_once '../tools/variables.php';
