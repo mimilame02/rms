@@ -13,8 +13,12 @@
     }
     //if the above code is false then html below will be displayed
 
-    $current_month = date('F', strtotime('now'));
+    $current_month_name = date('F', strtotime('now'));
+    $_SESSION['current_month_name'] = $current_month_name;    
+    $current_month = date('m', strtotime('now'));
     $_SESSION['current_month'] = $current_month;
+    $current_year = date('Y', strtotime('now'));
+    $_SESSION['current_year'] = $current_year;
 
 
     // Count total tenants
@@ -39,15 +43,8 @@
 
     $currentMonth = date('d-m-Y');
 
-    // Query the database for rent payments made in the current month
-    $sql = "SELECT SUM(amount_paid) as total_income FROM invoice WHERE MONTH(payment_date) = MONTH('$currentMonth') AND YEAR(payment_date) = YEAR('$currentMonth' AND status = 'Paid')";
-    $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_assoc($result);
-
   // Get the total income for the current month
-  $currentmonth = date('m');
-  $currentyear = date('Y');
-  $result = mysqli_query($conn, "SELECT SUM(total_due) AS total_income FROM invoice WHERE status='Paid' AND MONTH(date) = $currentmonth AND YEAR(date) = $currentyear");
+  $result = mysqli_query($conn, "SELECT SUM(total_due) AS total_income FROM invoice WHERE status='Paid' AND MONTH(payment_date) = $current_month AND YEAR(payment_date) = $current_year");
   $row = mysqli_fetch_assoc($result);
   $totalIncome = $row['total_income'];
 
@@ -126,7 +123,7 @@
                           <p class="fs-5 mb-3 mt-2 fw-bolder">TOTAL INCOME</p>
                           <div class="row">
                             <h2 class="fw-bolder">&#8369; <?php echo $totalIncome; ?></h2>
-                            <p class="text-white fs-6 font-weight-500 mb-2">Total income for the month of <strong class="fs-6"><?php echo $_SESSION['current_month']; ?></strong> </p>
+                            <p class="text-white fs-6 font-weight-500 mb-2">Total income for the month of <strong class="fs-6"><?php echo $_SESSION['current_month_name']; ?></strong> </p>
                           </div>
                           <div class="d-flex justify-content-end">
                             <button type="button" class="view-button">View</button>
