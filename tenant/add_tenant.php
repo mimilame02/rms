@@ -366,8 +366,9 @@
                         <select class="form-control form-control-sm" id="relationship_status" name="relationship_status" >
                           <option name="relationship_status" value="None">--Select--</option>
                           <option name="relationship_status" value="single">Single</option>
-                          <option name="relationship_status" value="in a relationship">In a relationship</option>
-                          <option name="relationship_status" value="married">Married</option>
+                          <option name="relationship_status" value="Divorced">Divorced</option>
+                          <option name="relationship_status" value="Married">Married</option>
+                          <option name="relationship_status" value="Widowed">Widowed</option>
                         </select>
                       </div>
                     </div>
@@ -616,7 +617,7 @@
           <div class="col-md-6">
             <div class="form-group-row">
               <div class="col">
-                <label for="occupants">Full Name/s</label>
+                <label for="occupants"></label>
                 <input class="form-control form-control-sm" name="occupants[]"></textarea>
               </div>
             </div>
@@ -624,7 +625,7 @@
           <div class="col-md-6">
             <div class="form-group-row">
               <div class="col">
-                <label for="occupants_relations">Relationship to Tenant</label><span class="req"> *</span>
+                <label for="occupants_relations"></label><span class="req"></span>
                 <input class="form-control form-control-sm" type="text" name="occupants_relations[]">
               </div>
             </div>

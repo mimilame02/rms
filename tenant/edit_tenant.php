@@ -442,9 +442,10 @@
                         </label>
                         <select class="form-control form-control-sm" id="relationship_status" name="relationship_status" >
                           <option name="relationship_status" value="None" <?php if(isset($_POST['relationship_status'])) { if ($_POST['relationship_status'] == 'None') echo ' selected="selected"'; } elseif ($tenant_obj->relationship_status == 'None') echo ' selected="selected"'; ?>>--Select--</option>
-                          <option name="relationship_status" value="single" <?php if(isset($_POST['relationship_status'])) { if ($_POST['relationship_status'] == 'single') echo ' selected="selected"'; } elseif ($tenant_obj->relationship_status == 'single') echo ' selected="selected"'; ?>>Single</option>
-                          <option name="relationship_status" value="in a relationship" <?php if(isset($_POST['relationship_status'])) { if ($_POST['relationship_status'] == 'in a relationship') echo ' selected="selected"'; } elseif ($tenant_obj->relationship_status == 'in a relationship') echo ' selected="selected"'; ?>>In a relationship</option>
-                          <option name="relationship_status" value="married" <?php if(isset($_POST['relationship_status'])) { if ($_POST['relationship_status'] == 'married') echo ' selected="selected"'; } elseif ($tenant_obj->relationship_status == 'married') echo ' selected="selected"'; ?>>Married</option>
+                          <option name="relationship_status" value="Single" <?php if(isset($_POST['relationship_status'])) { if ($_POST['relationship_status'] == 'Single') echo ' selected="selected"'; } elseif ($tenant_obj->relationship_status == 'Single') echo ' selected="selected"'; ?>>Single</option>
+                          <option name="relationship_status" value="Divorced" <?php if(isset($_POST['relationship_status'])) { if ($_POST['relationship_status'] == 'Divorced') echo ' selected="selected"'; } elseif ($tenant_obj->relationship_status == 'Divorced') echo ' selected="selected"'; ?>>Divorced</option>
+                          <option name="relationship_status" value="Married" <?php if(isset($_POST['relationship_status'])) { if ($_POST['relationship_status'] == 'Married') echo ' selected="selected"'; } elseif ($tenant_obj->relationship_status == 'Married') echo ' selected="selected"'; ?>>Married</option>
+                          <option name="relationship_status" value="Widowed" <?php if(isset($_POST['relationship_status'])) { if ($_POST['relationship_status'] == 'Widowed') echo ' selected="selected"'; } elseif ($tenant_obj->relationship_status == 'Widowed') echo ' selected="selected"'; ?>>Widowed</option>
                         </select>
                       </div>
                     </div>
