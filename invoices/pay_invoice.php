@@ -54,6 +54,7 @@
                     <th>Penalty</th>
                     <th>Rent Due Date</th>
                     <th>Total Due</th>
+                    <th>Status</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -61,7 +62,7 @@
                   <?php 
                   // Fetch the invoice data
                   $sql = "SELECT invoice.id, tenant.id as tenant_id, CONCAT(tenant.first_name, ' ', tenant.last_name) as tenant_name, invoice.lease_unit_id, property_units.id as property_unit_id, 
-                  invoice.monthly_rent, (invoice.electricity + invoice.water) as monthly_bills, penalty.amount as penalty_amount, invoice.total_due, invoice.rent_due_date
+                  invoice.monthly_rent, (invoice.electricity + invoice.water) as monthly_bills, penalty.amount as penalty_amount, invoice.total_due, invoice.rent_due_date, invoice.status
                   FROM invoice
                   JOIN tenant ON invoice.tenant_id = tenant.id
                   JOIN lease ON invoice.lease_unit_id = lease.id
@@ -82,6 +83,7 @@
                           <td>'.$row['penalty_amount'].'</td>
                           <td>'.$row['rent_due_date'].'</td>
                           <td>'.$row['total_due'].'</td>
+                          <td>'.$row['status'].'</td>
                           <td><button class="show2" onclick="redirectTo(\'show_invoice.php?id='.$row['id'].'\')">PAY NOW</button></td>
                         </tr>';
                       $i++;

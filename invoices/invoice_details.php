@@ -36,7 +36,7 @@ $query->bind_param("i", $invoices);
 $query->execute();
 
 // Bind the result variables
-$query->bind_result($id, $lease_unit_id, $property_name, $tenant_name, $rent_due_date, $amount_paid, $rent, $electricity, $water, $penalty_amount, $total_due, $email, $contact_no, $payment_date, $one_month_advance, $balance, $status);
+$query->bind_result($id, $lease_unit_id, $property_name, $tenant_name, $rent_due_date, $amount_paid, $rent, $electricity, $water, $penalty_amount, $total_due, $email, $contact_no, $payment_date, $one_month_advance, $balance, $status, $total);
 
 
 
@@ -59,7 +59,8 @@ while ($query->fetch()) {
         'one_month_advance' => $one_month_advance,
         'payment_date' => $payment_date,
         'balance' => $balance,
-        'status' => $status
+        'status' => $status,
+        'total' => $total
     ];
 }
 
@@ -153,9 +154,6 @@ while ($query->fetch()) {
                         <tr>
                             <td class="text-right">
                             <p>
-                                <strong>Total Amount: </strong>
-                            </p>
-                            <p>
                                 <strong>Advance: </strong>
                             </p>
 							<p>
@@ -166,9 +164,6 @@ while ($query->fetch()) {
                             </p>
 							</td>
                             <td>
-                            <p>
-                                <strong>₱ <?php echo $total_due; ?></strong>
-                            </p>
                             <p>
                                 <strong>₱ <?php echo $one_month_advance; ?></strong>
                             </p>
@@ -184,7 +179,7 @@ while ($query->fetch()) {
                            
                             <td class="text-right"><h2><strong>Total: </strong></h2></td>
 
-                            <td class="text-left text-danger"><h2><strong>₱  <?php echo $balance; ?></strong></h2></td>
+                            <td class="text-left text-danger"><h2><strong>₱  <?php echo $total_due; ?></strong></h2></td>
                         </tr>
                     </tbody>
                 </table>
