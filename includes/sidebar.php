@@ -19,9 +19,9 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../properties/properties.php">
-            <i class='bx bx-building-house menu-icon' title="Properties"></i>
-              <span class="menu-title">Properties</span>
+            <a class="nav-link" href="../buildings/buildings.php">
+            <i class='bx bx-building-house menu-icon' title="Buildings"></i>
+              <span class="menu-title">Buildings</span>
             </a>
           </li>
           <li class="nav-item">
