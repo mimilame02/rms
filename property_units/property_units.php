@@ -53,7 +53,7 @@
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Main Property</th>
+                      <th>Main Building</th>
                       <th>Units</th>
                       <th>Floors</th>
                       <th>Condition</th>

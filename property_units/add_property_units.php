@@ -97,7 +97,7 @@
                 <div class="col-md-6">
                     <div class="form-group-row">
                         <div class="col">
-                            <label for="main_property">Main Property</label><span class="req"> *</span>
+                            <label for="main_property">Main Building</label><span class="req"> *</span>
                             <select class="form-control form-control-sm" placeholder="" id="main_property" name="main_property" required>
                                 <option value="none">--Select--</option>
                                 <?php

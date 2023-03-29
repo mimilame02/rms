@@ -1,7 +1,7 @@
 <?php
   require_once '../includes/dbconfig.php';
   require_once '../tools/functions.php';
-  require_once '../classes/properties.class.php';
+  require_once '../classes/buildings.class.php';
 
     //resume session here to fetch session values
     session_start();
@@ -14,14 +14,10 @@
         header('location: ../login/login.php');
      }
 
-
-
-  $property_obj = new Properties;
-
   if(isset($_POST['property_save'])){
-
+      $property_obj = new Properties();
+      
       //sanitize user inputs
-      $property_obj->id = htmlentities($_POST['property-id']);
       $property_obj->property_name = htmlentities($_POST['property_name']);
       $property_obj->property_description = htmlentities($_POST['property_description']);
       $property_obj->num_of_floors = htmlentities($_POST['num_of_floors']);
@@ -42,7 +38,7 @@
 
       if (isset($_FILES['image_path'])) {
         $image = $_FILES['image_path']['name'];
-        $target = "../img/properties/" . basename($image);
+        $target = "../img/buildings/" . basename($image);
     
         if (move_uploaded_file($_FILES['image_path']['tmp_name'], $target)) {
             $property_obj->image_path = $_FILES['image_path']['name'];
@@ -79,40 +75,19 @@
       }
  
       // Add property to database
-      if(validate_add_properties($_POST)){
         if ($property_obj->properties_add()) {
-          header('Location: properties.php');
+          header('Location: buildings.php');
           exit; // always exit after redirecting
         } else {
           // handle property add error
           $msg = "Error uploading file";
         }
-      }
-  } else {
-    if ($property_obj->properties_fetch($_GET['id'])){
-      $data = $property_obj->properties_fetch($_GET['id']);
-      $property_obj->id = $data['id'];
-      $property_obj->property_name = $data['property_name'];
-      $property_obj->property_description = $data['property_description'];
-      $property_obj->num_of_floors = $data['num_of_floors'];
-      $property_obj->landlord_id = $data['landlord_id'];
-      $property_obj->region = $data['region'];
-      $property_obj->provinces = $data['provinces'];
-      $property_obj->city = $data['city'];
-      $property_obj->barangay = $data['barangay'];
-      $property_obj->street = $data['street'];
-      $property_obj->features_description = $data['features_description'];
-      $property_obj->features = json_decode($data['features'], true);
-      $property_obj->image_path = $data['image_path'];
-      $property_obj->floor_plan = json_decode($data['floor_plan'], true);
-
-    }
   }
   
 
     
     require_once '../tools/variables.php';
-    $page_title = 'RMS | Edit Property';
+    $page_title = 'RMS | Add Building';
     $properties = 'active';
     require_once '../includes/header.php';
 ?>
@@ -132,11 +107,11 @@
         <div class="content-wrapper">
           <div class="row">
             <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-              <h3 class="font-weight-bolder">EDIT PROPERTY</h3> 
+              <h3 class="font-weight-bolder">ADD BUILDING</h3> 
             </div>
             <div class="add-page-container">
               <div class="col-md-2 d-flex justify-align-between float-right">
-                <a href="properties.php" class='bx bx-caret-left'>Back</a>
+                <a href="buildings.php" class='bx bx-caret-left'>Back</a>
               </div>
             </div>
             <div class="d-flex">
@@ -149,8 +124,7 @@
               <!-- Images Step -->
               <span class="step rounded pt-3 pb-2 text-center">Images</span>
             </div>
-            <form action="edit_properties.php" id="regForm" method="post" enctype="multipart/form-data">
-              <input type="text" hidden name="property-id" value="<?php echo $property_obj->id; ?>">
+            <form action="add_building.php" id="regForm" method="post" enctype="multipart/form-data">
               <div class="col-12">
                 <div class="tab">
                   <!-- Basic Details Step -->
@@ -159,11 +133,8 @@
                     <div class="col-md-6">
                       <div class="form-group-row">
                         <div class="col">
-                          <label for="property_name">Property Name <?php if(isset($_POST['save']) && !validate_property_name($_POST)){?><label class="text-danger">*</label><?php }?></label>
-                          <input class="form-control form-control-sm req" type="text" id="property_name" name="property_name" value="<?php if(isset($_POST['property_name'])) { echo $_POST['property_name']; } else { echo $property_obj->property_name; }?>">
-                          <!-- <div class="invalid-feedback">
-                            Please provide a property name.
-                          </div> -->
+                        <label for="property_name">Building Name</label>
+                        <input class="form-control form-control-sm req" type="text" id="property_name" name="property_name">                              
                         </div>
                       </div>
                     </div>
@@ -171,8 +142,8 @@
                       <div class="form-group-row">
                         <div class="col">
                           <div class="col-lg-12">
-                            <label for="property_description">Description of the Property<?php if(isset($_POST['save']) && !validate_property_description($_POST)){?><label class="text-danger">*</label><?php }?></label>
-                            <textarea class="form-control form-control-lg" id="property_description" name="property_description"><?php if(isset($_POST['property_description'])) { echo $_POST['property_description']; } else { echo $property_obj->property_description; }?></textarea>
+                            <label for="property_description">Description of the Property</label>
+                            <textarea class="form-control form-control-lg" id="property_description" name="property_description"></textarea>
                           </div>
                         </div>
                       </div>
@@ -180,36 +151,25 @@
                     <div class="col-md-12">
                       <div class="form-group-row">
                         <div class="col-md-6">
-                            <label for="landlord">Select Landlord<?php if(isset($_POST['save']) && !validate_landlord_id($_POST)){?><label class="text-danger">*</label><?php }?></label>
-                            <select class="form-control form-control-sm form-select mb-3 req" id="landlord" name="landlord">
-                              <option class="col-md-6" value="none" disabled <?php if (!isset($_POST['landlord']) && !isset($property_obj->landlord_id)) echo 'selected'; ?>>Select Landlord</option>
-                              <?php
-                                // Connect to the database and retrieve the list of landlords
-                                $result = mysqli_query($conn, "SELECT id, last_name, first_name FROM landlord");
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                  $selected = '';
-                                  if (isset($_POST['landlord']) && $_POST['landlord'] == $row['id']) {
-                                    $selected = 'selected';
-                                  } elseif (isset($property_obj->landlord_id) && $property_obj->landlord_id == $row['id']) {
-                                    $selected = 'selected';
+                            <label for="landlord">Select Landlord</label>
+                            <select class="form-control form-control-sm mb-3 req" id="landlord" name="landlord">
+                              <option class="col-md-6" value="none" disabled selected>Select Landlord</option>
+                                <?php
+                                  // Connect to the database and retrieve the list of landlords
+                                  $result = mysqli_query($conn, "SELECT id, last_name, first_name FROM landlord");
+                                  while ($row = mysqli_fetch_assoc($result)) {
+                                  
+                                    echo "<option value='" . $row['id'] . "'>" . $row['last_name'] . "," .$row['first_name']."</option>";
                                   }
-                                  echo "<option value='" . $row['id'] . "' " . $selected . ">" . $row['last_name'] . "," . $row['first_name'] . "</option>";
-                                }
-                              ?>
+                                ?>
                             </select>
-                            <!-- <div class="invalid-feedback">
-                              Please select a Landlord.
-                            </div> -->
                           </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group-row">
                           <div class="">
-                            <label for="num_of_floors">Number of Floors<?php if(isset($_POST['save']) && !validate_num_of_floors($_POST)){?><label class="text-danger">*</label><?php }?></label>
-                            <input class="form-control form-control-sm req" type="number" id="num_of_floors" name="num_of_floors" min="1" max="100" onchange="generateFloorPlan()" <?php if(isset($_POST['num_of_floors'])){echo "value=".$_POST['num_of_floors'];} else { echo $property_obj->num_of_floors; }?>>
-                            <!-- <div class="invalid-feedback">
-                              Please enter the number of floors (between 1 and 100).
-                            </div> -->
+                            <label for="num_of_floors">Number of Floors</label>
+                            <input class="form-control form-control-sm req" type="number" id="num_of_floors" name="num_of_floors" min="1" max="100" onchange="generateFloorPlan()" <?php if(isset($_POST['num_of_floors'])){echo "value=".$_POST['num_of_floors'];}?>>
                           </div>
                         </div>
                       </div>
@@ -225,87 +185,75 @@
                     <div class="w-100">
                       <div class="mar d-flex">
                         <div class="col-sm-3">
-                          <label for="region">Region<?php if(isset($_POST['save']) && !validate_region($_POST)){?><label class="text-danger">*</label><?php }?></label>
-                          <select type="text" class="form-control form-control-sm req" name="region" id="region" placeholder=""> 
-                            <option value="none"<?php if(isset($_POST['region'])) { if ($_POST['region'] == 'None') echo ' selected="selected"'; } elseif ($property_obj->region == 'None') echo ' selected="selected"'; ?>>--Select--</option>
+                          <label for="region">Region</label>
+                          <select type="text" class="form-control form-control-sm req" name="region" id="region" placeholder="" > 
+                            <option value="none">--Select--</option>
                             <?php
                                   require_once '../classes/reference.class.php';
                                   $ref_obj = new Reference();
                                   $ref = $ref_obj->get_region();
                                   foreach($ref as $row){
                               ?>
-                                      <option value="<?=$row['regCode']?>" <?php if(isset($_POST['region'])) { if ($_POST['region'] == $row['regCode']) echo ' selected="selected"'; } elseif ($property_obj->region == $row['regCode']) echo ' selected="selected"'; ?>><?=$row['regDesc']?></option>
+                                      <option value="<?=$row['regCode']?>"><?=$row['regDesc']?></option>
                               <?php
                                   }
                               ?>
                           </select>
-                          <!-- <div class="invalid-feedback">
-                            Please select a Region.
-                          </div> -->
                         </div>
                         <div class="col-sm-3">
-                          <label for="provinces">Provinces<?php if(isset($_POST['save']) && !validate_prov($_POST)){?><label class="text-danger">*</label><?php }?></label>
-                          <select type="text" id="provinces" class="form-control form-control-sm" name="provinces">
-                            <option value="None" <?php if(isset($_POST['provinces'])) { if ($_POST['provinces'] == 'None') echo ' selected="selected"'; } elseif ($property_obj->provinces == 'None') echo ' selected="selected"'; ?>>--Select--</option>
-                                <?php
-                                    require_once '../classes/reference.class.php';
-                                    $ref_obj = new Reference();
-                                    $ref = $ref_obj->get_provinced();
-                                    foreach($ref as $row){
-                                ?>
-                                        <option value="<?=$row['provCode']?>" <?php if(isset($_POST['provinces'])) { if ($_POST['provinces'] == $row['provCode']) echo ' selected="selected"'; } elseif ($property_obj->provinces == $row['provCode']) echo ' selected="selected"'; ?>><?=$row['provDesc']?></option>
-                                <?php
-                                    }
-                                ?>
-                            </select>
-                          <!-- <div class="invalid-feedback">
-                            Please select a Province.
-                          </div> -->
+                          <label for="provinces">Provinces</label>
+                          <select id="provinces" class="form-control form-control-sm req" id="provinces" name="provinces">
+                            <option value="none">--Select--</option>
+                            <?php
+                                require_once '../classes/reference.class.php';
+                                $ref_obj = new Reference();
+                                  $ref = $ref_obj->get_province($regCode);
+                                  foreach($ref as $row){
+                            ?>
+                                  <option value="<?=$row['provCode']?>"><?=$row['provDesc']?></option>
+                              <?php
+                                  }
+                              ?>
+                          </select>
                         </div>
                         <div class="col-sm-3">
-                          <label for="city">City<?php if(isset($_POST['save']) && !validate_city($_POST)){?><label class="text-danger">*</label><?php }?></label>
-                          <select id="city" class="form-control form-control-sm req" id="city" name="city">
-                          <option value="None" <?php if(isset($_POST['city'])) { if ($_POST['city'] == 'None') echo ' selected="selected"'; } elseif ($property_obj->city == 'None') echo ' selected="selected"'; ?>>--Select--</option>
+                          <label for="city">City</label>
+                          <select id="city" class="form-control form-control-sm req" id="city" name="city" >
+                            <option value="none">--Select--</option>
                             <?php
                                   require_once '../classes/reference.class.php';
                                   $ref_obj = new Reference();
-                                  $ref = $ref_obj->get_Citys();
+                                  $ref = $ref_obj->get_City($provCode);
                                   foreach($ref as $row){
                               ?>
-                                  <option value="<?=$row['citymunCode']?>" <?php if(isset($_POST['city'])) { if ($_POST['city'] == $row['citymunCode']) echo ' selected="selected"'; } elseif ($property_obj->city == $row['citymunCode']) echo ' selected="selected"'; ?>><?=$row['citymunDesc']?></option>
+                                  <option value="<?=$row['citymunCode']?>"><?=$row['citymunDesc']?></option>
                               <?php
                                   }
                                   ?>
                           </select>
-                          <!-- <div class="invalid-feedback">
-                            Please select a City.
-                          </div> -->
                         </div>
                       </div>
                       <div class="mar d-flex pt-3">
                         <div class="col-sm-5">
-                          <label for="barangay">Barangay<?php if(isset($_POST['save']) && !validate_brgy($_POST)){?><label class="text-danger">*</label><?php }?></label>
+                          <label for="barangay">Barangay</label>
                           <select class="form-control form-control-sm req" name="barangay" id="barangay"> 
-                            <option value="none"<?php if(isset($_POST['barangay'])) { if ($_POST['barangay'] == 'None') echo ' selected="selected"'; } elseif ($property_obj->barangay == 'None') echo ' selected="selected"'; ?>>--Select--</option>
+                            <option value="none">--Select--</option>
                             <?php
                                   require_once '../classes/reference.class.php';
                                   $ref_obj = new Reference();
-                                  $ref = $ref_obj->get_brgay();
+                                  $ref = $ref_obj->get_brgy($citymunCode);
                                   foreach($ref as $row){
                               ?>
-                                      <option value="<?=$row['brgyCode']?>" <?php if(isset($_POST['barangay'])) { if ($_POST['barangay'] == $row['brgyCode']) echo ' selected="selected"'; } elseif ($property_obj->barangay == $row['brgyCode']) echo ' selected="selected"'; ?>><?=$row['brgyDesc']?></option>
+                                      <option value="<?=$row['brgyCode']?>"><?=$row['brgyDesc']?></option>
                               <?php
                                   }
                               ?>
                           </select>
-                          <!-- <div class="invalid-feedback">
-                            Please select a Barangay.
-                          </div> -->
                         </div>
                         <div class="col-sm-5">
                           <div class="form-group-row">
-                            <label for="street">Street<?php if(isset($_POST['save']) && !validate_street($_POST)){?> <label class="text-danger">*</label> <?php }?></label>
-                            <input class="form-control form-control-sm req" type="text" id="street" name="street" value="<?php if(isset($_POST['street'])) { echo $_POST['street']; } else { echo $property_obj->street; }?>">
+                            <label for="street">Street</label>
+                            <input class="form-control form-control-sm req" type="text" id="street" name="street" value="">
                           </div>
                         </div>
                       </div>
@@ -322,8 +270,8 @@
                       <div class="form-group">
                         <div class="col d-flex">
                           <div class="col-lg-12">
-                              <label for="features_description">Description of the Features<?php if(isset($_POST['save']) && !validate_features_description($_POST)){?><label class="text-danger">*</label><?php }?></label>
-                              <textarea class="form-control form-control-lg" id="features_description" name="features_description"><?php if(isset($_POST['features_description'])) { echo $_POST['features_description']; } else { echo $property_obj->features_description; }?></textarea>
+                              <label for="features_description">Description of the Features</label>
+                              <textarea class="form-control form-control-lg" id="features_description" name="features_description"></textarea>
                           </div>
                       </div>
                     </div>
@@ -331,27 +279,23 @@
                       <div class="form-group-row">
                         <div class="col d-flex">
                           <div class="col-lg-12">
-                            <p>Check box if features are allowed:<?php if(isset($_POST['save']) && !validate_features($_POST)){?><label class="text-danger">*</label><?php }?></p>
+                            <p>Check box if features are allowed:</p>
                               <?php
-                                // Connect to the database and retrieve the list of features
-                                $result = mysqli_query($conn, "SELECT id, feature_name FROM features");
-                                $selected_features = isset($property_obj->features) ? json_decode($property_obj->features) : array();
-                                $invalid_class = isset($_POST['save']) && !validate_features($_POST) ? ' is-invalid' : '';
-                                echo "<div class='row p-3'>";
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                    $checked = in_array($row['id'], $selected_features) ? "checked" : "";
-                                    echo "
-                                        <div class='col-sm-4 text-dark'>
-                                            <input type='checkbox' class='checkmark req" . $invalid_class . "' id='feature" . $row['id'] . "' name='features[]' value='" . $row['id'] . "' $checked>" .
-                                            "<label class='feature'  for='feature" . $row['id'] . "'>" . $row['feature_name'] . "</label><br>
-                                        </div>
-                                    ";
-                                }
-                                echo "</div>";
-                            ?> 
-                            <!-- <div class="invalid-feedback">
-                              Please select at least one feature.
-                            </div> -->
+                              // Connect to the database and retrieve the list of features
+                              $result = mysqli_query($conn, "SELECT id, feature_name FROM features");
+                              $selected_features = isset($property_obj->features) ? json_decode($property_obj->features) : array();
+                              echo "<div class='row p-3'>";
+                              while ($row = mysqli_fetch_assoc($result)) {
+                                $checked = in_array($row['id'], $selected_features) ? "checked" : "";
+                                echo "
+                                  <div class='col-sm-4 text-dark'>
+                                    <input type='checkbox' class='checkmark req' id='feature" . $row['id'] . "' name='features[]' value='" . $row['id'] . "' $checked>" .
+                                    "<label class='feature'  for='feature" . $row['id'] . "'>" . $row['feature_name'] . "</label><br>
+                                  </div>
+                                  ";
+                              }
+                              echo"</div>";
+                            ?>
                           </div>
                         </div>
                       </div>
@@ -364,18 +308,18 @@
                   <!-- Images Step -->
                   <div class="row g-3">
                     <h4 class="card-title fw-bolder">Image Details</h4>
-                    <div class="pt-4">
-                      <label for="image_path">Upload a picture of the property:</label>
-                      <div class="image-container w-100 pb-3" style="display: none;">
-                        <img id="uploaded-image" src="../img/<?php echo isset($property_obj->image_path) ? $property_obj->image_path : 'my-default-image.jpg' ?>" height="300px" width="870px">
-                        <?php if (isset($property_obj->image_path) && !empty($property_obj->image_path)) { ?>
-                        <p class="mt-2 file-name">File name: <?php echo basename($property_obj->image_path); ?></p>
-                        <?php } else { ?>
-                          <p class="mt-2 ml-2 file-name text-break">No file selected yet</p>
-                        <?php } ?>
+                      <div class="pt-4">
+                        <label for="image_path">Upload a picture of the property:</label>
+                        <div class="image-container w-100 pb-3" style="display: none;">
+                          <img id="uploaded-image" src="my-default-image.jpg" alt="Default Image" height="300px" width="870px">
+                          <?php if (!empty($property_obj->image_path)) { ?>
+                          <p class="mt-2 file-name">File name: <?php echo basename($property_obj->image_path); ?></p>
+                          <?php } else { ?>
+                            <p class="mt-2 ml-2 file-name text-break">No file selected yet</p>
+                          <?php } ?>
+                        </div>
+                        <input class="form-control form-control-lg" type="file" id="image_path" name="image_path" accept=".jpg,.jpeg,.png">
                       </div>
-                      <input class="form-control form-control-lg" type="file" id="image_path" name="image_path" accept=".jpg,.jpeg,.png" value="<?php echo isset($property_obj->image_path) ? $property_obj->image_path : '' ?>">
-                    </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group-row">
@@ -388,12 +332,12 @@
                 </div>
               </div>
               <div style="overflow:auto;">
-                <div style="float:right;">
-                  <button type="button" class="btn btn-secondary" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                  <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Next</button>
-                  <button type="submit" class="btn btn-success" id="saveBtn" name="property_save" style="display:none;">Save</button>
-                </div>
+              <div style="float:right;">
+                <button type="button" class="btn btn-secondary" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                <button type="submit" class="btn btn-success" id="saveBtn" name="property_save" style="display:none;">Save</button>
               </div>
+            </div>
             </form>
           </div>
         </div>
@@ -540,11 +484,11 @@
           imageUpload.classList.add("form-group");
           imageUpload.innerHTML = `
             <label for="floor_plan_${i}">Floor Plan:</label>
-            <input type="file" class="form-control form-control-sm" id="floor_plan_${i}" name="floor_plan[]" value="${isset(property_obj.floor_plan) ? property_obj.floor_plan[i] : ''}">
+            <input type="file" class="form-control form-control-sm" id="floor_plan_${i}" name="floor_plan[]">
             <div class="floor-plan-container float-right pb-3" style="display: none;">
-              <img id="uploaded-floor-plan_${i}" src="${isset(property_obj.floor_plan) ? '../img/' + property_obj.floor_plan[i] : 'default-image.jpg'}" alt="Default Floor Plan" height="250px" width="250px">
+              <img id="uploaded-floor-plan_${i}" src="default-image.jpg" alt="Default Floor Plan" height="250px" width="250px">
             </div>
-            <p class="mt-2 floor-plan-file-name_${i}">${isset(property_obj.floor_plan) ? property_obj.floor_plan[i] : ''}</p>
+            <p class="mt-2 floor-plan-file-name_${i}"></p>
           `;
           col2.appendChild(imageUpload);
 

@@ -87,7 +87,7 @@ if (isset($_FILES['lease_doc']) && $_FILES['lease_doc']['error'] === UPLOAD_ERR_
     
     require_once '../tools/variables.php';
     $page_title = 'RMS | Add Lease';
-    $properties = 'active';
+    $leases = 'active';
     require_once '../includes/header.php';
 ?>
 <body>
@@ -123,7 +123,7 @@ if (isset($_FILES['lease_doc']) && $_FILES['lease_doc']['error'] === UPLOAD_ERR_
               <div class="row g-3">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label for="property_name">Property Name</label><span class="req"> *</span>
+                    <label for="property_name">Building Name</label><span class="req"> *</span>
                     <select class="form-control form-control-sm" placeholder="" id="property_name" name="property_name"  onchange="filterPropertyUnits()" required>
                         <option value="none">--Select--</option>
                         <?php

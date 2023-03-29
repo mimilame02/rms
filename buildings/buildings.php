@@ -32,14 +32,14 @@
   <div class="content-wrapper">
     <div class="row">
       <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-        <h3 class="font-weight-bolder">PROPERTIES</h3> 
+        <h3 class="font-weight-bolder">BUILDINGS</h3> 
       </div>
       <div class="add-tenant-container">
         <?php
             if($_SESSION['user_type'] == 'admin'){ 
         ?>
-        <a href="add_properties.php" class="btn btn-success btn-icon-text float-right">
-            Add Property </a>
+        <a href="add_building.php" class="btn btn-success btn-icon-text float-right">
+            Add Building </a>
             <?php
                 }
             ?>
@@ -53,7 +53,7 @@
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Property Name</th>
+                      <th>Building Name</th>
                       <th>Units</th>
                       <th>Location</th>
                       <th>Landlord</th>
@@ -82,9 +82,9 @@
                             <td>'.$row['first_name'].' '.$row['last_name'].'</td>
                             <td>
                               <div class="action">
-                                <a class="me-2 green" href="view_properties.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
-                                <a class="me-2 green" href="edit_properties.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
-                                <a class="green action-delete" href="delete_properties.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
+                                <a class="me-2 green" href="view_building.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
+                                <a class="me-2 green" href="edit_building.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
+                                <a class="green action-delete" href="delete_building.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
                               </div>
                             </td>
                           </tr>';
@@ -117,8 +117,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
-<div id="delete-dialog" class="dialog" title="Delete Property">
-    <p><span>Are you sure you want to delete the property record?</span></p>
+<div id="delete-dialog" class="dialog" title="Delete Building">
+    <p><span>Are you sure you want to delete the building record?</span></p>
 </div>
 
 <script>
