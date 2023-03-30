@@ -25,6 +25,21 @@
     position: relative;
     z-index: 1;
   }
+
+  .tab-content {
+    position: relative;
+  }
+
+  .tab-pane {
+    display: none;
+    position: absolute;
+    top: 231px;
+    width: 65%;
+  }
+
+  .tab-pane.active {
+    display: block;
+  }
 </style>
 <div class="container-scroller">
   <?php
