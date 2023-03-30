@@ -67,7 +67,8 @@
                   JOIN tenant ON invoice.tenant_id = tenant.id
                   JOIN lease ON invoice.lease_unit_id = lease.id
                   JOIN property_units ON property_units.id = invoice.property_unit_id
-                  JOIN penalty ON invoice.penalty_id = penalty.id";
+                  JOIN penalty ON invoice.penalty_id = penalty.id
+                  WHERE invoice.status = 'Unpaid'";
 
                   $result = mysqli_query($conn, $sql);
                   $i = 1;
