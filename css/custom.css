@@ -269,6 +269,29 @@ li.nav-item.logout {
   width: calc(100% - 70px);
 }
 
+/* Select-group/ Select-Picker */
+
+.bootstrap-select.btn-group .btn .caret {
+  display: none;
+}
+.bootstrap-select.btn-group:not(.input-group-btn), .bootstrap-select.btn-group[class*=col-] {
+  float: none;
+  display: inline-block;
+  margin-left: 0;
+  border: 1px solid #ced4da;
+}
+.ajax-upload-dragdrop .ajax-file-upload:not(:disabled):not(.disabled), .swal2-modal .swal2-buttonswrapper .swal2-styled:not(:disabled):not(.disabled), .wizard > .actions a:not(:disabled):not(.disabled) {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+.bootstrap-select .btn:focus {
+  /* outline: thin dotted #333!important; */
+  /* outline: 5px auto -webkit-focus-ring-color!important; */
+  /* outline-offset: -2px; */
+  outline: auto;
+}
+
 .card-light-green {
   height: calc(100% + 10px);
   background: rgb(8,76,78);
@@ -343,6 +366,10 @@ background: linear-gradient(111deg, rgba(8,76,78,1) 11%, rgba(13,91,94,1) 22%, r
   margin-top: 0;
 }
 
+.row>* {
+  padding-left: calc(var(--bs-gutter-x) * .0);
+  padding-right: calc(var(--bs-gutter-x) * .0);
+}
 
 ul.no-bullets, li.no-bullets {
   list-style-type: none;
@@ -388,15 +415,15 @@ ul.no-bullets, li.no-bullets {
   .fs2 {
     font-size: 0.8em!important;
   }
-  .col.px-1.fs1.fs2{
+  .col-sm-3.px-1.fs1.fs2{
     width: 95px!important;
     font-size: 0.64em!important;
   }
-  .col-sm-4.pr-1.fs2 {
+  .col-auto.pr-1.fs2 {
     width: 93px!important;
     font-size: 0.7em!important;
   }
-  .col-md-4.pl-1.fs1.fs2{
+  .col-sm-4.pl-1.fs1.fs2{
     width: 79px!important;
     font-size: 0.7em!important;
   }
@@ -422,6 +449,26 @@ ul.no-bullets, li.no-bullets {
     color: #176f73; }
   td.fc-day.fc-day-sun.fc-day-today.fc-daygrid-day {
     background: rgb(46 112 179 / 10%)!important;
+  }
+  .fc .fc-col-header-cell-cushion {
+    display: inline-block;
+    padding: 2px 4px;
+    text-decoration: none;
+    color: #176f73;
+  }
+  .fc .fc-daygrid-day-number {
+    padding: 4px;
+    position: relative;
+    z-index: 4;
+    text-decoration: none;
+    color: #176f73;
+  }
+  .fc .fc-button .fc-icon:hover {
+    font-size: 1.5em;
+    vertical-align: middle;
+    color: white;
+    z-index: 1;
+    width: 100%;
   }
 
 :root {
@@ -756,3 +803,21 @@ span.dtr-data {
 }
 
 
+.alert {
+  padding: 15px;
+  margin-top: 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.alert-info {
+  border-color: #bce8f1;
+  color: #31708f;
+  background-color: #d9edf7;
+}
+
+.alert-error {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
