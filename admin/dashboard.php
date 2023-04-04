@@ -43,11 +43,50 @@
 
     $currentMonth = date('d-m-Y');
 
-  // Get the total income for the current month
-  $result = mysqli_query($conn, "SELECT SUM(total_due) AS total_income FROM invoice WHERE status='Paid' AND MONTH(payment_date) = $current_month AND YEAR(payment_date) = $current_year");
-  $row = mysqli_fetch_assoc($result);
-  $totalIncome = $row['total_income'];
+    // Get the total income for the current month
+    $result = mysqli_query($conn, "SELECT SUM(total_due) AS total_income FROM invoice WHERE status='Paid' AND MONTH(payment_date) = $current_month AND YEAR(payment_date) = $current_year");
+    $row = mysqli_fetch_assoc($result);
+    $totalIncome = $row['total_income'];
 
+      // Fetch year and month from the URL
+      $year = isset($_GET['year']) ? intval($_GET['year']) : 0;
+      $month = isset($_GET['month']) ? intval($_GET['month']) : 0;
+  
+      // Fetch the events data for the given month
+      $sql = "SELECT id, title, start, end, description FROM events WHERE YEAR(start) = ? AND MONTH(start) = ?";
+  
+      // Prepare and bind the statement
+      $query = $conn->prepare($sql);
+      $query->bind_param("ii", $year, $month);
+  
+      // Execute the statement
+      $query->execute();
+  
+      // Bind the result variables
+      $query->bind_result($id, $title, $start, $end, $description);
+  
+      // Initialize the events array
+      $events = array();
+  
+      // Fetch the data
+      while ($query->fetch()) {
+        $event = array(
+          'id' => $id,
+          'title' => $title,
+          'start' => $start,
+          'end' => $end,
+          'description' => $description
+        );
+  
+        // Add the event to the events array
+        $events[] = $event;
+      }
+  
+      // Close the statement
+      $query->close();
+  
+      // Convert the events array to a JSON string
+      $events_json = json_encode($events);
 
 
     require_once '../tools/variables.php';
@@ -126,7 +165,7 @@
                             <p class="text-white fs-6 font-weight-500 mb-2">Total income for the month of <strong class="fs-6"><?php echo $_SESSION['current_month_name']; ?></strong> </p>
                           </div>
                           <div class="d-flex justify-content-end">
-                            <button type="button" class="view-button">View</button>
+                            <button type="button" onclick="window.location.href='../reports/reports.php'" class="view-button">View</button>
                           </div>
                         </div>
                     </div>
@@ -151,14 +190,17 @@
 
     <script>
 
-      document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth',
-          events: 'events.php'
-        });
-        calendar.render();
+document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+      var events = <?php echo $events_json; ?>;
+
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: events
       });
+
+      calendar.render();
+    });
 
     </script>
     

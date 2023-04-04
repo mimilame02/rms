@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "bootstrap-hardskilled-extend-select": "^1.2.2",
+    "datatables.net-dt": "^1.13.4",
+    "intl-tel-input": "^17.0.21",
+    "jspdf": "^2.5.1",
+    "sweetalert2": "^11.7.3"
+  }
+}

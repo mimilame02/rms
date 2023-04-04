@@ -13,7 +13,7 @@
         header('location: ../login/login.php');
     }
 
-    if(isset($_POST['save'])){
+    if(isset($_POST['Save'])){
       $tenant_obj = new Tenant();
       //sanitize user inputs
       $tenant_obj->first_name = htmlentities($_POST['first_name']);
@@ -111,7 +111,7 @@
               </div>
             </div>
           </div>
-          <form action="add_tenant.php" method="post">
+          <form action="add_tenant.php" method="post" novalidate>
             <div class="card">
               <div class="card-body">
                 <h3 class="table-title fw-bolder pb-4">Tenant Details</h3>
@@ -128,7 +128,7 @@
                                 }
                             ?>
                         </label>
-                        <input required class="form-control form-control-sm " placeholder="First name" type="text" id="first_name" name="first_name">
+                        <input required class="form-control form-control-sm " placeholder="First name" type="text" id="first_name" name="first_name" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })" required>
                       </div>
                     </div>
                   </div>
@@ -144,7 +144,7 @@
                                 }
                             ?>
                       </label>
-                      <input class="form-control form-control-sm" type="text" id="middle_name" name="middle_name">
+                      <input class="form-control form-control-sm" type="text" id="middle_name" placeholder="Middle name" name="middle_name" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
                       </div>
                     </div>
                   </div>
@@ -160,7 +160,7 @@
                                   }
                               ?>
                             </label>
-                          <input required class="form-control form-control-sm" placeholder="Last name" type="text" id="last_name" name="last_name">
+                          <input required class="form-control form-control-sm" placeholder="Last name" type="text" id="last_name" name="last_name" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
                         </div>
                       </div>
                   </div>
@@ -206,8 +206,11 @@
                               <?php
                                   }
                               ?>
-                          </label>
-                          <input required class="form-control form-control-sm" type="text" id="contact_no" name="contact_no" maxlength="12">
+                          </label><br>
+                          <div class="px-3 row g-3">
+                            <input required class="form-control form-control-sm" type="text" id="contact_no" name="contact_no">
+                            <div class="alert alert-info" id="contact_no_alert-info" style="display: none;"></div>
+                          </div>
                         </div>
                       </div>
                   </div>
@@ -223,80 +226,82 @@
                                 }
                             ?>
                       </label>
-                        <input required class="form-control form-control-sm" placeholder="House No., Building No."  type="text" id="previous_address" name="previous_address">
+                        <input required class="form-control form-control-sm" placeholder="House No., Building No."  type="text" id="previous_address" name="previous_address" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
                       </div>
                     </div>
                   </div>
-                  <div class="col d-flex">
-                    <div class="col-sm-4">
-                      <label for="region">Region<span class="text-muted"></span>
-                      <?php
-                            if(isset($_POST['save']) && !validate_region($_POST)){
+                  <div class="col-md-6">
+                    <div class="d-flex">
+                      <div class="col-sm-4">
+                        <label for="region">Region<span class="text-muted"></span>
+                        <?php
+                              if(isset($_POST['save']) && !validate_region($_POST)){
+                              ?>
+                                <span class="text-danger">*</span>
+                              <?php
+                                  }
+                              ?></label>
+                        <select type="text" class="form-control form-control-sm selectpicker" name="region" id="region" placeholder="" data-live-search="true"> 
+                          <option value="None">--Select--</option>
+                          <?php
+                                require_once '../classes/reference.class.php';
+                                $ref_obj = new Reference();
+                                $ref = $ref_obj->get_region();
+                                foreach($ref as $row){
                             ?>
-                              <span class="text-danger">*</span>
+                                    <option value="<?=$row['regCode']?>"><?=$row['regDesc']?></option>
                             <?php
                                 }
-                            ?></label>
-                      <select type="text" class="form-control form-control-sm" name="region" id="region" placeholder=""> 
+                            ?>
+                        </select>
+                      </div>
+                      <div class="col-sm-4 pl-0">
+                        <label for="provinces">Provinces<span class="text-muted"></span>
+                        <?php
+                              if(isset($_POST['save']) && !validate_prov($_POST)){
+                              ?>
+                                <span class="text-danger">*</span>
+                              <?php
+                                  }
+                              ?></label>
+                        <select type="text" id="provinces" class="form-control form-control-sm selectpicker" name="provinces" data-live-search="true">
                         <option value="None">--Select--</option>
                         <?php
-                              require_once '../classes/reference.class.php';
-                              $ref_obj = new Reference();
-                              $ref = $ref_obj->get_region();
-                              foreach($ref as $row){
-                          ?>
-                                  <option value="<?=$row['regCode']?>"><?=$row['regDesc']?></option>
-                          <?php
-                              }
-                          ?>
-                      </select>
-                    </div>
-                    <div class="col-sm-4 pl-0">
-                      <label for="provinces">Provinces<span class="text-muted"></span>
-                      <?php
-                            if(isset($_POST['save']) && !validate_prov($_POST)){
+                                require_once '../classes/reference.class.php';
+                                $ref_obj = new Reference();
+                                $ref = $ref_obj->get_province($regCode);
+                                foreach($ref as $row){
                             ?>
-                              <span class="text-danger">*</span>
-                            <?php
-                                }
-                            ?></label>
-                      <select type="text" id="provinces" class="form-control form-control-sm" name="provinces">
-                      <option value="None">--Select--</option>
-                      <?php
-                              require_once '../classes/reference.class.php';
-                              $ref_obj = new Reference();
-                              $ref = $ref_obj->get_province($regCode);
-                              foreach($ref as $row){
-                          ?>
-                                  <option value="<?=$row['provCode']?>"><?=$row['provDesc']?></option>
-                          <?php
-                              }
-                          ?>
-                      </select>
-                    </div>
-                    <div class="col-sm-4 pl-0">
-                      <label for="city">City
-                      <?php
-                            if(isset($_POST['save']) && !validate_city($_POST)){
-                            ?>
-                              <span class="text-danger">*</span>
+                                    <option value="<?=$row['provCode']?>"><?=$row['provDesc']?></option>
                             <?php
                                 }
                             ?>
-                      </label>
-                      <select type="text" class="form-control form-control-sm" id="city" name="city">
-                      <option value="None">--Select--</option>
-                      <?php
-                          require_once '../classes/reference.class.php';
-                          $ref_obj = new Reference();
-                          $ref = $ref_obj->get_City($provCode);
-                          foreach($ref as $row){
-                      ?>
-                              <option value="<?=$row['citymunCode']?>"><?=$row['citymunDesc']?></option>
-                      <?php
-                          }
-                          ?>
-                      </select>
+                        </select>
+                      </div>
+                      <div class="col-sm-3 pl-0">
+                        <label for="city">City
+                        <?php
+                              if(isset($_POST['save']) && !validate_city($_POST)){
+                              ?>
+                                <span class="text-danger">*</span>
+                              <?php
+                                  }
+                              ?>
+                        </label>
+                        <select type="text" class="form-control form-control-sm selectpicker" id="city" name="city" data-live-search="true">
+                        <option value="None">--Select--</option>
+                        <?php
+                            require_once '../classes/reference.class.php';
+                            $ref_obj = new Reference();
+                            $ref = $ref_obj->get_City($provCode);
+                            foreach($ref as $row){
+                        ?>
+                                <option value="<?=$row['citymunCode']?>"><?=$row['citymunDesc']?></option>
+                        <?php
+                            }
+                            ?>
+                        </select>
+                      </div>
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -319,7 +324,7 @@
                     </div>
                   </div>
                   <div class="col d-flex">
-                    <div class="col-sm-4 pr-1 fs2">
+                    <div class="col-auto pr-3 fs2">
                       <label for="has_pet">Do Tenant own a pet?
                       <?php
                             if(isset($_POST['save']) && !validate_has_pet($_POST)){
@@ -334,11 +339,11 @@
                       <input type="radio" id="has_pet_no" name="has_pet" value="No">
                       <label for="has_pet_no">No</label>
                     </div>
-                    <div class="col px-1 fs1 fs2">
+                    <div class="col-sm-3 px-1 fs1 fs2">
                       <label for="number_of_pets">No. of Pets</label>
                       <input class="form-control form-control-sm fs1" type="number" name="number_of_pets" min="0">
                     </div>
-                    <div class="col-md-4 pl-1 fs1 fs2">
+                    <div class="col-sm-4 pl-1 fs1 fs2">
                       <label for="type_of_pet">Pet Type:
                         <?php
                             if(isset($_POST['save']) && !validate_pet_type($_POST)){
@@ -348,7 +353,7 @@
                                 }
                             ?>
                       </label>
-                      <input class="form-control form-control-sm fs1" type="text" id="type_of_pet" name="type_of_pet">
+                      <input class="form-control form-control-sm fs1" type="text" id="type_of_pet" name="type_of_pet" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -429,14 +434,14 @@
                             <label for="other">Other</label><br>
                             <div class="d-flex col-sm-12">
                               <label for="vehicle_specification" hidden>If other, please specify:</label><br>
-                              <input class="form-control form-control-sm" type="text" name="vehicle_specification" id="vehicle_specification" style="display:none;"><br>
+                              <input class="form-control form-control-sm" type="text" name="vehicle_specification" id="vehicle_specification" style="display:none;" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })"><br>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div id="spouse_fields" style="display: none;">
+                  <div class="col-md-12" id="spouse_fields" style="display: none;">
                     <div class="row g-3">
                       <div class="col-md-12">
                         <div class="form-group-row">
@@ -449,7 +454,7 @@
                         <div class="form-group-row">
                           <div class="col">
                             <label for="spouse_first_name">First Name</label>
-                            <input class="form-control form-control-sm" type="text" id="spouse_first_name" name="spouse_first_name">
+                            <input class="form-control form-control-sm" type="text" id="spouse_first_name" name="spouse_first_name" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
                           </div>
                         </div>
                       </div>
@@ -457,7 +462,7 @@
                         <div class="form-group-row">
                           <div class="col">
                             <label for="spouse_first_name">Last Name</label>
-                            <input class="form-control form-control-sm" type="text" id="spouse_last_name" name="spouse_last_name">
+                            <input class="form-control form-control-sm" type="text" id="spouse_last_name" name="spouse_last_name" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
                           </div>
                         </div>
                       </div>
@@ -473,7 +478,10 @@
                         <div class="form-group-row">
                           <div class="col"> 
                             <label for="spouse_num">Contact No.</label>
-                            <input class="form-control form-control-sm" type="text" id="spouse_num" name="spouse_num">
+                            <div class="px-3 row g-3">
+                              <input class="form-control form-control-sm" type="text" id="spouse_num" name="spouse_num">
+                            <div class="alert alert-info" id="spouse_num_alert-info" style="display: none;"></div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -488,12 +496,12 @@
                       </div>
                     </div>
                     <div class="occupant-container">
-                      <div class="row">
+                      <div class="row g-3">
                         <div class="col-md-6">
                           <div class="form-group-row">
                             <div class="col">
                               <label for="occupants">Full Name/s</label>
-                              <input class="form-control form-control-sm" id="occupants" name="occupants[]"></textarea>
+                              <input class="form-control form-control-sm" id="occupants" name="occupants[]" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })"></textarea>
                             </div>
                           </div>
                         </div>
@@ -501,7 +509,7 @@
                           <div class="form-group-row">
                             <div class="col">
                               <label for="occupants_relations">Relationship to Tenant</label><span class="req"> *</span>
-                              <input class="form-control form-control-sm" type="text" id="occupants_relations" name="occupants_relations[]">
+                              <input class="form-control form-control-sm" type="text" id="occupants_relations" name="occupants_relations[]" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
                             </div>
                           </div>
                         </div>  
@@ -528,7 +536,7 @@
                                 }
                             ?>
                         </label>
-                        <input required class="form-control form-control-sm" type="text" id="emergency_contact_person" name="emergency_contact_person">
+                        <input required class="form-control form-control-sm" type="text" id="emergency_contact_person" name="emergency_contact_person" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
                       </div>
                     </div>
                     <div class="form-group-row w-50">
@@ -542,18 +550,34 @@
                                 }
                             ?>
                         </label>
-                        <input required class="form-control form-control-sm" type="text" id="emergency_contact_number" name="emergency_contact_number">
+                        <div class="px-3 row g-3">
+                          <input required class="form-control form-control-sm" type="text" id="emergency_contact_number" name="emergency_contact_number">
+                          <div class="alert alert-info" id="emergency_contact_number_alert-info" style="display: none;"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div class="pt-3">
-                    <input type="submit" class="btn btn-success btn-sm" value="Save Tenant" name="save" id="save">
+                    <input type="submit" class="btn btn-success btn-sm" value="Save Tenant" name="Save" id="save">
                   </div>
                 </div>
               </div>
             </div>
+          </form>
 
-            <script>
+
+<!-- Intl Tel Input -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.21/js/intlTelInput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.21/js/intlTelInput.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.21/js/utils.min.js"></script>
+
+<!-- Bootstrap Validator -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
+
+
+<script>
+
+
       // Add an event listener to the "has_pet" radio buttons
       const hasPetRadioButtons = document.getElementsByName("has_pet");
         hasPetRadioButtons.forEach((radioButton) => {
@@ -587,7 +611,7 @@
       var spouseFields = document.getElementById("spouse_fields");
 
       statusDropdown.addEventListener("change", function() {
-        if (this.value == "married") {
+        if (this.value == "Married") {
           spouseFields.style.display = "block";
         } else {
           spouseFields.style.display = "none";
@@ -679,4 +703,87 @@
               }  
           });
       });
-  </script>
+
+    $(document).ready(function() {
+      $('#save').click(function(e) {
+        e.preventDefault(); // prevent the form from submitting
+        
+        var saveButtonName = $(this).attr('name'); // retrieve the value of the name attribute
+        
+        Swal.fire({
+          title: 'Are you sure you want to ' + saveButtonName.toLowerCase() + ' record?',
+          showDenyButton: true,
+          confirmButtonText: saveButtonName, // set the confirm button text to the name attribute value
+          denyButtonText: 'Cancel'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire('Saved!', '', 'success');
+            $('form').submit(); // submit the form if the user confirms
+          } else if (result.isDenied) {
+            Swal.fire('Changes are not saved', '', 'info');
+          }
+        });
+      });
+    });
+
+
+
+    // Initialize the input element with the intlTelInput plugin for contact number
+    var contactInput = document.querySelector("#contact_no");
+    var contactIti = window.intlTelInput(contactInput, {
+      separateDialCode: true,
+      initialCountry: "ph",
+      geoIpLookup: function(success, failure) {
+        $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+          var countryCode = (resp && resp.country) ? resp.country : "ph";
+          success(countryCode);
+        });
+      },
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.21/js/utils.js"
+    });
+
+    // Initialize the input element with the intlTelInput plugin for spouse number
+    var spouseNumInput = document.querySelector("#spouse_num");
+    var spouseNumIti = window.intlTelInput(spouseNumInput, {
+      separateDialCode: true,
+      initialCountry: "ph",
+      geoIpLookup: function(success, failure) {
+        $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+          var countryCode = (resp && resp.country) ? resp.country : "ph";
+          success(countryCode);
+        });
+      },
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.21/js/utils.js"
+    });
+
+    // Initialize the input element with the intlTelInput plugin for emergency contact number
+    var emergencyContactInput = document.querySelector("#emergency_contact_number");
+    var emergencyContactIti = window.intlTelInput(emergencyContactInput, {
+      separateDialCode: true,
+      initialCountry: "ph",
+      geoIpLookup: function(success, failure) {
+        $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+          var countryCode = (resp && resp.country) ? resp.country : "ph";
+          success(countryCode);
+        });
+      },
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.21/js/utils.js"
+    });
+
+    // Add a change event listener to all input elements to validate the phone numbers
+contactInput.addEventListener("change", function() {
+  contactInput.value = contactIti.getNumber(intlTelInputUtils.numberFormat.E164);
+});
+
+spouseNumInput.addEventListener("change", function() {
+  spouseNumInput.value = spouseNumIti.getNumber(intlTelInputUtils.numberFormat.E164);
+});
+
+emergencyContactInput.addEventListener("change", function() {
+  emergencyContactInput.value = emergencyContactIti.getNumber(intlTelInputUtils.numberFormat.E164);
+});
+
+
+
+</script>
+

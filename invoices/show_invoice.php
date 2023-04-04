@@ -108,7 +108,7 @@ require_once '../includes/header.php';
                         </div>
                         <div class="ms-3 d-flex align-items-center justify-content-end col-md-10 float-right">
                           <label for="payment_date" class="font-weight-bolder number-border">Date:</label>
-                          <input type="date" id="payment_date" class="form-control form-control-sm" name="payment_date" value="<?php echo date('Y-m-d'); ?>" required>
+                          <input type="date" id="payment_date" class="form-control form-control-sm" name="payment_date" value="<?php echo date('F j, Y'); ?>" required>
                         </div>
                       </div>
                     </div>

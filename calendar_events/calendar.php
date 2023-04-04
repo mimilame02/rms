@@ -18,7 +18,46 @@
 
     require_once '../includes/header.php';
     require_once '../includes/dbconfig.php';
-/*     require_once 'add_event.php'; */
+
+    // Fetch year and month from the URL
+    $year = isset($_GET['year']) ? intval($_GET['year']) : 0;
+    $month = isset($_GET['month']) ? intval($_GET['month']) : 0;
+
+    // Fetch the events data for the given month
+    $sql = "SELECT id, title, start, end, description FROM events WHERE YEAR(start) = ? AND MONTH(start) = ?";
+
+    // Prepare and bind the statement
+    $query = $conn->prepare($sql);
+    $query->bind_param("ii", $year, $month);
+
+    // Execute the statement
+    $query->execute();
+
+    // Bind the result variables
+    $query->bind_result($id, $title, $start, $end, $description);
+
+    // Initialize the events array
+    $events = array();
+
+    // Fetch the data
+    while ($query->fetch()) {
+      $event = array(
+        'id' => $id,
+        'title' => $title,
+        'start' => $start,
+        'end' => $end,
+        'description' => $description
+      );
+
+      // Add the event to the events array
+      $events[] = $event;
+    }
+
+    // Close the statement
+    $query->close();
+
+    // Convert the events array to a JSON string
+    $events_json = json_encode($events);
 ?>
 <body>
   <div class="container-scroller">
@@ -48,57 +87,16 @@
 
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js'></script>
 
-    <script>
-      jQuery(document).ready(function($) {
-          const calendarEl = document.getElementById('calendar');
-          const calendar = new FullCalendar.Calendar(calendarEl, {
-              initialView: 'dayGridMonth',
-              events: 'add_event.php'
-          });
-          calendar.render();
+<script>
+ document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+      var events = <?php echo $events_json; ?>;
 
-          $('#add-event-btn').click(function() {
-              // Initialize the datepicker on the "start" and "end" inputs
-              $('#start, #end').datepicker({
-                  dateFormat: 'yy-mm-dd',
-                  onSelect: function(dateText) {
-                      $(this).val(`${dateText}T14:00:00`); // Assumes a default start time of 2:00 PM
-                  }
-              });
-
-              // Open the event form when the "Add Event" button is clicked
-              $('#event-modal').modal('show');
-
-              // Handle form submission
-              $('#event-form').submit(function(event) {
-                  event.preventDefault();
-
-                  // Get form values
-                  const title = $('#title').val();
-                  const start = $('#start').val();
-                  const end = $('#end').val();
-
-                  // Create the event object
-                  const eventData = {
-                      title: title,
-                      start: start,
-                      end: end
-                  };
-
-                  // Send the event to the server
-                  $.post('add_event.php', eventData, function(response) {
-                      // If the event was added successfully, render it on the calendar
-                      if (response.status === 'success') {
-                          calendar.addEvent(eventData);
-                          $('#event-modal').modal('hide');
-                      } else {
-                          alert(response.message);
-                      }
-                  }, 'json');
-              });
-          });
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: events
       });
-  </script>
 
-
-</body>
+      calendar.render();
+    });
+</script>
