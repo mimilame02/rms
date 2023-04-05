@@ -3,7 +3,7 @@
 /* tenant validation */
 function validate_first_name($POST) {
    $first_name = strip_tags(trim($POST['first_name']));
-   if (preg_match('/[^A-Za-z\s-]/', $first_name)) {
+   if (preg_match('/^[A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ-]+$/', $first_name)) {
      // Returns false if the string contains anything other than letters, spaces or dashes.
      return false;
    }
@@ -12,7 +12,7 @@ function validate_first_name($POST) {
 
  function validate_middle_name($POST) {
    $middle_name = strip_tags(trim($POST['middle_name']));
-   if (preg_match('/[^A-Za-z\s-]/', $middle_name)) {
+   if (preg_match('/^[A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ-]+$/', $middle_name)) {
      // Returns false if the string contains anything other than letters, spaces or dashes.
      return false;
    }
@@ -21,7 +21,7 @@ function validate_first_name($POST) {
 
 function validate_last_name($POST) {
    $last_name = strip_tags(trim($POST['last_name']));
-   if (preg_match('/[^A-Za-z\s-]/', $last_name)) {
+   if (preg_match('/^[A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ-]+$/', $last_name)) {
      // Returns false if the string contains anything other than letters, spaces or dashes.
      return false;
    }
@@ -61,10 +61,10 @@ function validate_email($POST) {
 
 function validate_contact_num($POST) {
   // Remove all non-digit characters from the input using a regular expression
-  $digits = preg_replace('/[^0-9]/', '', $POST['contact_no']);
+  $digits = preg_replace('/^(?:(?:\+|00)?\d{1,3}[-. ]?)?((?:\(\d{1,6}\)|\d{1,6})(?:[-. ]?\d{1,6}){1,6})(?:[-. ]?\d{1,9})?$/', $POST['contact_no']);
 
   // Check if the input contains only digits
-  if (preg_match('/^[0-9]+$/', $digits)) {
+  if (preg_match('/^(?:(?:\+|00)?\d{1,3}[-. ]?)?((?:\(\d{1,6}\)|\d{1,6})(?:[-. ]?\d{1,6}){1,6})(?:[-. ]?\d{1,9})?$/', $digits)) {
     // If the input contains only digits, return the sanitized input
     return true;
   } else {
@@ -75,10 +75,10 @@ function validate_contact_num($POST) {
 
 function validate_prev_address($POST){
      // Remove all non-letter, non-digit characters from the input using a regular expression
-  $letters_digits = preg_replace('/[^a-zA-Z0-9]/', '', $POST['previous_address']);
+  $letters_digits = preg_replace('/^[0-9]*\s*[a-zA-Z0-9\s,.\/-]+$/', '', $POST['previous_address']);
 
   // Check if the input contains only letters and digits using a regular expression
-  if (preg_match('/^[a-zA-Z0-9]+$/', $letters_digits)) {
+  if (preg_match('/^[0-9]*\s*[a-zA-Z0-9\s,.\/-]+$/', $letters_digits)) {
     // If the input contains only letters and digits, return the sanitized input
     return true;
   } else {
@@ -88,10 +88,10 @@ function validate_prev_address($POST){
 }
 function validate_address($POST){
   // Remove all non-letter, non-digit characters from the input using a regular expression
-$letters_digits = preg_replace('/[^a-zA-Z0-9]/', '', $POST['address']);
+$letters_digits = preg_replace('/^[0-9]*\s*[a-zA-Z0-9\s,.\/-]+$/', '', $POST['address']);
 
 // Check if the input contains only letters and digits using a regular expression
-if (preg_match('/^[a-zA-Z0-9]+$/', $letters_digits)) {
+if (preg_match('/^[0-9]*\s*[a-zA-Z0-9\s,.\/-]+$/', $letters_digits)) {
  // If the input contains only letters and digits, return the sanitized input
  return true;
 } else {
@@ -155,7 +155,7 @@ function validate_has_pet($POST){
 
 function validate_pet_type($POST){
    $type_of_pet = strip_tags(trim($POST['type_of_pet']));
-   if (preg_match('/[^A-Za-z\s-]/', $type_of_pet)) {
+   if (preg_match('/^[A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ-]+$/', $type_of_pet)) {
      // Returns false if the string contains anything other than letters, spaces or dashes.
      return false;
    }
@@ -189,7 +189,7 @@ function validate_house($POST){
 
 function validate_full_name($POST) {
    $emergency_contact_person = strip_tags(trim($POST['emergency_contact_person']));
-   if (preg_match('/[^A-Za-z\s-]/', $emergency_contact_person)) {
+   if (preg_match('/[^A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ\s-]/', $emergency_contact_person)) {
      // Returns false if the string contains anything other than letters, spaces or dashes.
      return false;
    }
@@ -198,10 +198,10 @@ function validate_full_name($POST) {
 
  function validate_econtact_no($POST) {
    // Remove all non-digit characters from the input using a regular expression
-   $emergency_contact_number = preg_replace('/[^0-9]/', '', $POST['emergency_contact_number']);
+   $emergency_contact_number = preg_replace('/^(?:(?:\+|00)?\d{1,3}[-. ]?)?((?:\(\d{1,6}\)|\d{1,6})(?:[-. ]?\d{1,6}){1,6})(?:[-. ]?\d{1,9})?$/', '', $POST['emergency_contact_number']);
  
    // Check if the input contains only digits
-   if (preg_match('/^[0-9]+$/', $emergency_contact_number)) {
+   if (preg_match('/^(?:(?:\+|00)?\d{1,3}[-. ]?)?((?:\(\d{1,6}\)|\d{1,6})(?:[-. ]?\d{1,6}){1,6})(?:[-. ]?\d{1,9})?$/', $emergency_contact_number)) {
      // If the input contains only digits, return the sanitized input
      return true;
    } else {
@@ -287,10 +287,6 @@ function validate_floor_plan($FILES) {
   $image_info = getimagesize($floor_plan['tmp_name']);
   return $image_info !== false;
 } */
-
-
-
-
 
 
 

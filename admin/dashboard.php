@@ -127,7 +127,7 @@
                     <div class="col-md-6 mb-4 stretch-card transparent">
                       <div class="card card-tale">
                         <div class="card-body white-text">
-                          <span class="bx bx-user icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-45 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalTenants; ?></p></span>
+                          <span class="bx bx-user icons d-flex flex-row flex-wrap justify-content-between align-items-center mx-auto"><p class="fs-45 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalTenants; ?></p></span>
                           <p class="mb-1 pt-3 fw-bolder">Total Tenants </p>
                         </div>
                       </div>
@@ -135,7 +135,7 @@
                     <div class="col-md-6 mb-4 stretch-card transparent">
                       <div class="card card-dark-blue">
                         <div class="card-body white-text">
-                          <span class="bx bxs-user-rectangle icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-45 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalLandlords; ?></p></span>
+                          <span class="bx bxs-user-rectangle icons d-flex flex-row flex-wrap justify-content-between align-items-center mx-auto"><p class="fs-45 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalLandlords; ?></p></span>
                           <p class="mb-1 pt-3 fw-bolder">Total Landlords </p>
                         </div>
                       </div>
@@ -143,7 +143,7 @@
                     <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
                       <div class="card card-light-blue">
                         <div class="card-body white-text">
-                          <span class="bx bx-building-house icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-45 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalProperties; ?></p></span>
+                          <span class="bx bx-building-house icons d-flex flex-row flex-wrap justify-content-between align-items-center mx-auto"><p class="fs-45 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalProperties; ?></p></span>
                           <p class="mb-1 pt-3 fw-bolder">Total Property </p>
                         </div>
                       </div>
@@ -151,7 +151,7 @@
                     <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
                       <div class="card card-light-blue">
                         <div class="card-body white-text">
-                          <span class="bx bx-home-alt-2 icons d-flex flex-row flex-wrap justify-content-between align-items-center"><p class="fs-45 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalPropertyUnits; ?></p></span>
+                          <span class="bx bx-home-alt-2 icons d-flex flex-row flex-wrap justify-content-between align-items-center mx-auto"><p class="fs-45 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalPropertyUnits; ?></p></span>
                           <p class="mb-1 pt-3 fw-bolder">Total Property Units </p>
                         </div>
                       </div>
@@ -160,8 +160,8 @@
                       <div class="card px-3 card-light-green">
                         <div class="card-body  text-white mb-0 ">
                           <p class="fs-5 mb-3 mt-2 fw-bolder">TOTAL INCOME</p>
-                          <div class="row">
-                            <h2 class="fw-bolder">&#8369; <?php echo $totalIncome; ?></h2>
+                          <div class="row mx-1">
+                            <h2 class="fw-bolder mx-2">&#8369; <?php echo $totalIncome; ?></h2>
                             <p class="text-white fs-6 font-weight-500 mb-2">Total income for the month of <strong class="fs-6"><?php echo $_SESSION['current_month_name']; ?></strong> </p>
                           </div>
                           <div class="d-flex justify-content-end">

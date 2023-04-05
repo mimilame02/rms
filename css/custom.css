@@ -391,6 +391,9 @@ ul.no-bullets, li.no-bullets {
   border-radius: 0.625rem;
 }
 
+
+
+
 /*Font-size smaller for mobiles, tablets*/
 @media (max-width: 1024px){
   .fs1 {
@@ -415,15 +418,15 @@ ul.no-bullets, li.no-bullets {
   .fs2 {
     font-size: 0.8em!important;
   }
-  .col-sm-3.px-1.fs1.fs2{
+  .col-3.px-1.fs1.fs2{
     width: 95px!important;
     font-size: 0.64em!important;
   }
-  .col-auto.pr-1.fs2 {
+  .col-5.pr-1.fs2 {
     width: 93px!important;
     font-size: 0.7em!important;
   }
-  .col-sm-4.pl-1.fs1.fs2{
+  .col-4.pl-1.fs1.fs2{
     width: 79px!important;
     font-size: 0.7em!important;
   }
@@ -469,6 +472,15 @@ ul.no-bullets, li.no-bullets {
     color: white;
     z-index: 1;
     width: 100%;
+  }
+  .fc .fc-scrollgrid, .fc .fc-scrollgrid table {
+    table-layout: fixed;
+    width: 100%!important;
+  }
+  .fc .fc-daygrid-body {
+    position: relative;
+    z-index: 1;
+    width: 100%!important;
   }
 
 :root {

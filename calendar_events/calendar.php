@@ -72,9 +72,9 @@
         <div class="content-wrapper">
           <div class="row mt-4">
             <div class="card card-light-blue">
-              <p class="fw-bolder mt-3 mb-0 fs-3">CALENDAR</p>
+              <p class="fw-bolder mt-3 mb-0 fs-3 ml-3">CALENDAR</p>
               <div class="card-body">
-                <div class="fs-5 mb-2">
+                <div class="fs-5 mb-2 mx-2">
                   <div id='calendar'></div>
                 </div>
               </div>

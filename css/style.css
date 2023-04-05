@@ -28452,10 +28452,10 @@ div.tagsinput span.tag a {
   padding: 0;
   width: 235px;
   z-index: 11;
-  transition: width 0.25s ease, background 0.25s ease;
-  -webkit-transition: width 0.25s ease, background 0.25s ease;
-  -moz-transition: width 0.25s ease, background 0.25s ease;
-  -ms-transition: width 0.25s ease, background 0.25s ease;
+  transition: width 0.25s cubic-bezier(0, 2.35, 1, 1.32), background 0.25s;
+  -webkit-transition: width 0.25s cubic-bezier(0, 2.35, 1, 1.32), background 0.25s;
+  -moz-transition: width 0.25s cubic-bezier(0, 2.35, 1, 1.32), background 0.25s;
+  -ms-transition: width 0.25s cubic-bezier(0, 2.35, 1, 1.32), background 0.25s;
 }
 
 .sidebar .nav {
