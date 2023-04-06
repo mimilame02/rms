@@ -87,17 +87,9 @@
           //redirect user to landing page after saving
           header('location: tenants.php');
           exit; // always exit after redirecting
-
-      if (validate_tenants($_POST)) {
-        if ($tenant_obj->tenants_add()) {
-          //redirect user to landing page after saving
-          header('location: tenants.php');
-          exit; // always exit after redirecting
         }
       }
-    }
   }
-}
         require_once '../tools/variables.php';
       $page_title = 'RMS | Add Tenant';
       $tenant = 'active';
@@ -262,7 +254,6 @@
                     </div>
                   </div>
                   <div class="col d-flex">
-                    <div class="col-auto pr-3 fs2">
                     <div class="col-5 pr-3 fs2">
                       <label for="has_pet">Do Tenant own a pet?</label><br>
                       <input type="radio" id="has_pet_yes" name="has_pet" value="Yes">
@@ -273,14 +264,11 @@
                     <div class="col-3 px-1 fs1 fs2">
                       <label for="number_of_pets">No. of Pets</label>
                       <input class="form-control form-control-sm fs1" type="number" id="number_of_pets" name="number_of_pets" min="0">
-                      <input class="form-control form-control-sm fs1" type="number" id="number_of_pets" name="number_of_pets" min="0">
                     </div>
-                    <div class="col-sm-4 pl-1 fs1 fs2">
                     <div class="col-4 pl-1 fs1 fs2">
                       <label for="type_of_pet">Pet Type:</label>
                       <input class="form-control form-control-sm fs1" type="text" id="type_of_pet" name="type_of_pet" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
                     </div>
-                    <div class="invalid-feedback" id="pets_feedback">Please provide the number and type of pets.</div>
                     <div class="invalid-feedback" id="pets_feedback">Please provide the number and type of pets.</div>
                   </div>
                   <div class="col-md-6">
@@ -295,29 +283,24 @@
                           <option name="relationship_status" value="Widowed">Widowed</option>
                         </select>
                         <div class="invalid-feedback">Please select a valid relationship status.</div>
-                        <div class="invalid-feedback">Please select a valid relationship status.</div>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group-row">
                       <div class="col">
-                        <label for="is_smoking">Do Tenant Smoke?</label><br>
                         <label for="is_smoking">Do Tenant Smoke?</label><br>
                         <input type="radio" id="is_smoking_yes" name="is_smoking" value="Yes">
                         <label for="is_smoking_yes">Yes</label>
                         <input type="radio" id="is_smoking_no" name="is_smoking" value="No">
                         <label for="is_smoking_no">No</label>
                         <div class="invalid-feedback" id="smoking_feedback">Please select if the tenant smokes.</div>
-                        <div class="invalid-feedback" id="smoking_feedback">Please select if the tenant smokes.</div>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group-row">
                       <div class="col">
-                        <label for="type_of_household">Type of Household</label>
-                        <select class="form-control form-control-sm" id="type_of_household" name="type_of_household" required>
                         <label for="type_of_household">Type of Household</label>
                         <select class="form-control form-control-sm" id="type_of_household" name="type_of_household" required>
                         <option name="type_of_household" value="None">--Select--</option>
@@ -327,7 +310,6 @@
                           <option name="type_of_household" value="family">Family</option>
                           <option name="type_of_household" value="extended family">Extended Family</option>
                         </select>
-                        <div class="invalid-feedback">Please select a valid household type.</div>
                         <div class="invalid-feedback">Please select a valid household type.</div>
                       </div>
                     </div>
@@ -350,7 +332,6 @@
                             </div>
                           </div>
                           <div class="invalid-feedback" id="vehicles_feedback">Please specify the vehicle type.</div>
-                          <div class="invalid-feedback" id="vehicles_feedback">Please specify the vehicle type.</div>
                         </div>
                       </div>
                     </div>
@@ -370,7 +351,6 @@
                             <label for="spouse_first_name">First Name</label>
                             <input class="form-control form-control-sm" type="text" id="spouse_first_name" name="spouse_first_name" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
                             <div class="invalid-feedback">Please provide a valid first name (letters, spaces, and dashes only).</div>
-                            <div class="invalid-feedback">Please provide a valid first name (letters, spaces, and dashes only).</div>
                           </div>
                         </div>
                       </div>
@@ -379,7 +359,6 @@
                           <div class="col">
                             <label for="spouse_first_name">Last Name</label>
                             <input class="form-control form-control-sm" type="text" id="spouse_last_name" name="spouse_last_name" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
-                            <div class="invalid-feedback">Please provide a valid last name (letters, spaces, and dashes only).</div>
                             <div class="invalid-feedback">Please provide a valid last name (letters, spaces, and dashes only).</div>
                           </div>
                         </div>
@@ -422,7 +401,6 @@
                               <label for="occupants">Full Name/s</label>
                               <input class="form-control form-control-sm" id="occupants" name="occupants[]" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })"></textarea>
                               <div class="invalid-feedback">Please provide a valid name (letters, spaces, and dashes only).</div>
-                              <div class="invalid-feedback">Please provide a valid name (letters, spaces, and dashes only).</div>
                             </div>
                           </div>
                         </div>
@@ -431,7 +409,6 @@
                             <div class="col">
                               <label for="occupants_relations">Relationship to Tenant</label><span class="req"> *</span>
                               <input class="form-control form-control-sm" type="text" id="occupants_relations" name="occupants_relations[]" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
-                              <div class="invalid-feedback">Please remove any special characters, numbers, or symbols.</div>
                               <div class="invalid-feedback">Please remove any special characters, numbers, or symbols.</div>
                             </div>
                           </div>
@@ -551,14 +528,12 @@
             <div class="form-group-row">
               <div class="col">
                 <input class="form-control form-control-sm" id="occupants" name="occupants[]"></textarea>
-                <input class="form-control form-control-sm" id="occupants" name="occupants[]"></textarea>
               </div>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group-row">
               <div class="col">
-                <input class="form-control form-control-sm" id="occupants_relations" type="text" name="occupants_relations[]">
                 <input class="form-control form-control-sm" id="occupants_relations" type="text" name="occupants_relations[]">
               </div>
             </div>
@@ -981,3 +956,5 @@
       });
     }
   });
+
+</script>
