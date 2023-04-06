@@ -21,7 +21,7 @@ require_once '../classes/account.class.php';
       $row = mysqli_fetch_assoc($result);
 
     require_once '../tools/variables.php';
-    $page_title = 'RMS | Tenants';
+    $page_title = "RMS | Tenant: " . $row['id'];
     $tenant = 'active';
 
     require_once '../includes/header.php';
@@ -66,19 +66,19 @@ require_once '../classes/account.class.php';
                 <div class="card-body">
                         <div class="mb-3">
                             <label class="small mb-1" for="name">Full Name</label>
-                            <input class="form-control" id="name" type="text"  value="<?php echo $row['first_name'] . " " . $row['middle_name'] . " " . $row['last_name'] ; ?>">
+                            <input class="form-control" id="name" type="text"  value="<?php echo $row['first_name'] . " " . $row['middle_name'] . " " . $row['last_name'] ; ?>" disabled>
                         </div>
 
                         <div class="row gx-3 mb-3">
                   
                             <div class="col-md-6">
                                 <label class="small mb-1" for="email">Email</label>
-                                <input class="form-control" id="email" type="text" value="<?php echo $row['email']; ?>">
+                                <input class="form-control" id="email" type="text" value="<?php echo $row['email']; ?>"disabled>
                             </div>
                    
                             <div class="col-md-6">
                                 <label class="small mb-1" for="Contact">Contact No.</label>
-                                <input class="form-control" id="Contact" type="text" value="<?php echo $row['contact_no']; ?>">
+                                <input class="form-control" id="Contact" type="text" value="<?php echo $row['contact_no']; ?>"disabled>
                             </div>
                         </div>
                 
@@ -86,33 +86,33 @@ require_once '../classes/account.class.php';
                        
                             <div class="col-md-6">
                                 <label class="small mb-1" for="Civil_Status">Civil Status</label>
-                                <input class="form-control" id="Civil_Status" type="text" value="<?php echo $row['relationship_status']; ?>">
+                                <input class="form-control" id="Civil_Status" type="text" value="<?php echo $row['relationship_status']; ?>"disabled>
                             </div>
                      
                             <div class="col-md-6">
                                 <label class="small mb-1" for="Sex">Sex</label>
-                                <input class="form-control" id="Sex" type="text"  value="<?php echo $row['sex']; ?>">
+                                <input class="form-control" id="Sex" type="text"  value="<?php echo $row['sex']; ?>"disabled>
                             </div>
                         </div>
 												<div class="row gx-3 mb-3">
 												<div class="col-md-6">
                                 <label class="small mb-1" for="dob">Date of Birth</label>
-                                <input class="form-control" id="dob" type="text" value="<?php echo $row['date_of_birth']; ?>">
+                                <input class="form-control" id="dob" type="text" value="<?php echo $row['date_of_birth']; ?>"disabled>
                             </div>
 														<div class="col-md-6">
                                 <label class="small mb-1" for="toh">Type of Household</label>
-                                <input class="form-control" id="toh" type="text"  value="<?php echo $row['type_of_household']; ?>">
+                                <input class="form-control" id="toh" type="text"  value="<?php echo $row['type_of_household']; ?>"disabled>
                             </div>
 														</div>
                           <div class="row gx-3 mb-3">
                      
                         <div class="col-md-6">
                             <label class="small mb-1" for="address">Address</label>
-                            <input class="form-control" id="address" value="<?php echo $row['previous_address'] ?>">
+                            <input class="form-control" id="address" value="<?php echo $row['previous_address'] ?>"disabled>
                         </div>
                         <div class="col-md-6">
                             <label class="small mb-1" for="address">Is smoking?</label>
-                            <input class="form-control" id="address" value="<?php echo $row['is_smoking'] ?>">
+                            <input class="form-control" id="address" value="<?php echo $row['is_smoking'] ?>"disabled>
                         </div>
                         </div>
                     
@@ -121,12 +121,12 @@ require_once '../classes/account.class.php';
                         
                             <div class="col-md-6">
                                 <label class="small mb-1" for="petd">Pet Details</label>
-                                <input class="form-control" id="petd" value="<?php echo $row['number_of_pets'] . " " . $row['type_of_pet']; ?>">
+                                <input class="form-control" id="petd" value="<?php echo $row['number_of_pets'] . " " . $row['type_of_pet']; ?>"disabled>
                             </div>
                       
                             <div class="col-md-6">
                             <label class="small mb-1" for="vehicled">Vehicle Details</label>
-                            <input class="form-control" id="vehicled"  value="<?php echo implode(", ", json_decode($row['has_vehicle'])) . " " . $row['vehicle_specification']; ?>">
+                            <input class="form-control" id="vehicled"  value="<?php echo implode(", ", json_decode($row['has_vehicle'])) . " " . $row['vehicle_specification']; ?>"disabled>
                             </div>
 
                         </div>
@@ -142,19 +142,19 @@ require_once '../classes/account.class.php';
                   
                         <div class="mb-3">
                             <label class="small mb-1" for="sname">Full Name</label>
-                            <input class="form-control" id="sname" type="text"  value="<?php echo $row['spouse_first_name'] . " " . $row['spouse_last_name']; ?>">
+                            <input class="form-control" id="sname" type="text"  value="<?php echo $row['spouse_first_name'] . " " . $row['spouse_last_name']; ?>"disabled>
                         </div>
                      
                         <div class="row gx-3 mb-3">
                       
                             <div class="col-md-6">
                                 <label class="small mb-1" for="semail">Email</label>
-                                <input class="form-control" id="semail" type="text" value="<?php echo $row['spouse_email'] ?>">
+                                <input class="form-control" id="semail" type="text" value="<?php echo $row['spouse_email'] ?>"disabled>
                             </div>
                           
                             <div class="col-md-6">
                                 <label class="small mb-1" for="scontact">Contact No.</label>
-                                <input class="form-control" id="scontact" type="text" value="<?php echo $row['spouse_num'] ?>">
+                                <input class="form-control" id="scontact" type="text" value="<?php echo $row['spouse_num'] ?>"disabled>
                             </div>
                         </div>
                 </div>
@@ -195,12 +195,12 @@ require_once '../classes/account.class.php';
                   
                             <div class="col-md-6">
                                 <label class="small mb-1" for="ename">Full Name</label>
-                                <input class="form-control" id="ename" type="text" value="<?php echo $row['emergency_contact_person'] ?>">
+                                <input class="form-control" id="ename" type="text" value="<?php echo $row['emergency_contact_person'] ?>"disabled>
                             </div>
             
                             <div class="col-md-6">
                                 <label class="small mb-1" for="econtact">Contact No.</label>
-                                <input class="form-control" id="econtact" type="text" value="<?php echo $row['emergency_contact_number'] ?>">
+                                <input class="form-control" id="econtact" type="text" value="<?php echo $row['emergency_contact_number'] ?>"disabled>
                             </div>
                         </div>
     </div>

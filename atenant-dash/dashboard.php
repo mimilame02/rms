@@ -15,7 +15,7 @@
 
 
     require_once '../tools/variables.php';
-    $page_title = 'RMS | Test Dashboard';
+    $page_title = 'RMS | Dashboard';
     $dashboard = 'active';
 
     require_once '../includes/header.php';

@@ -15,10 +15,6 @@
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-      echo "<pre>";
-      print_r($_POST);
-      echo "</pre>";
-
       $tenant_obj = new Tenant();
       //sanitize user inputs
       $tenant_obj->first_name = htmlentities($_POST['first_name']);

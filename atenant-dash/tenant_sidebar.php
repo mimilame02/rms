@@ -53,4 +53,35 @@
 </nav>
 
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const body = document.body;
+    const sidebarToggle = document.getElementById('sidebar-toggle');
 
+    // Restore the sidebar state from localStorage
+    const sidebarState = localStorage.getItem('sidebarState');
+    if (sidebarState === 'maximize') {
+      body.classList.add('sidebar-mini', 'sidebar-icon-only');
+      sidebarToggle.setAttribute('data-toggle', 'maximize');
+    }
+
+    document.addEventListener('click', function (event) {
+      const target = event.target;
+      const isSidebarToggle = target === sidebarToggle || target.closest('#sidebar-toggle');
+
+      if (isSidebarToggle) {
+        const dataToggle = sidebarToggle.getAttribute('data-toggle');
+
+        if (dataToggle === 'minimize') {
+          body.classList.add('sidebar-mini', 'sidebar-icon-only');
+          sidebarToggle.setAttribute('data-toggle', 'maximize');
+          localStorage.setItem('sidebarState', 'maximize'); // Save the state to localStorage
+        } else {
+          body.classList.remove('sidebar-mini', 'sidebar-icon-only');
+          sidebarToggle.setAttribute('data-toggle', 'minimize');
+          localStorage.removeItem('sidebarState'); // Remove the state from localStorage
+        }
+      }
+    });
+  });
+</script>

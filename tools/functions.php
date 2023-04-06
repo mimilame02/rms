@@ -1,18 +1,18 @@
 <?php
 
 /* tenant validation */
+/* In validate_first_name, the condition to check if 'region' is set should be removed. It is not relevant to the first name validation. */
 function validate_first_name($POST) {
-  if(!isset($POST['region'])){
+  if(!isset($POST['first_name'])){
    $first_name = strip_tags(trim($POST['first_name']));
-   if (preg_match('/^[A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ-]+$/', $first_name)) {
-     // Returns false if the string contains anything other than letters, spaces or dashes.
+   if (!preg_match('/^([A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ]+[\s-]?){2,}[A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ]+$/', $first_name)) {
+    // Returns false if the string contains anything other than letters, spaces or dashes.
      return false;
    }
-   return true;
+   return false;
  }
+ return true;
 }
-
-
 
  function validate_middle_name($POST) {
    $middle_name = strip_tags(trim($POST['middle_name']));
@@ -20,16 +20,19 @@ function validate_first_name($POST) {
      // Returns false if the string contains anything other than letters, spaces or dashes.
      return false;
    }
-   return true;
+   return true; 
  }
 
-function validate_last_name($POST) {
+ function validate_last_name($POST) {
+  if(!isset($POST['last_name'])){
    $last_name = strip_tags(trim($POST['last_name']));
-   if (preg_match('/^[A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ-]+$/', $last_name)) {
-     // Returns false if the string contains anything other than letters, spaces or dashes.
+   if (!preg_match('/^([A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ]+[\s-]?){2,}[A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ]+$/', $last_name)) {
+    // Returns false if the string contains anything other than letters, spaces or dashes.
      return false;
    }
-   return true;
+   return false;
+ }
+ return true;
 }
 
 function validate_date_birth($POST) {
@@ -49,26 +52,27 @@ function validate_date_birth($POST) {
    }
  }
 
-function validate_email($POST) {
+ function validate_email($POST) {
   // Remove any tags and white space from the email address
   $email = filter_var(trim($POST['email']), FILTER_SANITIZE_EMAIL);
 
-  // Validate the email address
-  if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    // If the email address is valid, return it
-    return true;
+  // Validate the email address using the provided regex pattern
+  if (preg_match('/^[a-zA-Z0-9.!#$%&’()*+\/=?^_`{|}~\[\]-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/', $email)) {
+      // If the email address is valid, return true
+      return true;
   } else {
-    // If the email address is not valid, return false
-    return false;
+      // If the email address is not valid, return false
+      return false;
   }
 }
+
 
 function validate_contact_num($POST) {
   // Remove all non-digit characters from the input using a regular expression
   $digits = preg_replace('/\D/', '', $POST['contact_no']);
 
   // Check if the input contains only digits
-  if (preg_match('/^(?:(?:\+|00)?\d{1,3}[-. ]?)?((?:\(\d{1,6}\)|\d{1,6})(?:[-. ]?\d{1,6}){1,6})(?:[-. ]?\d{1,9})?$/', $POST['contact_no'])) {
+  if (ctype_digit($digits)) {
     // If the input contains only digits, return the sanitized input
     return true;
   } else {
@@ -76,6 +80,7 @@ function validate_contact_num($POST) {
     return false;
   }
 }
+
 
 
 function validate_prev_address($POST) {
@@ -155,15 +160,20 @@ function validate_has_pet($POST){
 }
 
 function validate_pet_type($POST){
-  if (isset($POST['type_of_pet'])) {
-   $type_of_pet = strip_tags(trim($POST['type_of_pet']));
-   if (preg_match('/^[A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ-]+$/', $type_of_pet)) {
-     // Returns false if the string contains anything other than letters, spaces or dashes.
-     return false;
-   }
-   return true;
+  if ($POST['has_pet'] === 'No') {
+      return true;
+  } elseif (isset($POST['type_of_pet'])) {
+      $type_of_pet = strip_tags(trim($POST['type_of_pet']));
+      if (!preg_match('/^[A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ-]+$/', $type_of_pet)) {
+          // Returns false if the string contains anything other than letters, spaces or dashes.
+          return false;
+      }
+      return true;
+  } else {
+      return false;
+  }
 }
-}
+
 
 function validate_civil_status($POST){
    if(!isset($POST['relationship_status'])){
@@ -190,28 +200,31 @@ function validate_house($POST){
    return true;
 }
 
+/* In validate_full_name, you should change the condition inside preg_match to return true if the pattern matches, and false otherwise.*/
 function validate_full_name($POST) {
-   $emergency_contact_person = strip_tags(trim($POST['emergency_contact_person']));
-   if (preg_match('/^([A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ]+[\s-]?){2,}[A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ]+$/', $emergency_contact_person)) {
-     // Returns false if the string contains anything other than letters, spaces or dashes.
-     return false;
-   }
-   return true;
- }
+  $emergency_contact_person = strip_tags(trim($POST['emergency_contact_person']));
+  if (!preg_match('/^([A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ]+[\s-]?){2,}[A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ]+$/', $emergency_contact_person)) {
+      // Returns false if the string contains anything other than letters, spaces or dashes.
+      return false;
+  }
+  return true;
+}
 
- function validate_econtact_no($POST) {
-   // Remove all non-digit characters from the input using a regular expression
-   $emergency_contact_number = preg_replace('/^(?:(?:\+|00)?\d{1,3}[-. ]?)?((?:\(\d{1,6}\)|\d{1,6})(?:[-. ]?\d{1,6}){1,6})(?:[-. ]?\d{1,9})?$/', '', $POST['emergency_contact_number']);
- 
-   // Check if the input contains only digits
-   if (preg_match('/^(?:(?:\+|00)?\d{1,3}[-. ]?)?((?:\(\d{1,6}\)|\d{1,6})(?:[-. ]?\d{1,6}){1,6})(?:[-. ]?\d{1,9})?$/', $emergency_contact_number)) {
-     // If the input contains only digits, return the sanitized input
-     return true;
-   } else {
-     // If the input contains non-digit characters, return false
-     return false;
-   }
- }
+/* In validate_econtact_no, you have missed the second argument in the preg_replace function.*/
+function validate_econtact_no($POST) {
+  // Remove all non-digit characters from the input using a regular expression
+  $emergency_contact_number = preg_replace('/\D/', '', $POST['emergency_contact_number']);
+
+  // Check if the input contains only digits
+  if (ctype_digit($emergency_contact_number)) {
+    // If the input contains only digits, return the sanitized input
+    return true;
+  } else {
+    // If the input contains non-digit characters, return false
+    return false;
+  }
+}
+
  
  function validate_property_name($POST) {
   // Trim the input and Strip HTML tags
