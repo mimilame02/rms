@@ -481,17 +481,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-      // Add an event listener to the "has_pet" radio buttons
-      const hasPetRadioButtons = document.getElementsByName("has_pet");
-        hasPetRadioButtons.forEach((radioButton) => {
-        radioButton.addEventListener("click", function() {
-        if (this.value === "No") {
-          // If the user selects "No" for owning a pet, set the values of number_of_pets and type_of_pet to "0" and "None" respectively
-            document.getElementById("number_of_pets").value = "0";
-            document.getElementById("type_of_pet").value = "None";
-          }
-        });
-      });
     // Add an event listener to the "has_pet" radio buttons
     const hasPetRadioButtons = document.getElementsByName("has_pet");
     hasPetRadioButtons.forEach((radioButton) => {
