@@ -179,12 +179,14 @@
                     </div>
                   </div>
                 </div>
-              </div>
-          <div class="col-md-6 order-md-1 grid-margin">
-            <div class="card card-light-blue">
-              <div class="card-body">
-                  <p class="fw-bolder mb-0 fs-5">CALENDAR</p>
-                  <div id='calendar'></div>
+                <div class="col-md-6 order-md-1 grid-margin">
+                  <div class="card card-light-blue">
+                    <div class="card-body">
+                        <p class="fw-bolder mb-0 fs-5">CALENDAR</p>
+                        <div id='calendar'></div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
