@@ -158,16 +158,24 @@
                     </div>
                     <div class="col-md-12 stretch-card mt-5">
                       <div class="card px-3 card-light-green">
-                        <div class="card-body  text-white mb-0 ">
+                        <div class="card-body text-white mb-0" itemscope itemtype="https://schema.org/FinancialProduct">
+                          <meta itemprop="name" content="Total Income for <?php echo $_SESSION['current_month_name']; ?>">
                           <p class="fs-5 mb-3 mt-2 fw-bolder">TOTAL INCOME</p>
                           <div class="row mx-1">
-                            <h2 class="fw-bolder mx-2">&#8369; <?php echo $totalIncome; ?></h2>
-                            <p class="text-white fs-6 font-weight-500 mb-2">Total income for the month of <strong class="fs-6"><?php echo $_SESSION['current_month_name']; ?></strong> </p>
+                            <h2 class="fw-bolder mx-2" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                              <span itemprop="priceCurrency" content="PHP">&#8369;</span>
+                              <span itemprop="price" content="<?php echo $totalIncome; ?>"><?php echo $totalIncome; ?></span>
+                            </h2>
+                            <p class="text-white fs-6 font-weight-500 mb-2">
+                              Total income for the month of
+                              <strong class="fs-6" itemprop="description"><?php echo $_SESSION['current_month_name']; ?></strong>
+                            </p>
                           </div>
                           <div class="d-flex justify-content-end">
                             <button type="button" onclick="window.location.href='../reports/reports.php'" class="view-button">View</button>
                           </div>
                         </div>
+                      </div>
                     </div>
                   </div>
                 </div>
