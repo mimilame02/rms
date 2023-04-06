@@ -1,13 +1,13 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-<div class="text-center navbar-brand-wrapper d-flex align-items-center pl-3">
+  <div class="text-center navbar-brand-wrapper d-flex align-items-center pl-3">
         <a class="navbar-brand brand-logo mr-5"><img src="../img/logo.svg" class="mr-2" alt="logo"/>
         <span class="menu-title">Sofiyyah</span>
         </a>
-        <a class="navbar-brand brand-logo-mini pr-2"><img src="../img/logo.svg" alt="logo"/></a>
+        <a class="navbar-brand brand-logo-mini"><img src="../img/logo.svg" alt="logo"/></a>
       </div>
 
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-        <button class="navbar-toggler navbar-toggler align-self-center" id="sidebar-toggle" type="button" data-toggle="minimize">
+        <button class="navbar-toggler navbar-toggler align-self-center toggle-sidebar" id="sidebar-toggle" type="button" data-toggle="minimize">
           <span class="bx bx-menu"></span>
         </button>
         
@@ -94,4 +94,38 @@
         </button>
       </div>
     </nav>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const body = document.body;
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+
+    // Restore the sidebar state from localStorage
+    const sidebarState = localStorage.getItem('sidebarState');
+    if (sidebarState === 'maximize') {
+      body.classList.add('sidebar-mini', 'sidebar-icon-only');
+      sidebarToggle.setAttribute('data-toggle', 'maximize');
+    }
+
+    document.addEventListener('click', function (event) {
+      const target = event.target;
+      const isSidebarToggle = target === sidebarToggle || target.closest('#sidebar-toggle');
+
+      if (isSidebarToggle) {
+        const dataToggle = sidebarToggle.getAttribute('data-toggle');
+
+        if (dataToggle === 'minimize') {
+          body.classList.add('sidebar-mini', 'sidebar-icon-only');
+          sidebarToggle.setAttribute('data-toggle', 'maximize');
+          localStorage.setItem('sidebarState', 'maximize'); // Save the state to localStorage
+        } else {
+          body.classList.remove('sidebar-mini', 'sidebar-icon-only');
+          sidebarToggle.setAttribute('data-toggle', 'minimize');
+          localStorage.removeItem('sidebarState'); // Remove the state from localStorage
+        }
+      }
+    });
+  });
+</script>
 
