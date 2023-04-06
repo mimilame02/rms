@@ -485,8 +485,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-
-
       // Add an event listener to the "has_pet" radio buttons
       const hasPetRadioButtons = document.getElementsByName("has_pet");
         hasPetRadioButtons.forEach((radioButton) => {
