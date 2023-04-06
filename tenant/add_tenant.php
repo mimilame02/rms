@@ -13,7 +13,12 @@
         header('location: ../login/login.php');
     }
 
-    if(isset($_POST['Save'])){
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+      echo "<pre>";
+      print_r($_POST);
+      echo "</pre>";
+
       $tenant_obj = new Tenant();
       //sanitize user inputs
       $tenant_obj->first_name = htmlentities($_POST['first_name']);
@@ -76,11 +81,12 @@
 
       $tenant_obj->emergency_contact_person = htmlentities($_POST['emergency_contact_person']);
       $tenant_obj->emergency_contact_number = htmlentities($_POST['emergency_contact_number']);
-      if(validate_tenants($_POST)){
-        if($tenant_obj->tenants_add()){  
-            //redirect user to landing page after saving
-            header('location: tenants.php');
-            exit; // always exit after redirecting
+
+      if (validate_tenants($_POST)) {
+        if ($tenant_obj->tenants_add()) {
+          //redirect user to landing page after saving
+          header('location: tenants.php');
+          exit; // always exit after redirecting
         }
       }
   }
@@ -194,7 +200,7 @@
                               <?php
                                   }
                               ?></label>
-                        <select type="text" class="form-control form-control-sm selectpicker" name="region" id="region" placeholder="" data-live-search="true" required> 
+                        <select type="text" class="form-control form-control-sm selectpicker" name="region" id="region" placeholder="" data-live-search="true"> 
                           <option value="None">--Select--</option>
                           <?php
                                 require_once '../classes/reference.class.php';
@@ -217,7 +223,7 @@
                               <?php
                                   }
                               ?></label>
-                        <select type="text" id="provinces" class="form-control form-control-sm selectpicker" name="provinces" data-live-search="true" required>
+                        <select type="text" id="provinces" class="form-control form-control-sm selectpicker" name="provinces" data-live-search="true">
                         <option value="None">--Select--</option>
                         <?php
                                 require_once '../classes/reference.class.php';
@@ -241,7 +247,7 @@
                                   }
                               ?>
                         </label>
-                        <select type="text" class="form-control form-control-sm selectpicker" id="city" name="city" data-live-search="true" required>
+                        <select type="text" class="form-control form-control-sm selectpicker" id="city" name="city" data-live-search="true">
                         <option value="None">--Select--</option>
                         <?php
                             require_once '../classes/reference.class.php';
@@ -268,7 +274,7 @@
                             <?php
                                 }
                             ?></label>
-                          <select class="form-control" id="sex" placeholder="" name="sex" required>
+                          <select class="form-control" id="sex" placeholder="" name="sex">
                               <option value="None">--Select--</option>
                               <option value="Male">Male</option>
                               <option value="Female">Female</option>
@@ -277,7 +283,7 @@
                     </div>
                   </div>
                   <div class="col d-flex">
-                    <div class="col-5 pr-3 fs2">
+                    <div class="col-auto pr-3 fs2">
                       <label for="has_pet">Do Tenant own a pet?
                       <?php
                             if(isset($_POST['save']) && !validate_has_pet($_POST)){
@@ -294,9 +300,9 @@
                     </div>
                     <div class="col-3 px-1 fs1 fs2">
                       <label for="number_of_pets">No. of Pets</label>
-                      <input class="form-control form-control-sm fs1" type="number" name="number_of_pets" min="0">
+                      <input class="form-control form-control-sm fs1" type="number" id="number_of_pets" name="number_of_pets" min="0">
                     </div>
-                    <div class="col-4 pl-1 fs1 fs2">
+                    <div class="col-sm-4 pl-1 fs1 fs2">
                       <label for="type_of_pet">Pet Type:
                         <?php
                             if(isset($_POST['save']) && !validate_pet_type($_POST)){
@@ -308,6 +314,7 @@
                       </label>
                       <input class="form-control form-control-sm fs1" type="text" id="type_of_pet" name="type_of_pet" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
                     </div>
+                    <div class="invalid-feedback" id="pets_feedback">Please provide the number and type of pets.</div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group-row">
@@ -321,48 +328,34 @@
                                 }
                             ?>
                         </label>
-                        <select class="form-control form-control-sm" id="relationship_status" name="relationship_status" required>
+                        <select class="form-control form-control-sm" id="relationship_status" name="relationship_status" >
                           <option name="relationship_status" value="None">--Select--</option>
                           <option name="relationship_status" value="single">Single</option>
                           <option name="relationship_status" value="Divorced">Divorced</option>
                           <option name="relationship_status" value="Married">Married</option>
                           <option name="relationship_status" value="Widowed">Widowed</option>
                         </select>
+                        <div class="invalid-feedback">Please select a valid relationship status.</div>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group-row">
                       <div class="col">
-                        <label for="is_smoking">Do Tenant Smoke?
-                        <?php
-                            if(isset($_POST['save']) && !validate_is_smoking($_POST)){
-                            ?>
-                              <span class="text-danger">*</span>
-                            <?php
-                                }
-                            ?>
-                        </label><br>
+                        <label for="is_smoking">Do Tenant Smoke?</label><br>
                         <input type="radio" id="is_smoking_yes" name="is_smoking" value="Yes">
                         <label for="is_smoking_yes">Yes</label>
                         <input type="radio" id="is_smoking_no" name="is_smoking" value="No">
                         <label for="is_smoking_no">No</label>
+                        <div class="invalid-feedback" id="smoking_feedback">Please select if the tenant smokes.</div>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group-row">
                       <div class="col">
-                        <label for="type_of_household">Type of Household
-                        <?php
-                            if(isset($_POST['save']) && !validate_house($_POST)){
-                            ?>
-                              <span class="text-danger">*</span>
-                            <?php
-                                }
-                            ?>
-                        </label>
-                        <select class="form-control form-control-sm" id="type_of_household" name="type_of_household" >
+                        <label for="type_of_household">Type of Household</label>
+                        <select class="form-control form-control-sm" id="type_of_household" name="type_of_household" required>
                         <option name="type_of_household" value="None">--Select--</option>
                           <option name="type_of_household" value="one person">One Person</option>
                           <option name="type_of_household" value="couple">Couple</option>
@@ -370,6 +363,7 @@
                           <option name="type_of_household" value="family">Family</option>
                           <option name="type_of_household" value="extended family">Extended Family</option>
                         </select>
+                        <div class="invalid-feedback">Please select a valid household type.</div>
                       </div>
                     </div>
                   </div>
@@ -390,6 +384,7 @@
                               <input class="form-control form-control-sm" type="text" name="vehicle_specification" id="vehicle_specification" style="display:none;" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })"><br>
                             </div>
                           </div>
+                          <div class="invalid-feedback" id="vehicles_feedback">Please specify the vehicle type.</div>
                         </div>
                       </div>
                     </div>
@@ -408,6 +403,7 @@
                           <div class="col">
                             <label for="spouse_first_name">First Name</label>
                             <input class="form-control form-control-sm" type="text" id="spouse_first_name" name="spouse_first_name" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
+                            <div class="invalid-feedback">Please provide a valid first name (letters, spaces, and dashes only).</div>
                           </div>
                         </div>
                       </div>
@@ -416,6 +412,7 @@
                           <div class="col">
                             <label for="spouse_first_name">Last Name</label>
                             <input class="form-control form-control-sm" type="text" id="spouse_last_name" name="spouse_last_name" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
+                            <div class="invalid-feedback">Please provide a valid last name (letters, spaces, and dashes only).</div>
                           </div>
                         </div>
                       </div>
@@ -456,6 +453,7 @@
                             <div class="col">
                               <label for="occupants">Full Name/s</label>
                               <input class="form-control form-control-sm" id="occupants" name="occupants[]" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })"></textarea>
+                              <div class="invalid-feedback">Please provide a valid name (letters, spaces, and dashes only).</div>
                             </div>
                           </div>
                         </div>
@@ -464,6 +462,7 @@
                             <div class="col">
                               <label for="occupants_relations">Relationship to Tenant</label><span class="req"> *</span>
                               <input class="form-control form-control-sm" type="text" id="occupants_relations" name="occupants_relations[]" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
+                              <div class="invalid-feedback">Please remove any special characters, numbers, or symbols.</div>
                             </div>
                           </div>
                         </div>  
@@ -490,7 +489,7 @@
                                 }
                             ?>
                         </label>
-                        <input class="form-control form-control-sm" type="text" id="emergency_contact_person" name="emergency_contact_person" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })" required>
+                        <input required class="form-control form-control-sm" type="text" id="emergency_contact_person" name="emergency_contact_person" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
                       </div>
                     </div>
                     <div class="form-group-row w-50">
@@ -519,17 +518,19 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    // Add an event listener to the "has_pet" radio buttons
-    const hasPetRadioButtons = document.getElementsByName("has_pet");
-      hasPetRadioButtons.forEach((radioButton) => {
-      radioButton.addEventListener("click", function() {
-      if (this.value === "No") {
-        // If the user selects "No" for owning a pet, set the values of number_of_pets and type_of_pet to "0" and "None" respectively
-          document.getElementById("number_of_pets").value = "0";
-          document.getElementById("type_of_pet").value = "None";
-        }
+
+
+      // Add an event listener to the "has_pet" radio buttons
+      const hasPetRadioButtons = document.getElementsByName("has_pet");
+        hasPetRadioButtons.forEach((radioButton) => {
+        radioButton.addEventListener("click", function() {
+        if (this.value === "No") {
+          // If the user selects "No" for owning a pet, set the values of number_of_pets and type_of_pet to "0" and "None" respectively
+            document.getElementById("number_of_pets").value = "0";
+            document.getElementById("type_of_pet").value = "None";
+          }
+        });
       });
-    });
 
     // Script to show/hide "other_vehicle_type" input field
     var vehicleTypeCheckboxes = document.querySelectorAll('input[name="has_vehicle[]"]');
@@ -582,16 +583,14 @@
           <div class="col-md-6">
             <div class="form-group-row">
               <div class="col">
-                <label for="occupants"></label>
-                <input class="form-control form-control-sm" name="occupants[]"></textarea>
+                <input class="form-control form-control-sm" id="occupants" name="occupants[]"></textarea>
               </div>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group-row">
               <div class="col">
-                <label for="occupants_relations"></label><span class="req"></span>
-                <input class="form-control form-control-sm" type="text" name="occupants_relations[]">
+                <input class="form-control form-control-sm" id="occupants_relations" type="text" name="occupants_relations[]">
               </div>
             </div>
           </div>  
@@ -642,132 +641,80 @@
     });
 </script>
 
-<script>
-    var contactInput = document.querySelector("#contact_no");
-    var spouseNumInput = document.querySelector("#spouse_num");
-    var emergencyContactInput = document.querySelector("#emergency_contact_number");
-
-    const contactIti = getItiInstance(contactInput);
-    const spouseIti = getItiInstance(spouseNumInput);
-    const emergencyContactIti = getItiInstance(emergencyContactInput);
-
-    function getItiInstance(inputElement) {
-      return window.intlTelInput(inputElement, {
-        separateDialCode: true,
-        initialCountry: "ph",
-        geoIpLookup: function (success, failure) {
-          $.get("https://ipinfo.io", function () {}, "jsonp").always(function (resp) {
-            var countryCode = (resp && resp.country) ? resp.country : "ph";
-            success(countryCode);
-          });
-        },
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.21/js/utils.js",
+    $(document).ready(function() {
+      $('#save').click(function(e) {
+        e.preventDefault(); // prevent the form from submitting
+        
+        var saveButtonName = $(this).attr('name'); // retrieve the value of the name attribute
+        
+        Swal.fire({
+          title: 'Are you sure you want to ' + saveButtonName.toLowerCase() + ' record?',
+          showDenyButton: true,
+          confirmButtonText: saveButtonName, // set the confirm button text to the name attribute value
+          denyButtonText: 'Cancel'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire('Saved!', '', 'success');
+            $('form').submit(); // submit the form if the user confirms
+          } else if (result.isDenied) {
+            Swal.fire('Changes are not saved', '', 'info');
+          }
+        });
       });
-    }
-    
-</script>
-
-<script>
-
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('addTenantForm');
-  const firstNameInput = document.getElementById('first_name');
-  const middleNameInput = document.getElementById('middle_name');
-  const lastNameInput = document.getElementById('last_name');
-  const dateOfBirthInput = document.getElementById('date_of_birth');
-  const previousAddressInput = document.getElementById('previous_address');
-  const emailInput = document.getElementById('email');
-  const spouseEmailInput = document.getElementById('spouse_email');
-
-  const regionSelect = document.getElementById('region');
-  const provinceSelect = document.getElementById('provinces');
-  const citySelect = document.getElementById('city');
-  const sexSelect = document.getElementById('sex');
+    });
 
 
-  function validateName(name) {
-    const namePattern = /^[A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ-]+$/;
-    return namePattern.test(name);
-  }
-  function validateAddress(inputValue) {
-    // Check if the input contains only letters and digits using a regular expression
-    return /^[0-9]*\s*[a-zA-Z0-9\s,.\/-]+$/.test(inputValue);
-  }
-  function validateEmail(email) {
-    const emailPattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    return emailPattern.test(email);
-  }
-  function validateSelect(value) {
-    return value !== ""; // Check if a value has been selected
-  }
 
-  function validateDateOfBirth(dateOfBirth) {
-    const currentDate = new Date();
-    const dob = new Date(dateOfBirth);
-    const ageDifference = currentDate - dob;
-    const ageDate = new Date(ageDifference);
-    const age = Math.abs(ageDate.getUTCFullYear() - 1970);
-    return age >= 18;
-  }
+    // Initialize the input element with the intlTelInput plugin for contact number
+    var contactInput = document.querySelector("#contact_no");
+    var contactIti = window.intlTelInput(contactInput, {
+      separateDialCode: true,
+      initialCountry: "ph",
+      geoIpLookup: function(success, failure) {
+        $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+          var countryCode = (resp && resp.country) ? resp.country : "ph";
+          success(countryCode);
+        });
+      },
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.21/js/utils.js"
+    });
 
-  function validatePhone(itiInstance) {
-    return itiInstance.isValidNumber();
-  }
-  
-  function updateInvalidFeedbackText(inputElement, itiInstance) {
-    const feedbackElement = document.getElementById(inputElement.id + "_feedback");
-    if (!itiInstance.isValidNumber()) {
-      const exampleNumber = itiInstance.getNumber(intlTelInputUtils.numberFormat.INTERNATIONAL);
-      feedbackElement.innerHTML = `Please provide a valid contact number. Example: ${exampleNumber}`;
-    }
-    console.error('Feedback element not found.');
-  }
+    // Initialize the input element with the intlTelInput plugin for spouse number
+    var spouseNumInput = document.querySelector("#spouse_num");
+    var spouseNumIti = window.intlTelInput(spouseNumInput, {
+      separateDialCode: true,
+      initialCountry: "ph",
+      geoIpLookup: function(success, failure) {
+        $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+          var countryCode = (resp && resp.country) ? resp.country : "ph";
+          success(countryCode);
+        });
+      },
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.21/js/utils.js"
+    });
 
-  function updateInvalidEmailFeedback(inputElement) {
-    const feedbackElement = inputElement.parentNode.querySelector('.invalid-feedback');
+    // Initialize the input element with the intlTelInput plugin for emergency contact number
+    var emergencyContactInput = document.querySelector("#emergency_contact_number");
+    var emergencyContactIti = window.intlTelInput(emergencyContactInput, {
+      separateDialCode: true,
+      initialCountry: "ph",
+      geoIpLookup: function(success, failure) {
+        $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+          var countryCode = (resp && resp.country) ? resp.country : "ph";
+          success(countryCode);
+        });
+      },
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.21/js/utils.js"
+    });
 
-    if (!validateEmail(inputElement.value)) {
-      feedbackElement.innerHTML = "Please provide a valid email address.";
-    } else {
-      feedbackElement.innerHTML = "";
-    }
-  }
+    // Add a change event listener to all input elements to validate the phone numbers
+contactInput.addEventListener("change", function() {
+  contactInput.value = contactIti.getNumber(intlTelInputUtils.numberFormat.E164);
+});
 
-  function updateValidInputClass(input, isValid) {
-    if (isValid) {
-      input.classList.add('is-valid');
-      input.classList.remove('is-invalid');
-    } else {
-      input.classList.remove('is-valid');
-      input.classList.add('is-invalid');
-    }
-  }
-
-  firstNameInput.addEventListener('input', function () {
-    updateValidInputClass(this, validateName(this.value));
-  });
-
-  middleNameInput.addEventListener('input', function () {
-    updateValidInputClass(this, validateName(this.value));
-  });
-
-  lastNameInput.addEventListener('input', function () {
-    updateValidInputClass(this, validateName(this.value));
-  });
-
-  dateOfBirthInput.addEventListener('input', function () {
-    updateValidInputClass(this, validateDateOfBirth(this.value));
-  });
-
-  contactInput.addEventListener('input', function () {
-    updateValidInputClass(this, validatePhone(contactIti));
-    contactInput.value = contactIti.getNumber(intlTelInputUtils.numberFormat.E164);
-  });
-
-  spouseNumInput.addEventListener('input', function () {
-    updateValidInputClass(this, validatePhone(spouseIti));
-    spouseNumInput.value = spouseNumIti.getNumber(intlTelInputUtils.numberFormat.E164);
-  });
+spouseNumInput.addEventListener("change", function() {
+  spouseNumInput.value = spouseNumIti.getNumber(intlTelInputUtils.numberFormat.E164);
+});
 
   emergencyContactInput.addEventListener('input', function () {
     updateValidInputClass(this, validatePhone(emergencyContactIti));
@@ -788,154 +735,3 @@ document.addEventListener('DOMContentLoaded', function () {
     updateInvalidEmailFeedback(spouseEmailInput);
   });
 
-  regionSelect.addEventListener('change', function () {
-    updateValidInputClass(this, validateSelect(this.value));
-  });
-
-  provinceSelect.addEventListener('change', function () {
-    updateValidInputClass(this, validateSelect(this.value));
-  });
-
-  citySelect.addEventListener('change', function () {
-    updateValidInputClass(this, validateSelect(this.value));
-  });
-
-  sexSelect.addEventListener('change', function () {
-    updateValidInputClass(this, validateSelect(this.value));
-  });
-
-
-  function validateForm() {
-    let isValid = true;
-
-    if (!validateName(firstNameInput.value)) {
-      firstNameInput.classList.add('is-invalid');
-      isValid = false;
-    } else {
-      firstNameInput.classList.remove('is-invalid');
-    }
-
-    if (!validateName(lastNameInput.value)) {
-      lastNameInput.classList.add('is-invalid');
-      isValid = false;
-    } else {
-      lastNameInput.classList.remove('is-invalid');
-    }
-
-    if (!validateDateOfBirth(dateOfBirthInput.value)) {
-      dateOfBirthInput.classList.add('is-invalid');
-      isValid = false;
-    } else {
-      dateOfBirthInput.classList.remove('is-invalid');
-    }
-
-    if (!validatePhone(contactIti)) {
-      contactInput.classList.add('is-invalid');
-      updateInvalidFeedbackText(contactInput, contactIti);
-      isValid = false;
-    } else {
-      contactInput.classList.remove('is-invalid');
-    }
-
-    if (!validatePhone(spouseIti)) {
-      spouseNumInput.classList.add('is-invalid');
-      updateInvalidFeedbackText(spouseNumInput, spouseIti);
-      isValid = false;
-    } else {
-      spouseNumInput.classList.remove('is-invalid');
-    }
-
-    if (!validatePhone(emergencyContactIti)) {
-      emergencyContactInput.classList.add('is-invalid');
-      updateInvalidFeedbackText(emergencyContactInput, emergencyContactIti);
-      isValid = false;
-    } else {
-      emergencyContactInput.classList.remove('is-invalid');
-    }
-    if (!validateAddress(previousAddressInput.value)) {
-      previousAddressInput.classList.add('is-invalid');
-      isValid = false;
-    } else {
-      previousAddressInput.classList.remove('is-invalid');
-    }
-    if (!validateEmail(emailInput.value)) {
-      emailInput.classList.add('is-invalid');
-      updateInvalidEmailFeedback(emailInput);
-      isValid = false;
-    } else {
-      emailInput.classList.remove('is-invalid');
-    }
-
-    if (!validateEmail(spouseEmailInput.value)) {
-      spouseEmailInput.classList.add('is-invalid');
-      updateInvalidEmailFeedback(spouseEmailInput);
-      isValid = false;
-    } else {
-      spouseEmailInput.classList.remove('is-invalid');
-    }
-    if (!validateSelect(regionSelect.value)) {
-      regionSelect.classList.add('is-invalid');
-      isValid = false;
-    } else {
-      regionSelect.classList.remove('is-invalid');
-    }
-
-    if (!validateSelect(provinceSelect.value)) {
-      provinceSelect.classList.add('is-invalid');
-      isValid = false;
-    } else {
-      provinceSelect.classList.remove('is-invalid');
-    }
-
-    if (!validateSelect(citySelect.value)) {
-      citySelect.classList.add('is-invalid');
-      isValid = false;
-    } else {
-      citySelect.classList.remove('is-invalid');
-    }
-
-    if (!validateSelect(sexSelect.value)) {
-      sexSelect.classList.add('is-invalid');
-      isValid = false;
-    } else {
-      sexSelect.classList.remove('is-invalid');
-    }
-
-
-    return isValid;
-  }
-
-  document.getElementById('save').addEventListener('click', function (event) {
-    event.preventDefault();
-
-    if (validateForm()) {
-      Swal.fire({
-        title: 'Are you sure you want to save the record?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Save'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          form.submit(); // submit the form if the user confirms
-          Swal.fire(
-            'Saved!',
-            'Your record has been saved.',
-            'success'
-          );
-        }
-      });
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Please fix the errors in the form!'
-      });
-    }
-  });
-});
-
-
-
-</script>
