@@ -65,7 +65,8 @@ function validate_email($POST) {
 
 function validate_contact_num($POST) {
   // Remove all non-digit characters from the input using a regular expression
-  $digits = preg_replace('/[^0-9]/', '', $POST['contact_no']);
+<<<<<<< HEAD
+  $digits = preg_replace('/\D/', '', $POST['contact_no']);
 
   // Check if the input contains only digits
   if (preg_match('/^[0-9]+$/', $digits)) {
