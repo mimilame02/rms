@@ -815,13 +815,6 @@ document.addEventListener('DOMContentLoaded', function () {
       firstNameInput.classList.remove('is-invalid');
     }
 
-    if (!validateName(middleNameInput.value)) {
-      middleNameInput.classList.add('is-invalid');
-      isValid = false;
-    } else {
-      middleNameInput.classList.remove('is-invalid');
-    }
-
     if (!validateName(lastNameInput.value)) {
       lastNameInput.classList.add('is-invalid');
       isValid = false;
