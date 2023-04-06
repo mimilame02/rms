@@ -106,3 +106,15 @@
     <link rel="icon" href="../img/logo-edit.png" type="image/icon type">
 
 </head>
+<<<<<<< HEAD
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7B4BLQNGYY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7B4BLQNGYY');
+</script>
+=======
+>>>>>>> 9a5b06a0d7209075d0067a7cf3aab30b254686a6

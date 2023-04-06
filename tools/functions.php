@@ -65,11 +65,10 @@ function validate_email($POST) {
 
 function validate_contact_num($POST) {
   // Remove all non-digit characters from the input using a regular expression
-<<<<<<< HEAD
   $digits = preg_replace('/\D/', '', $POST['contact_no']);
 
   // Check if the input contains only digits
-  if (preg_match('/^[0-9]+$/', $digits)) {
+  if (preg_match('/^(?:(?:\+|00)?\d{1,3}[-. ]?)?((?:\(\d{1,6}\)|\d{1,6})(?:[-. ]?\d{1,6}){1,6})(?:[-. ]?\d{1,9})?$/', $POST['contact_no'])) {
     // If the input contains only digits, return the sanitized input
     return true;
   } else {
@@ -78,13 +77,10 @@ function validate_contact_num($POST) {
   }
 }
 
-function validate_prev_address($POST){
-     // Remove all non-letter, non-digit characters from the input using a regular expression
-  $letters_digits = preg_replace('/[^a-zA-Z0-9]/', '', $POST['previous_address']);
 
-  // Check if the input contains only letters and digits using a regular expression
-  if (preg_match('/^[a-zA-Z0-9]+$/', $letters_digits)) {
-    // If the input contains only letters and digits, return the sanitized input
+function validate_prev_address($POST) {
+  // Check if the input matches the pattern
+  if (preg_match('/^[0-9]*\s*[a-zA-Z\s]+([,.-]?[a-zA-Z0-9\s]+)*$/', $POST['previous_address'])) {
     return true;
   } else {
     return false;
@@ -93,10 +89,10 @@ function validate_prev_address($POST){
 
 function validate_address($POST){
   // Remove all non-letter, non-digit characters from the input using a regular expression
-$letters_digits = preg_replace('/[^a-zA-Z0-9]/', '', $POST['address']);
+$letters_digits = preg_replace("/^[0-9]*\s*[a-zA-Z0-9\s,.'()\[\]`{|}~-]+$/", '', $POST['address']);
 
 // Check if the input contains only letters and digits using a regular expression
-if (preg_match('/^[a-zA-Z0-9]+$/', $letters_digits)) {
+if (preg_match("/^[0-9]*\s*[a-zA-Z0-9\s,.'()\[\]`{|}~-]+$/", $letters_digits)) {
  // If the input contains only letters and digits, return the sanitized input
  return true;
 } else {
@@ -196,7 +192,7 @@ function validate_house($POST){
 
 function validate_full_name($POST) {
    $emergency_contact_person = strip_tags(trim($POST['emergency_contact_person']));
-   if (preg_match('/[^A-Za-z\s-]/', $emergency_contact_person)) {
+   if (preg_match('/^([A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ]+[\s-]?){2,}[A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ]+$/', $emergency_contact_person)) {
      // Returns false if the string contains anything other than letters, spaces or dashes.
      return false;
    }
@@ -294,12 +290,6 @@ function validate_floor_plan($FILES) {
   $image_info = getimagesize($floor_plan['tmp_name']);
   return $image_info !== false;
 } */
-
-
-
-
-
-
 
 function validate_tenants($POST) {
   $validation_results = [
