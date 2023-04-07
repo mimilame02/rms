@@ -1,5 +1,26 @@
 <?php
 
+function pluralize($noun, $count) {
+  if ($count == 1) {
+      return $noun;
+  }
+
+  $last_letter = strtolower($noun[strlen($noun) - 1]);
+  switch ($last_letter) {
+      case 's':
+      case 'x':
+      case 'z':
+      case 'o':
+          return $noun . 'es';
+          break;
+      case 'y':
+          return substr($noun, 0, -1) . 'ies';
+          break;
+      default:
+          return $noun . 's';
+  }
+}
+
 /* tenant validation */
 /* In validate_first_name, the condition to check if 'region' is set should be removed. It is not relevant to the first name validation. */
 function validate_first_name($POST) {
