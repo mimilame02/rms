@@ -78,7 +78,7 @@
                           echo '
                           <tr>
                             <td>'.$i.'</td>
-                            <td>'.$row['last_name'].', '.$row['first_name'].'</td>
+                            <td>'.$row['first_name'].' '.$row['last_name'].'</td>
                             <td>'.$row['email'].'</td>
                             <td>'.$row['contact_no'].'</td>
                             <td>Properties: '.$row['property_count'].'<br><br>Units: '.$row['unit_count'].'</td>
