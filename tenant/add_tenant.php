@@ -830,6 +830,22 @@
     updateValidInputClass(typeOfPetInput, validatePets());
   });
 
+  carCheckbox.addEventListener('input', () => {
+    updateValidInputClass(carCheckbox, validateVehicles());
+  });
+
+  motorcycleCheckbox.addEventListener('input', () => {
+    updateValidInputClass(motorcycleCheckbox, validateVehicles());
+  });
+
+  otherCheckbox.addEventListener('input', () => {
+    updateValidInputClass(otherCheckbox, validateVehicles());
+  });
+
+  vehicleSpecificationInput.addEventListener('input', () => {
+    updateValidInputClass(vehicleSpecificationInput, validateVehicles());
+  });
+
   function validateForm() {
     let isValid = true;
 
