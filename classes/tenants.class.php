@@ -44,10 +44,6 @@ class Tenant{
     function tenants_add() {
         $sql = "INSERT INTO tenant (first_name, middle_name, last_name, email, contact_no, relationship_status, type_of_household, previous_address, region, provinces, city, sex, date_of_birth, has_pet, number_of_pets, type_of_pet, is_smoking, has_vehicle, vehicle_specification, spouse_first_name, spouse_last_name, spouse_email, spouse_num, occupants, occupants_relations, emergency_contact_person, emergency_contact_number) 
         VALUES (:first_name, :middle_name, :last_name, :email, :contact_no, :relationship_status, :type_of_household, :previous_address, :region, :provinces, :city, :sex, :date_of_birth, :has_pet, :number_of_pets, :type_of_pet, :is_smoking, :has_vehicle, :vehicle_specification, :spouse_first_name, :spouse_last_name, :spouse_email, :spouse_num, :occupants, :occupants_relations, :emergency_contact_person, :emergency_contact_number)";
-        // Convert arrays to comma-separated strings
-        $this->has_vehicle = implode(",", $_POST['has_vehicle']);
-        $this->occupants = implode(",", $_POST['occupants']);
-        $this->occupants_relations = implode(",", $_POST['occupants_relations']);
     
         $query=$this->db->connect()->prepare($sql);
         $query->bindParam(':first_name', $this->first_name);
