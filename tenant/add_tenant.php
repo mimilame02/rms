@@ -273,7 +273,7 @@
                         <label for="relationship_status">Civil Status</label>
                         <select class="form-control form-control-sm" id="relationship_status" name="relationship_status" required>
                           <option name="relationship_status" value="None">--Select--</option>
-                          <option name="relationship_status" value="single">Single</option>
+                          <option name="relationship_status" value="Single">Single</option>
                           <option name="relationship_status" value="Divorced">Divorced</option>
                           <option name="relationship_status" value="Married">Married</option>
                           <option name="relationship_status" value="Widowed">Widowed</option>
@@ -300,11 +300,11 @@
                         <label for="type_of_household">Type of Household</label>
                         <select class="form-control form-control-sm" id="type_of_household" name="type_of_household" required>
                         <option name="type_of_household" value="None">--Select--</option>
-                          <option name="type_of_household" value="one person">One Person</option>
-                          <option name="type_of_household" value="couple">Couple</option>
-                          <option name="type_of_household" value="single parent">Single Parent</option>
-                          <option name="type_of_household" value="family">Family</option>
-                          <option name="type_of_household" value="extended family">Extended Family</option>
+                          <option name="type_of_household" value="One Person">One Person</option>
+                          <option name="type_of_household" value="Couple">Couple</option>
+                          <option name="type_of_household" value="Single Parent">Single Parent</option>
+                          <option name="type_of_household" value="Family">Family</option>
+                          <option name="type_of_household" value="Extended Family">Extended Family</option>
                         </select>
                         <div class="invalid-feedback">Please select a valid household type.</div>
                       </div>
@@ -316,11 +316,11 @@
                         <label for="has_vehicle">Please check if tenant own any of the vehicles:</label><br>
                         <div class="row">
                           <div class='col-sm-12 text-dark'>
-                            <input type="checkbox" name="has_vehicle[]" id="car" value="car">
+                            <input type="checkbox" name="has_vehicle[]" id="car" value="Car">
                             <label for="car">Car</label><br>
-                            <input type="checkbox" name="has_vehicle[]" id="motorcycle" value="motorcycle">
+                            <input type="checkbox" name="has_vehicle[]" id="Motorcycle" value="motorcycle">
                             <label for="motorcycle">Motorcycle</label><br>
-                            <input type="checkbox" name="has_vehicle[]" id="other" value="others">
+                            <input type="checkbox" name="has_vehicle[]" id="Other" value="others">
                             <label for="other">Other</label><br>
                             <div class="d-flex col-sm-12">
                               <label for="vehicle_specification" hidden>If other, please specify:</label><br>
@@ -508,7 +508,7 @@
       // show/hide Other Occupants section based on selected value of Type of Household dropdown
       $('#type_of_household').on('change', function() {
         var selectedValue = $(this).val();
-        if (selectedValue == 'one person') {
+        if (selectedValue == 'One Person') {
           $('#other_occupants_fields').hide();
         } else {
           $('#other_occupants_fields').show();
