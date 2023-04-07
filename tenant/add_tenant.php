@@ -257,13 +257,13 @@
                       <input type="radio" id="has_pet_no" name="has_pet" value="No">
                       <label for="has_pet_no">No</label>
                     </div>
-                    <div class="col-3 px-1 fs1 fs2">
-                      <label for="number_of_pets">No. of Pets</label>
-                      <input class="form-control form-control-sm fs1" type="number" id="number_of_pets" name="number_of_pets" min="0">
-                    </div>
                     <div class="col-4 pl-1 fs1 fs2">
                       <label for="type_of_pet">Pet Type:</label>
                       <input class="form-control form-control-sm fs1" type="text" id="type_of_pet" name="type_of_pet" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
+                    </div>
+                    <div class="col-3 px-1 fs1 fs2">
+                      <label for="number_of_pets">No. of Pets</label>
+                      <input class="form-control form-control-sm fs1" type="number" id="number_of_pets" name="number_of_pets" min="0">
                     </div>
                     <div class="invalid-feedback" id="pets_feedback">Please provide the number and type of pets.</div>
                   </div>
@@ -711,10 +711,11 @@
     if (petYesRadio.checked) {
       return numberOfPetsInput.value > 0 && typeOfPetInput.value.trim() !== '';
     } else if (petNoRadio.checked) {
-      return numberOfPetsInput.value < 0 && typeOfPetInput.value.trim() === '';
+      return numberOfPetsInput.disabled && typeOfPetInput.disabled;
     }
     return false;
   }
+
 
   firstNameInput.addEventListener('input', function () {
     updateValidInputClass(this, validateName(this.value));
@@ -810,16 +811,19 @@
     updateValidInputClass(smokingNoRadio, validateSmoking());
   });
 
-  petYesRadio.addEventListener('input', () => {
-    updateValidInputClass(petYesRadio, validatePets());
+  petYesRadio.addEventListener('change', () => {
+    updateValidInputClass(numberOfPetsInput, validatePets());
+    updateValidInputClass(typeOfPetInput, validatePets());
   });
 
-  petNoRadio.addEventListener('input', () => {
-    updateValidInputClass(petNoRadio, validatePets());
+  petNoRadio.addEventListener('change', () => {
+    updateValidInputClass(numberOfPetsInput, validatePets());
+    updateValidInputClass(typeOfPetInput, validatePets());
   });
 
   numberOfPetsInput.addEventListener('input', () => {
     updateValidInputClass(numberOfPetsInput, validatePets());
+    updateValidInputClass(typeOfPetInput, validatePets());
   });
 
   typeOfPetInput.addEventListener('input', () => {
