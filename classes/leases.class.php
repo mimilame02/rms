@@ -1,7 +1,6 @@
 <?php
 
 require_once 'database.php';
-require_once '../classes/invoices.class.php';
 
 class Leases{
     //Attributes
@@ -71,48 +70,15 @@ class Leases{
         $query->bindParam(':electricity', $this->electricity);
         $query->bindParam(':water', $this->water);
         $query->bindParam(':status', $this->status);
-    
+
+
         if($query->execute()){
-            $lease_id = $this->db->connect()->lastInsertId();
-            // Determine if the invoice should be generated automatically (fixed bill) or manually
-            if (!empty($this->electricity) && !empty($this->water)) {
-                // Fixed bill - generate invoice automatically by month
-                // ...
-                $invoice_monthly_bills = 1;
-                $invoice_fixed_bills = 1;
-            } else {
-                // Manual bill - do not generate invoice automatically
-                // ...
-                $invoice_monthly_bills = 0;
-                $invoice_fixed_bills = 0;
-            }
-            // Call the invoice_add() function to generate the invoice
-            $invoice = new Invoice();
-            $invoice->lease_unit_id = $lease_id;
-            $invoice->tenant_id = $this->tenant_id;
-            $invoice->property_id = $this->property_id;
-            $invoice->property_unit_id = $this->property_unit_id;
-            $invoice->monthly_rent = $this->monthly_rent;
-            $invoice->rent_due_date = date('Y-m-d', strtotime($this->lease_start . ' +1 month'));
-            $invoice->electricity = $this->electricity;
-            $invoice->water = $this->water;
-            $invoice->one_month_deposit = $this->one_month_deposit;
-            $invoice->one_month_advance = $this->one_month_advance;
-            $invoice->penalty_id = null;
-            $invoice->total_due = $this->monthly_rent + $this->electricity + $this->water;
-            $invoice->amount_paid = 0;
-            $invoice->balance = $invoice->total_due;
-            $invoice->status = 'unpaid';
-            $invoice->payment_date = null;
-            $invoice->fixed_bills = $invoice_fixed_bills;
-            $invoice->monthly_bills = $invoice_monthly_bills;
-            $invoice->invoice_add();
             return true;
-        } else{
+        }
+        else{
             return false;
         }
     }
-    
     function lease_delete($record_id){
         $sql = "DELETE FROM lease WHERE id = :id;";
         $query=$this->db->connect()->prepare($sql);
