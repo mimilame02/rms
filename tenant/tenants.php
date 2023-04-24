@@ -141,9 +141,9 @@
                           while ($row = mysqli_fetch_assoc($result)){
                             $actionButtons = ($_SESSION['user_type'] == 'admin' || $_SESSION['user_type'] == 'landlord') ? 
                           '<div class="action">
-                            <a class="me-2 green" href="view_building.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
-                            <a class="me-2 green" href="edit_building.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
-                            <a class="green action-delete" href="delete_building.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
+                            <a class="me-2 green" href="view_tenant.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
+                            <a class="me-2 green" href="edit_tenant.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
+                            <a class="green action-delete" href="delete_tenant.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
                           </div>' : '';
                           $leaseDates = ($row['lease_start'] !== null && $row['lease_end'] !== null) ? $row['lease_start'] . ' to ' . $row['lease_end'] : 'No contract yet';
                           $leaseCount = ($row['lease_count'] != 0) ? $row['lease_count'] : '- - -';

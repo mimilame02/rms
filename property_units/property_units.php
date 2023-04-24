@@ -68,7 +68,7 @@
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Main Building</th>
+                      <th>Main property_units</th>
                       <th>Units</th>
                       <th>Floors</th>
                       <th>Condition</th>
@@ -113,9 +113,9 @@
                           }
                           $actionButtons = ($_SESSION['user_type'] == 'admin' || $_SESSION['user_type'] == 'landlord') ? 
                           '<div class="action">
-                            <a class="me-2 green" href="view_building.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
-                            <a class="me-2 green" href="edit_building.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
-                            <a class="green action-delete" href="delete_building.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
+                            <a class="me-2 green" href="view_property_units.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
+                            <a class="me-2 green" href="edit_property_units.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
+                            <a class="green action-delete" href="delete_property_units.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
                           </div>' : '';
                           echo '
                           <tr>
