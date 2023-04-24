@@ -46,6 +46,11 @@ $success_msg = '';
 ?>
 
 <body id="fp">
+<div class="loading-screen">
+  <img class="logo" src="../img/logo-edit.png" alt="logo">
+  <?php echo $page_title; ?>
+  <div class="loading-bar"></div>
+</div>
     <main class="py-md-4">
         <div class="container-fluid d-flex align-items-md-center justify-content-md-center">
             <div class="container-fluid fp p-sm-5">

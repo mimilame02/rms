@@ -2,9 +2,10 @@
     session_start();
     require_once '../includes/dbconfig.php';
    
-    if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] != 'admin'){
-        header('location: ../login/login.php');  
+    if (!isset($_SESSION['user_type']) || ($_SESSION['user_type'] != 'admin' && $_SESSION['user_type'] != 'landlord')) {
+        header('location: ../login/login.php');
     }
+  
     if(isset($_POST['save_tickets'])) {
       $raised_by = $_POST['raised_by'];
       $subject = $_POST['subject'];

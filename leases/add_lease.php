@@ -10,9 +10,10 @@
         this is to prevent users from accessing pages that requires
         authentication such as the dashboard
     */
-    if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] != 'admin'){
+    if (!isset($_SESSION['user_type']) || ($_SESSION['user_type'] != 'admin' && $_SESSION['user_type'] != 'landlord')) {
         header('location: ../login/login.php');
     }
+  
 
     if(isset($_POST['save'])){
 
@@ -29,10 +30,7 @@
       $leases_obj->water = $_POST['water'];
       $leases_obj->status = 'Occupied';
 
-// Set a default value for lease_doc
-$leases_obj->lease_doc = $_POST['lease_doc'];
-
-if (isset($_FILES['lease_doc']) && $_FILES['lease_doc']['error'] === UPLOAD_ERR_OK) {
+    if (isset($_FILES['lease_doc']) && $_FILES['lease_doc']['error'] === UPLOAD_ERR_OK) {
     $image = $_FILES['lease_doc']['name'];
     $target = "../img/leases/" . basename($image);
     
@@ -75,7 +73,8 @@ if (isset($_FILES['lease_doc']) && $_FILES['lease_doc']['error'] === UPLOAD_ERR_
 
       // Add property to database
         if ($leases_obj->lease_add()) {
-          header('Location: leases.php');
+          $_SESSION['added_lease'] = true;
+          header('location: leases.php?add_success=1');
           exit; // always exit after redirecting
         } else {
           // handle property add error
@@ -91,14 +90,28 @@ if (isset($_FILES['lease_doc']) && $_FILES['lease_doc']['error'] === UPLOAD_ERR_
     require_once '../includes/header.php';
 ?>
 <body>
+<div class="loading-screen">
+  <img class="logo" src="../img/logo-edit.png" alt="logo">
+  <?php echo $page_title; ?>
+  <div class="loading-bar"></div>
+</div>
 <div class="container-scroller">
   <?php
     require_once '../includes/navbar.php';
   ?>
 <div class="container-fluid page-body-wrapper">
 <?php
-     require_once '../includes/sidebar.php';
-  ?>
+        if (isset($_SESSION['user_type'])) {
+            if ($_SESSION['user_type'] == 'landlord') {
+                require_once '../alandlord-dash/landlord_sidebar.php';
+            } elseif ($_SESSION['user_type'] == 'admin') {
+                require_once '../includes/sidebar.php';
+            }
+            // Add more conditions for other user types if needed
+        } else {
+            // Redirect to login or show a default sidebar if the user type is not set
+        }
+    ?>
 <div class="main-panel">
   <div class="content-wrapper">
     <div class="row">
@@ -180,18 +193,18 @@ if (isset($_FILES['lease_doc']) && $_FILES['lease_doc']['error'] === UPLOAD_ERR_
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="monthly_rent">Monthly Rent</label>
-                    <input type="number" class="form-control form-control-sm" id="monthly_rent" placeholder="Monthly Rent (default)" name="monthly_rent" value = "<?php echo "$rent"?>" disabled>
+                    <input type="number" min="0" step="0.01" class="form-control form-control-sm" id="monthly_rent" placeholder="Monthly Rent (default)" name="monthly_rent" value = "<?php echo "$rent"?>" disabled>
                   </div>
                   <div class="form-group pt-2">
                     <div class="">
                       <label for="one_month_deposit">One Month Deposit Amount</label><span class="req"> *</span>
-                      <input type="number" class="form-control form-control-sm" id="one_month_deposit" placeholder="One Month Deposit (default)" name="one_month_deposit" value="<?php echo "$deposit" ?>"disabled>
+                      <input type="number" min="0" step="0.01" class="form-control form-control-sm" id="one_month_deposit" placeholder="One Month Deposit (default)" name="one_month_deposit" value="<?php echo "$deposit" ?>"disabled>
                     </div>
                   </div>
                   <div class="form-group pt-2">
                     <div class="">
                       <label for="one_month_advance">One Month Advance Amount</label><span class="req"> *</span>
-                      <input type="number" class="form-control form-control-sm" id="one_month_advance" placeholder="One Month Advance (default)" name="one_month_advance" value="<?php echo "$advance" ?>"disabled>
+                      <input type="number" min="0" step="0.01" class="form-control form-control-sm" id="one_month_advance" placeholder="One Month Advance (default)" name="one_month_advance" value="<?php echo "$advance" ?>"disabled>
                     </div>
                   </div>
                 </div>
@@ -199,13 +212,13 @@ if (isset($_FILES['lease_doc']) && $_FILES['lease_doc']['error'] === UPLOAD_ERR_
                   <div class="form-group">
                     <label for="lease_start">Start Date</label><span class="req"> *</span>
                     <div class="input-group">
-                      <input type="date" class="form-control" id="lease_start" name="lease_start" placeholder="Start Date" aria-label="lease_start" onchange="updateEndDate()">
+                      <input min="<?php echo date('Y-m-d'); ?>" type="date" class="form-control" id="lease_start" name="lease_start" placeholder="Start Date" aria-label="lease_start" onchange="updateEndDate()">
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="lease_end">End Date</label><span class="req"> *</span>
                     <div class="input-group">
-                      <input type="date" class="form-control" id="lease_end" name="lease_end" placeholder="End Date" aria-label="lease_end">
+                      <input min="<?php echo date('Y-m-d'); ?>" type="date" class="form-control" id="lease_end" name="lease_end" placeholder="End Date" aria-label="lease_end">
                     </div>
                   </div>
                 </div>

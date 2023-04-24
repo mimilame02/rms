@@ -18,7 +18,7 @@
     if(isset($_GET['id'])){
         if($tenant->tenant_delete($_GET['id'])){
             //redirect user to tenant page after saving
-            header('location: tenants.php?delete=true');
+            header('location: tenants.php');
         }
     }
 ?>

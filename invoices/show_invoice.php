@@ -11,9 +11,10 @@ session_start();
     this is to prevent users from accessing pages that requires
     authentication such as the dashboard
 */
-if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] != 'admin') {
-    header('location: ../login/login.php');
+if (!isset($_SESSION['user_type']) || ($_SESSION['user_type'] != 'admin' && $_SESSION['user_type'] != 'landlord')) {
+  header('location: ../login/login.php');
 }
+
 //if the above code is false then html below will be displayed
 
 if(isset($_GET['id'])){
@@ -73,14 +74,27 @@ $invoices = 'active';
 
 require_once '../includes/header.php';
 ?>
-
+<div class="loading-screen">
+  <img class="logo" src="../img/logo-edit.png" alt="logo">
+  <?php echo $page_title; ?>
+  <div class="loading-bar"></div>
+</div>
 <div class="container-scroller">
   <?php
       require_once '../includes/navbar.php';
   ?>
   <div class="container-fluid page-body-wrapper">
-    <?php
-        require_once '../includes/sidebar.php';
+  <?php
+        if (isset($_SESSION['user_type'])) {
+            if ($_SESSION['user_type'] == 'landlord') {
+                require_once '../alandlord-dash/landlord_sidebar.php';
+            } elseif ($_SESSION['user_type'] == 'admin') {
+                require_once '../includes/sidebar.php';
+            }
+            // Add more conditions for other user types if needed
+        } else {
+            // Redirect to login or show a default sidebar if the user type is not set
+        }
     ?>
     <div class="main-panel">
       <div class="content-wrapper">

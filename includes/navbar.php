@@ -1,10 +1,13 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-  <div class="text-center navbar-brand-wrapper d-flex align-items-center pl-3">
-        <a class="navbar-brand brand-logo mr-5"><img src="../img/logo.svg" class="mr-2" alt="logo"/>
-        <span class="menu-title">Sofiyyah</span>
+    <div class="text-center navbar-brand-wrapper d-flex align-items-center pl-3">
+        <a class="navbar-brand brand-logo mr-5" href="../admin/dashboard.php">
+            <img src="../img/logo.svg" class="mr-2" alt="logo">
+            <span class="menu-title">Sofiyyah</span>
         </a>
-        <a class="navbar-brand brand-logo-mini"><img src="../img/logo.svg" alt="logo"/></a>
-      </div>
+        <a class="navbar-brand brand-logo-mini" href="../admin/dashboard.php">
+            <img src="../img/logo.svg" alt="logo">
+        </a>
+    </div>
 
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center toggle-sidebar" id="sidebar-toggle" type="button" data-toggle="minimize">

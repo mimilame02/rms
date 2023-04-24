@@ -19,6 +19,7 @@ class Landlord{
     public $identification_document;
     public $emergency_contact_person;
     public $emergency_contact_number;
+    public $profile_img; 
    
     protected $db;
 
@@ -50,10 +51,10 @@ class Landlord{
         $query->bindParam(':id', $record_id);
         if($query->execute()){
             $data = $query->fetch();
-            // Add the file contents to the returned data array
         }
         return $data;
     }
+    
     
 
     function landlord_add() {
@@ -108,6 +109,7 @@ class Landlord{
                 return true;
             }
             else{
+                error_log(print_r($query->errorInfo(), true));
                 return false;
             }	
     }

@@ -9,9 +9,10 @@
         this is to prevent users from accessing pages that requires
         authentication such as the dashboard
     */
-    if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] != 'admin'){
+    if (!isset($_SESSION['user_type']) || ($_SESSION['user_type'] != 'admin' && $_SESSION['user_type'] != 'landlord')) {
         header('location: ../login/login.php');
     }
+  
 
     $tenant_obj = new Tenant;
 
@@ -83,7 +84,8 @@
       if (validate_tenants($_POST)) {
         if ($tenant_obj->tenants_edit()) {
           //redirect user to landing page after saving
-          header('location: tenants.php?edited=true');
+          $_SESSION['edited_tenants'] = true;
+          header('location: tenants.php?add_success=1');
           exit; // always exit after redirecting
         }
       }
@@ -166,14 +168,28 @@
   ?>
 
 <body>
+<div class="loading-screen">
+  <img class="logo" src="../img/logo-edit.png" alt="logo">
+  <?php echo $page_title; ?>
+  <div class="loading-bar"></div>
+</div>
   <div class="container-scroller">
     <?php
       require_once '../includes/navbar.php';
     ?>
     <div class="container-fluid page-body-wrapper">
-      <?php
-          require_once '../includes/sidebar.php';
-        ?>
+    <?php
+        if (isset($_SESSION['user_type'])) {
+            if ($_SESSION['user_type'] == 'landlord') {
+                require_once '../alandlord-dash/landlord_sidebar.php';
+            } elseif ($_SESSION['user_type'] == 'admin') {
+                require_once '../includes/sidebar.php';
+            }
+            // Add more conditions for other user types if needed
+        } else {
+            // Redirect to login or show a default sidebar if the user type is not set
+        }
+    ?>
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
@@ -456,42 +472,48 @@
                     </div>
                   </div>
                   <?php
-                        $occupants = is_array($tenant_obj->occupants) ? $tenant_obj->occupants : json_decode($tenant_obj->occupants, true);
-                        $occupants_relations = is_array($tenant_obj->occupants_relations) ? $tenant_obj->occupants_relations : json_decode($tenant_obj->occupants_relations, true);
+            if (!empty($tenant_obj->occupants) && !empty($tenant_obj->occupants_relations)) {
+              $occupants = is_string($tenant_obj->occupants) ? json_decode($tenant_obj->occupants, true) : $tenant_obj->occupants;
+              $occupants_relations = is_string($tenant_obj->occupants_relations) ? json_decode($tenant_obj->occupants_relations, true) : $tenant_obj->occupants_relations;
+
+
+                      echo '<div class="col-md-12" id="other_occupants_fields">
+                              <hr>
+                              <div class="form-group-row">
+                                <div class="col d-flex">
+                                  <h3 class="table-title">Other Occupants</h3>
+                                  <button id="add_occupant" class="btn btn-success btn-rounded btn-icon ml-auto"  type="button"><i class="fas fa-plus"></i></button>
+                                </div>
+                              </div>
+                              <div class="occupant-container">';
+                      
                       for ($i = 0; $i < count($occupants); $i++) {
-                          ?>
-                  <div class="col-md-12" id="other_occupants_fields" style="display: none;">
-                    <hr>
-                    <div class="form-group-row">
-                      <div class="col d-flex">
-                        <h3 class="table-title">Other Occupants</h3>
-                        <button id="add_occupant" class="btn btn-success btn-rounded btn-icon ml-auto"  type="button"><i class="fas fa-plus"></i></button>
-                      </div>
-                    </div>
-                    <div class="occupant-container">
-                      <div class="row g-3">
-                        <div class="col-md-6">
-                          <div class="form-group-row">
-                            <div class="col">
-                              <label for="occupants">Full Name/s</label>
-                              <input class="form-control form-control-sm" id="occupants" name="occupants[]" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })" value="<?php echo $occupants[$i];  ?>">
-                              <div class="invalid-feedback">Please provide a valid name (letters, spaces, and dashes only).</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group-row">
-                            <div class="col">
-                              <label for="occupants_relations">Relationship to Tenant</label><span class="req"> *</span>
-                              <input class="form-control form-control-sm" type="text" id="occupants_relations" name="occupants_relations[]" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })" value="<?php echo $occupants_relations[$i]; ?>">
-                              <div class="invalid-feedback">Please remove any special characters, numbers, or symbols.</div>
-                            </div>
-                          </div>
-                        </div>  
-                      </div>
-                    </div>
-                  </div>
-                  <?php } ?>
+                        echo '<div class="row g-3">
+                                <div class="col-md-6">
+                                  <div class="form-group-row">
+                                    <div class="col">
+                                      <label for="occupants">Full Name/s</label>
+                                      <input class="form-control form-control-sm" id="occupants" name="occupants[]" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })" value="' . $occupants[$i] . '">
+                                      <div class="invalid-feedback">Please provide a valid name (letters, spaces, and dashes only).</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group-row">
+                                    <div class="col">
+                                      <label for="occupants_relations">Relationship to Tenant</label><span class="req"> *</span>
+                                      <input class="form-control form-control-sm" type="text" id="occupants_relations" name="occupants_relations[]" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })" value="' . $occupants_relations[$i] . '">
+                                      <div class="invalid-feedback">Please remove any special characters, numbers, or symbols.</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>';
+                      }
+                      
+                      echo '</div>
+                          </div>';
+                    }
+                  ?>
                   <div class="col-md-12">
                     <hr>
                     <div class="form-group-row">
@@ -568,7 +590,7 @@
         }
       });
     });
-
+    
     $(document).ready(function() {
       $('#other_occupants_fields').hide();
       $('#spouse_fields').hide();
@@ -576,13 +598,12 @@
       function updateDisplay() {
         var typeOfHousehold = $('#type_of_household').val();
         var relationshipStatus = $('#relationship_status').val();
-        var typeOfHouseholdPHP = '<?php echo isset($tenant_obj->type_of_household) ? $tenant_obj->type_of_household : 'One Person'; ?>';
 
-        if (relationshipStatus === 'Married') {
+        if (relationshipStatus === 'Married' || relationshipStatus === 'Married' && typeOfHousehold === 'Couple' ) {
           $('#spouse_fields').show();
           $('#other_occupants_fields').hide();
 
-          if (typeOfHousehold === 'Single Parent' || typeOfHousehold === 'Family' || typeOfHousehold === 'Extended Family' || !typeOfHousehold || typeOfHousehold === typeOfHouseholdPHP) {
+          if (typeOfHousehold === 'Single Parent' || typeOfHousehold === 'Family' || typeOfHousehold === 'Extended Family' || !typeOfHousehold) {
             $('#other_occupants_fields').show();
           } else {
             $('#other_occupants_fields').hide();
@@ -590,28 +611,26 @@
         } else {
           $('#spouse_fields').hide();
 
-          if (typeOfHousehold === 'Single Parent' || typeOfHousehold === 'Family' || typeOfHousehold === 'Extended Family' || typeOfHousehold === typeOfHouseholdPHP) {
+          if (typeOfHousehold === 'Single Parent' || typeOfHousehold === 'Family' || typeOfHousehold === 'Extended Family') {
             $('#other_occupants_fields').show();
           } else {
             $('#other_occupants_fields').hide();
           }
         }
       }
+      updateDisplay();
 
       $('#type_of_household').on('change', updateDisplay);
       $('#relationship_status').on('change', updateDisplay);
-
-      updateDisplay();
     });
-
-    
+    $(document).ready(function() {
     $('#add_occupant').on('click', function() {
         var newOccupant = `
           <div class="row">
             <div class="col-md-6">
               <div class="form-group-row">
                 <div class="col mt-2">
-                  <input class="form-control form-control-sm" id="occupants" name="occupants[]" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
+                  <input class="form-control form-control-sm" id="occupants" name="occupants[]" pattern="[A-Za-z\s-]*" onkeyup="this.value = this.value.replace(/\\b\\w/g, function(l){ return l.toUpperCase(); })">
                   <div class="invalid-feedback">Please enter a valid full name.</div>
                 </div>
               </div>
@@ -619,8 +638,8 @@
             <div class="col-md-6">
               <div class="form-group-row">
                 <div class="col mt-2">
-                  <input class="form-control form-control-sm" id="occupants_relations" type="text" name="occupants_relations[]" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
-                  <div class="invalid-feedback">Please enter a valid relationship to tenant.</div>
+                  <input class="form-control form-control-sm" id="occupants_relations" type="text" name="occupants_relations[]" pattern="[A-Za-z\s-]*" onkeyup="this.value = this.value.replace(/\\b\\w/g, function(l){ return l.toUpperCase(); })">
+                  <div class="invalid-feedback">Please remove any special characters, numbers, or symbols.</div>
                 </div>
               </div>
             </div>  
@@ -651,6 +670,7 @@
           });
         });
       });
+    });
 
     $('#region').on('change', function(){
       var formData = {
@@ -1113,4 +1133,3 @@
   });
 
 </script>
-

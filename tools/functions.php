@@ -242,39 +242,33 @@ function validate_econtact_no($POST) {
   }
 }
 
- 
- function validate_property_name($POST) {
-  // Trim the input and Strip HTML tags
-  $propertyName = strip_tags(trim($POST['property_name']));
 
-  // Limit the length
-  $max_length = 100;
-  if (strlen($propertyName) > $max_length) {
-      return false;
+function validate_property_name($POST) {
+  $property_name = strip_tags(trim($POST['property_name']));
+  $namePattern = '/^([A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ]+[\s-]?){2,}[A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ]+$/';
+  return preg_match($namePattern, $property_name);
+}
+
+function validate_street($POST) {
+  $street = strip_tags(trim($POST['street']));
+
+  // Return true if the street input is empty
+  if (empty($street)) {
+    return true;
   }
 
-  // Check for invalid characters
-  if (preg_match('/[^A-Za-z0-9\-_.,\s]/', $propertyName)) {
-      // Returns false if the string contains anything other than allowed characters.
-      return false;
+  return preg_match('/^[0-9]*\s*[a-zA-Z0-9\s,.\'()\[\]`{|}~-]+$/', $street);
+}
+
+
+function validate_select($POST, $key) {
+  if (!isset($POST[$key])) {
+    return false;
   }
-
-  return true;
+  $value = strip_tags(trim($POST[$key]));
+  return $value !== "";
 }
 
-function validate_street($POST){
-  // Remove all non-letter, non-digit characters from the input using a regular expression
-$letters_digits = preg_replace('/[^a-zA-Z0-9]/', '', $POST['street']);
-
-// Check if the input contains only letters and digits using a regular expression
-if (preg_match('/^[a-zA-Z0-9]+$/', $letters_digits)) {
- // If the input contains only letters and digits, return the sanitized input
- return true;
-} else {
- // If the input contains non-letter, non-digit characters, return false
- return false;
-}
-}
 
 function validate_landlord_id($POST) {
   if(!isset($POST['landlord'])){
@@ -287,15 +281,16 @@ function validate_landlord_id($POST) {
 
 function validate_property_description($POST) {
   $max_length = 500; // Set the maximum length
-  $description = $POST['property_description'];
+  $description = str_replace("\n", "", $POST['property_description']); // Remove newline characters
   return strlen($description) <= $max_length;
 }
 
 function validate_features_description($POST) {
   $max_length = 500; // Set the maximum length
-  $features_description = $POST['features_description'];
+  $features_description = str_replace("\n", "", $POST['features_description']); // Remove newline characters
   return strlen($features_description) <= $max_length;
 }
+
 
 function validate_features($POST) {
   $features = $POST['features'];
@@ -307,19 +302,27 @@ function validate_num_of_floors($POST) {
   return is_numeric($num_of_floors) && $num_of_floors > 0;
 }
 
-/* function validate_image_path($FILES) {
-  // Validate if the uploaded file is an image
-  $image_path = $FILES['image_path'];
-  $image_info = getimagesize($image_path['tmp_name']);
-  return $image_info !== false;
+function validate_image_path($images) {
+  foreach ($images['tmp_name'] as $tmp_name) {
+      $image_info = getimagesize($tmp_name);
+      if ($image_info === false) {
+          return false;
+      }
+  }
+  return true;
 }
 
-function validate_floor_plan($FILES) {
-  // Validate if the uploaded file is an image
-  $floor_plan = $FILES['floor_plan'];
-  $image_info = getimagesize($floor_plan['tmp_name']);
-  return $image_info !== false;
-} */
+function validate_floor_plan($floor_plans) {
+  foreach ($floor_plans['tmp_name'] as $tmp_name) {
+      $image_info = getimagesize($tmp_name);
+      if ($image_info === false) {
+          return false;
+      }
+  }
+  return true;
+}
+
+ 
 
 function validate_tenants($POST) {
   $validation_results = [
@@ -416,19 +419,31 @@ function validate_add_landlord($post) {
 
 
 function validate_add_properties($post) {
-  if (!validate_property_name($post) ||
-      !validate_property_description($post) ||
-      !validate_num_of_floors($post) ||
-      !validate_landlord_id($post) ||
-      !validate_region($post) ||
-      !validate_prov($post) ||
-      !validate_city($post) ||
-      !validate_brgy($post) ||
-      !validate_street($post) ||
-      !validate_features_description($post) ||
-      !validate_features($post)
-  ) {
-      return false;
+  $validation_results = array(
+    "validate_property_name" => validate_property_name($post),
+    "validate_property_description" => validate_property_description($post),
+    "validate_num_of_floors" => validate_num_of_floors($post),
+    "validate_landlord_id" => validate_landlord_id($post),
+    "validate_region" => validate_select($post, 'region'),
+    "validate_province" => validate_select($post, 'provinces'),
+    "validate_city" => validate_select($post, 'city'),
+    "validate_brgy" => validate_select($post, 'barangay'),
+    "validate_street" => validate_street($post),
+    "validate_features_description" => validate_features_description($post),
+    "validate_features" => validate_features($post),
+    "validate_image_path" => validate_image_path($files['image_path']),
+    "validate_floor_plan" => validate_floor_plan($files['floor_plan'])
+    // Add any other validation functions you have
+  );
+
+  // Debugging output
+  foreach ($validation_results as $function => $result) {
+    echo $function . ": " . ($result ? "PASS" : "FAIL") . "<br>";   
+  }
+
+  // Check if any validation failed
+  if (in_array(false, $validation_results, true)) {
+    return false;
   }
   return true;
 }

@@ -27,6 +27,86 @@
 }
 
 
+/* Scrollbar OVERFLOW Y */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #50958dc2;
+  border-radius: 7px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-track {
+  background-color: #e5e5e5;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+::-webkit-scrollbar-button:single-button {
+  background-color: #ece4e4;
+  display: block;
+  background-size: 10px;
+  background-repeat: no-repeat;
+}
+
+/* Up arrow */
+::-webkit-scrollbar-button:single-button:vertical:decrement {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="%236d9dc5"><path d="M5 3L1 7h8L5 3z"/></svg>');
+  height: 10px;
+}
+
+/* Down arrow */
+::-webkit-scrollbar-button:single-button:vertical:increment {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="%236d9dc5"><path d="M5 7L1 3h8L5 7z"/></svg>');
+  height: 10px;
+}
+
+::-webkit-scrollbar-button:single-button:hover {
+  background-color: #d0cbcb;
+}
+
+/* Scrollbar OVERFLOW X */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #50958dc2;
+  border-radius: 7px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-track {
+  background-color: #e5e5e5;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+::-webkit-scrollbar-button:single-button {
+  background-color: #ece4e4;
+  display: block;
+  background-size: 10px;
+  background-repeat: no-repeat;
+}
+
+/* Left arrow */
+::-webkit-scrollbar-button:single-button:horizontal:decrement {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="%236d9dc5"><path d="M3 5l4 4V1z"/></svg>');
+  width: 10px;
+}
+
+/* Right arrow */
+::-webkit-scrollbar-button:single-button:horizontal:increment {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="%236d9dc5"><path d="M7 5L3 1v8z"/></svg>');
+  width: 10px;
+}
+
+::-webkit-scrollbar-button:single-button:hover {
+  background-color: #d0cbcb;
+}
+
+
 img {
   vertical-align: middle;
   border-style: none;
@@ -42,6 +122,56 @@ img[alt="Rental Building Icon"] {
   top: 6px;
   bottom: 0px;
 }
+#image-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+.image-container {
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.uploaded-image img {
+  height: auto;
+  width: 100%;
+  max-width: 200px;
+}
+
+.uploaded-image {
+  /* margin: 10px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 15px;
+}
+.uploaded-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.uploaded-image .remove-image {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 30px;
+  height: 30px;
+  background-color: #e535359e;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.uploaded-image .remove-image:hover {
+  background-color: darkred;
+}
+
 
 @media (max-width: 756px){
   span.menu-title{
@@ -145,6 +275,7 @@ input {
   .image-container.pb-3 {
     margin-left: 7%;
     margin-right: 15%;
+    object-fit: cover;
   }
 }
 @media (min-width: 1200px) {
@@ -154,8 +285,9 @@ input {
     padding-left: 14%;
   }
   .image-container.pb-3 {
-    margin-left: 23%;
+    margin-left: 12%;
     margin-right: 15%;
+    object-fit: cover;
   }
 }
 
@@ -212,7 +344,6 @@ input#save {
   font-size: 1rem;
   font-weight: bold;
   color: #333;
-  float: right;
 }
 
 
@@ -222,6 +353,7 @@ input#save {
   border-radius: 5px;
   padding: 5px;
   margin-top: 10px;
+  object-fit: scale-down;
 }
 #uploaded-image {
   max-width: 100%;
@@ -238,8 +370,9 @@ input#save {
   width: 50%;
 }
 
-
-  
+.sidebar .nav .nav-item.logout {
+  border-radius: 0px!important;
+}
 
 .text-center {
   text-align: center !important;
@@ -258,7 +391,7 @@ ol.list-group {
 li.nav-item.logout {
   position: absolute;
   bottom: 0;
-  width: 228.6px;
+  width: 233.6px;
 }
 
 li.nav-item.logout {
@@ -266,7 +399,6 @@ li.nav-item.logout {
   bottom: 0;
   background: white;
   border-top: solid #176F72 0.1px;
-  padding: 0px 5px 0px 5px;
   width: calc(100% - 70px);
 }
 

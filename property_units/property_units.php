@@ -7,9 +7,10 @@
         this is to prevent users from accessing pages that requires
         authentication such as the dashboard
     */
-    if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] != 'admin'){
+    if (!isset($_SESSION['user_type']) || ($_SESSION['user_type'] != 'admin' && $_SESSION['user_type'] != 'landlord')) {
         header('location: ../login/login.php');
     }
+  
     //if the above code is false then html below will be displayed
 
     require_once '../tools/variables.php';
@@ -20,14 +21,28 @@
     require_once '../includes/dbconfig.php';
 ?>
 <body>
+<div class="loading-screen">
+  <img class="logo" src="../img/logo-edit.png" alt="logo">
+  <?php echo $page_title; ?>
+  <div class="loading-bar"></div>
+</div>
 <div class="container-scroller">
   <?php
     require_once '../includes/navbar.php';
   ?>
 <div class="container-fluid page-body-wrapper">
 <?php
-     require_once '../includes/sidebar.php';
-  ?>
+        if (isset($_SESSION['user_type'])) {
+            if ($_SESSION['user_type'] == 'landlord') {
+                require_once '../alandlord-dash/landlord_sidebar.php';
+            } elseif ($_SESSION['user_type'] == 'admin') {
+                require_once '../includes/sidebar.php';
+            }
+            // Add more conditions for other user types if needed
+        } else {
+            // Redirect to login or show a default sidebar if the user type is not set
+        }
+    ?>
 <div class="main-panel">
   <div class="content-wrapper">
     <div class="row">
@@ -36,7 +51,7 @@
       </div>
       <div class="add-tenant-container">
       <?php
-                    if($_SESSION['user_type'] == 'admin'){ 
+                    if($_SESSION['user_type'] == 'admin' || $_SESSION['user_type'] == 'landlord'){ 
                 ?>
       <a href="add_property_units.php" class="btn btn-success btn-icon-text float-right">
           Add Property Unit </a>
@@ -59,7 +74,7 @@
                       <th>Condition</th>
                       <th>Rent</th>
                       <th>Status</th>
-                      <?php if($_SESSION['user_type'] == 'admin'){ ?>
+                      <?php if($_SESSION['user_type'] == 'admin' || $_SESSION['user_type'] == 'landlord'){ ?>
                         <th>Action</th>
                       <?php } ?>
                     </tr>
@@ -82,7 +97,7 @@
                           $status = '';
                           if ($row['current_status'] == 'Occupied') {
                             if (strtotime($row['lease_end']) >= time()) {
-                              $status = '<button class="btn btn-warning btn-lg p-2">Occupied until '.$row['lease_end'].'</button>';
+                              $status = '<button class="btn btn-warning btn-lg p-2">Occupied until '.date('F d', strtotime($row['lease_end'])).'</button>';
                             } else {
                               $status = '<button class="btn btn-danger btn-lg p-2">Occupied (expired lease)</button>';
                             }
@@ -96,7 +111,12 @@
                           } elseif ($row['current_status'] == 'Unavailable') {
                             $status = '<button class="btn btn-secondary btn-lg p-2">Unavailable</button>';
                           }
-
+                          $actionButtons = ($_SESSION['user_type'] == 'admin' || $_SESSION['user_type'] == 'landlord') ? 
+                          '<div class="action">
+                            <a class="me-2 green" href="view_building.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
+                            <a class="me-2 green" href="edit_building.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
+                            <a class="green action-delete" href="delete_building.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
+                          </div>' : '';
                           echo '
                           <tr>
                             <td>'.$i.'</td>
@@ -106,13 +126,7 @@
                             <td>'.$row['condition_name'].'</td>
                             <td>'.$row['monthly_rent'].'</td>
                             <td>'.$status.'</td>
-                            <td>
-                              <div class="action">
-                                <a class="me-2 green" href="view_property_units.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
-                                <a class="me-2 green" href="edit_property_units.php?id='.$row['id'].'"><i class="fas fa-edit"></i></a>
-                                <a class="green action-delete" href="delete_property_units.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
-                              </div>
-                            </td>
+                            <td>'.$actionButtons.'</td>
                           </tr>';
                           $i++;
                         }

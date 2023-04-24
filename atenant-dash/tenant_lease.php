@@ -20,6 +20,11 @@
     require_once '../includes/dbconfig.php';
 ?>
 <body>
+<div class="loading-screen">
+  <img class="logo" src="../img/logo-edit.png" alt="logo">
+  <?php echo $page_title; ?>
+  <div class="loading-bar"></div>
+</div>
 <div class="container-scroller">
   <?php
     require_once '../includes/navbar.php';

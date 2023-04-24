@@ -11,9 +11,10 @@ session_start();
     authentication such as the dashboard
 */
 
-if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] != 'admin') {
+if (!isset($_SESSION['user_type']) || ($_SESSION['user_type'] != 'admin' && $_SESSION['user_type'] != 'landlord')) {
     header('location: ../login/login.php');
 }
+
 //if the above code is false then html below will be displayed
 
 $tenant_id = $_GET['id'];
@@ -33,14 +34,28 @@ require_once '../includes/header.php';
 ?>
 
 <body>
+<div class="loading-screen">
+  <img class="logo" src="../img/logo-edit.png" alt="logo">
+  <?php echo $page_title; ?>
+  <div class="loading-bar"></div>
+</div>
     <div class="container-scroller">
         <?php
         require_once '../includes/navbar.php';
         ?>
         <div class="container-fluid page-body-wrapper">
-            <?php
-            require_once '../includes/sidebar.php';
-            ?>
+        <?php
+        if (isset($_SESSION['user_type'])) {
+            if ($_SESSION['user_type'] == 'landlord') {
+                require_once '../alandlord-dash/landlord_sidebar.php';
+            } elseif ($_SESSION['user_type'] == 'admin') {
+                require_once '../includes/sidebar.php';
+            }
+            // Add more conditions for other user types if needed
+        } else {
+            // Redirect to login or show a default sidebar if the user type is not set
+        }
+    ?>
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
@@ -188,14 +203,14 @@ require_once '../includes/header.php';
                         </div>
                     </div>
                     <?php endif; ?>
-                    <?php if (strcasecmp($row['type_of_household'], 'One Person') !== 0 && strcasecmp($row['relationship_status'], 'Single') !== 0): ?>
+                    <?php if (strcasecmp($row['type_of_household'], 'One Person') !== 0 ||   strcasecmp($row['type_of_household'], 'Couple') !== 0 && strcasecmp($row['relationship_status'], 'Married') !== 0 && !empty($occupants) && count($occupants) > 0): ?>
                     <div class="col-xl-12">
                         <div class="card mb-4">
                             <div class="card-header">Other Occupants Details</div>
                             <div class="card-body">
                                 <?php $occupants = json_decode($row['occupants'], true);
                                 $occupants_relations = json_decode($row['occupants_relations'], true);
-                                if(is_array($occupants) && count($occupants) > 0) { ?>
+                                if(is_array($occupants)) { ?>
                                     <?php foreach($occupants as $key => $occupant) { ?>
                                         <div class="row gx-3 mb-3">
                                             <div class="col-md-6">

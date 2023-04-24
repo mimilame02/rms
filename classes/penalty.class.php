@@ -6,6 +6,8 @@ class Penalty {
     public $id;
     public $name;
     public $amount;
+    public $percentage;
+    public $description;
 
     protected $db;
 
@@ -46,10 +48,11 @@ class Penalty {
     }
 
     function add_penalty() {
-        $sql = "INSERT INTO penalty (name, amount) VALUES (:name, :amount)";
+        $sql = "INSERT INTO penalty (name, amount, description) VALUES (:name, :amount, :description)";
         $query = $this->db->connect()->prepare($sql);
         $query->bindParam(':name', $this->name);
         $query->bindParam(':amount', $this->amount);
+        $query->bindParam(':description', $this->description);
 
         if ($query->execute()) {
             return true;

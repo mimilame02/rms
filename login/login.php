@@ -25,6 +25,9 @@
             }
             if($_SESSION['user_type'] == 'tenant'){
                 header('location: ../atenant-dash/dashboard.php');
+            }            
+            if($_SESSION['user_type'] == 'landlord'){
+                header('location: ../alandlord-dash/dashboard.php');
             }
         }
     }else{
@@ -33,8 +36,15 @@
     }
   }
   require_once '../includes/header.php';
+  require_once '../tools/variables.php';
+  $page_title = 'Loading...';
 ?>
 <body id="sign-up">
+<div class="loading-screen">
+  <img class="logo" src="../img/logo-edit.png" alt="logo">
+  <?php echo $page_title; ?>
+  <div class="loading-bar"></div>
+</div>
     <main class="py-md-4">
         <div class="container-fluid d-flex align-items-md-center justify-content-md-center">
             <div class="container-fluid sign-in p-sm-5 align-items-md-center">

@@ -9,9 +9,10 @@
         this is to prevent users from accessing pages that requires
         authentication such as the dashboard
     */
-    if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] != 'admin'){
+    if (!isset($_SESSION['user_type']) || ($_SESSION['user_type'] != 'admin' && $_SESSION['user_type'] != 'landlord')) {
         header('location: ../login/login.php');
     }
+  
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -81,7 +82,8 @@
       if (validate_tenants($_POST)) {
         if ($tenant_obj->tenants_add()) {
           //redirect user to landing page after saving
-          header('location: tenants.php?success=true');
+          $_SESSION['added_tenants'] = true;
+          header('location: tenants.php?add_success=1');
           exit; // always exit after redirecting
         }
       }
@@ -93,14 +95,28 @@
   ?>
 
 <body>
+<div class="loading-screen">
+  <img class="logo" src="../img/logo-edit.png" alt="logo">
+  <?php echo $page_title; ?>
+  <div class="loading-bar"></div>
+</div>
   <div class="container-scroller">
     <?php
       require_once '../includes/navbar.php';
     ?>
     <div class="container-fluid page-body-wrapper">
-      <?php
-          require_once '../includes/sidebar.php';
-        ?>
+    <?php
+        if (isset($_SESSION['user_type'])) {
+            if ($_SESSION['user_type'] == 'landlord') {
+                require_once '../alandlord-dash/landlord_sidebar.php';
+            } elseif ($_SESSION['user_type'] == 'admin') {
+                require_once '../includes/sidebar.php';
+            }
+            // Add more conditions for other user types if needed
+        } else {
+            // Redirect to login or show a default sidebar if the user type is not set
+        }
+    ?>
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
@@ -189,7 +205,7 @@
                     <div class="d-flex">
                       <div class="col-sm-4">
                         <label for="region">Region</label>
-                        <select type="text" class="form-control form-control-sm selectpicker" name="region" id="region" placeholder="" data-live-search="true" required> 
+                        <select type="text" class="form-control form-control-sm" name="region" id="region" required> 
                           <option value="None">--Select--</option>
                           <?php
                                 require_once '../classes/reference.class.php';
@@ -205,7 +221,7 @@
                       </div>
                       <div class="col-sm-4 pl-0">
                         <label for="provinces">Provinces</label>
-                        <select type="text" id="provinces" class="form-control form-control-sm selectpicker" name="provinces" data-live-search="true" required>
+                        <select type="text" id="provinces" class="form-control form-control-sm" name="provinces" required>
                         <option value="None">--Select--</option>
                         <?php
                                 require_once '../classes/reference.class.php';
@@ -221,7 +237,7 @@
                       </div>
                       <div class="col-sm-3 pl-0">
                         <label for="city">City</label>
-                        <select type="text" class="form-control form-control-sm selectpicker" id="city" name="city" data-live-search="true" required>
+                        <select type="text" class="form-control form-control-sm" id="city" name="city" required>
                         <option value="None">--Select--</option>
                         <?php
                             require_once '../classes/reference.class.php';
@@ -498,7 +514,7 @@
         var typeOfHousehold = $('#type_of_household').val();
         var relationshipStatus = $('#relationship_status').val();
 
-        if (relationshipStatus === 'Married') {
+        if (relationshipStatus === 'Married' || relationshipStatus === 'Married' && typeOfHousehold === 'Couple' ) {
           $('#spouse_fields').show();
           $('#other_occupants_fields').hide();
 
@@ -528,7 +544,7 @@
             <div class="col-md-6">
               <div class="form-group-row">
                 <div class="col mt-2">
-                  <input class="form-control form-control-sm" id="occupants" name="occupants[]" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
+                  <input class="form-control form-control-sm" id="occupants" name="occupants[]" pattern="[A-Za-z\s-]*" onkeyup="this.value = this.value.replace(/\\b\\w/g, function(l){ return l.toUpperCase(); })">
                   <div class="invalid-feedback">Please enter a valid full name.</div>
                 </div>
               </div>
@@ -536,8 +552,8 @@
             <div class="col-md-6">
               <div class="form-group-row">
                 <div class="col mt-2">
-                  <input class="form-control form-control-sm" id="occupants_relations" type="text" name="occupants_relations[]" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">
-                  <div class="invalid-feedback">Please enter a valid relationship to tenant.</div>
+                  <input class="form-control form-control-sm" id="occupants_relations" type="text" name="occupants_relations[]" pattern="[A-Za-z\s-]*" onkeyup="this.value = this.value.replace(/\\b\\w/g, function(l){ return l.toUpperCase(); })">
+                  <div class="invalid-feedback">Please remove any special characters, numbers, or symbols.</div>
                 </div>
               </div>
             </div>  

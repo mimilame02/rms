@@ -1,15 +1,15 @@
 <?php
 
 class Database{
-    private $host = 'localhost';
+    /* private $host = 'localhost';
     private $username = 'u588864141_rms';
     private $password = '3qRb#cIS]4q';
-    private $database = 'u588864141_rms';
+    private $database = 'u588864141_rms'; */
 
-    /* private $host = 'localhost';
+    private $host = 'localhost';
     private $username = 'root';
     private $password = '';
-    private $database = 'test'; */
+    private $database = 'test';
 
 
     protected $connection;

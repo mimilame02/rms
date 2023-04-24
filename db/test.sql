@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2023 at 06:24 AM
+-- Generation Time: Apr 24, 2023 at 01:34 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -28,15 +28,14 @@ SET time_zone = "+00:00";
 --
 
 DROP TABLE IF EXISTS `account`;
-CREATE TABLE IF NOT EXISTS `account` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `account` (
+  `id` int(11) NOT NULL,
   `username` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   `type` varchar(100) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`)
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -60,7 +59,7 @@ INSERT INTO `account` (`id`, `username`, `email`, `password`, `type`, `created_a
 --
 
 DROP TABLE IF EXISTS `events`;
-CREATE TABLE IF NOT EXISTS `events` (
+CREATE TABLE `events` (
   `id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `start` datetime NOT NULL,
@@ -68,9 +67,8 @@ CREATE TABLE IF NOT EXISTS `events` (
   `description` text DEFAULT NULL,
   `lease_id` int(11) DEFAULT NULL,
   `invoice_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_events_lease` (`lease_id`),
-  KEY `fk_events_invoice` (`invoice_id`)
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -82,8 +80,8 @@ TRUNCATE TABLE `events`;
 -- Dumping data for table `events`
 --
 
-INSERT INTO `events` (`id`, `title`, `start`, `end`, `description`, `lease_id`, `invoice_id`) VALUES
-(0, 'Test', '2023-03-31 11:00:08', NULL, 'TESTING ', NULL, NULL);
+INSERT INTO `events` (`id`, `title`, `start`, `end`, `description`, `lease_id`, `invoice_id`, `created_at`, `updated_at`) VALUES
+(0, 'Test', '2023-03-31 11:00:08', NULL, 'TESTING ', NULL, NULL, '2023-04-23 23:31:20', '2023-04-23 23:31:20');
 
 -- --------------------------------------------------------
 
@@ -92,10 +90,11 @@ INSERT INTO `events` (`id`, `title`, `start`, `end`, `description`, `lease_id`, 
 --
 
 DROP TABLE IF EXISTS `features`;
-CREATE TABLE IF NOT EXISTS `features` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `features` (
+  `id` int(11) NOT NULL,
   `feature_name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -107,16 +106,16 @@ TRUNCATE TABLE `features`;
 -- Dumping data for table `features`
 --
 
-INSERT INTO `features` (`id`, `feature_name`) VALUES
-(1, 'car parking'),
-(2, 'motorcycle parking'),
-(3, 'garden'),
-(4, 'common bathroom'),
-(5, 'laundry'),
-(6, 'allow pets'),
-(7, 'allow smoking'),
-(8, 'ablution space/area'),
-(9, 'common kitchen');
+INSERT INTO `features` (`id`, `feature_name`, `created_at`, `updated_at`) VALUES
+(1, 'car parking', '2023-04-23 23:31:20', '2023-04-23 23:31:20'),
+(2, 'motorcycle parking', '2023-04-23 23:31:20', '2023-04-23 23:31:20'),
+(3, 'garden', '2023-04-23 23:31:20', '2023-04-23 23:31:20'),
+(4, 'common bathroom', '2023-04-23 23:31:20', '2023-04-23 23:31:20'),
+(5, 'laundry', '2023-04-23 23:31:20', '2023-04-23 23:31:20'),
+(6, 'allow pets', '2023-04-23 23:31:20', '2023-04-23 23:31:20'),
+(7, 'allow smoking', '2023-04-23 23:31:20', '2023-04-23 23:31:20'),
+(8, 'ablution space/area', '2023-04-23 23:31:20', '2023-04-23 23:31:20'),
+(9, 'common kitchen', '2023-04-23 23:31:20', '2023-04-23 23:31:20');
 
 -- --------------------------------------------------------
 
@@ -125,8 +124,8 @@ INSERT INTO `features` (`id`, `feature_name`) VALUES
 --
 
 DROP TABLE IF EXISTS `invoice`;
-CREATE TABLE IF NOT EXISTS `invoice` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `invoice` (
+  `id` int(11) NOT NULL,
   `lease_unit_id` int(11) NOT NULL,
   `tenant_id` int(11) NOT NULL,
   `property_id` int(11) NOT NULL,
@@ -146,13 +145,7 @@ CREATE TABLE IF NOT EXISTS `invoice` (
   `fixed_bills` tinyint(1) NOT NULL DEFAULT 0,
   `monthly_bills` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`monthly_bills`)),
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `lease_unit_id` (`lease_unit_id`),
-  KEY `tenant_id` (`tenant_id`),
-  KEY `property_id` (`property_id`),
-  KEY `penalty_id` (`penalty_id`),
-  KEY `property_unit_id` (`property_unit_id`)
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -167,8 +160,8 @@ TRUNCATE TABLE `invoice`;
 --
 
 DROP TABLE IF EXISTS `landlord`;
-CREATE TABLE IF NOT EXISTS `landlord` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `landlord` (
+  `id` int(11) NOT NULL,
   `first_name` varchar(50) NOT NULL,
   `middle_name` varchar(50) DEFAULT NULL,
   `last_name` varchar(50) NOT NULL,
@@ -182,7 +175,9 @@ CREATE TABLE IF NOT EXISTS `landlord` (
   `identification_document` varchar(100) NOT NULL,
   `emergency_contact_person` varchar(100) NOT NULL,
   `emergency_contact_number` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
+  `profile_img` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -194,8 +189,9 @@ TRUNCATE TABLE `landlord`;
 -- Dumping data for table `landlord`
 --
 
-INSERT INTO `landlord` (`id`, `first_name`, `middle_name`, `last_name`, `date_of_birth`, `email`, `contact_no`, `address`, `region`, `provinces`, `city`, `identification_document`, `emergency_contact_person`, `emergency_contact_number`) VALUES
-(1, 'Xiānle', 'Gu&oacute;w&aacute;ng', 'Gu&oacute;w&aacute;ng', '1982-01-25', 'landlord@gmail.com', '09881726662', 'Baliwasan, Lot.12 Blg.09', '09', '0973', '097332', '', 'Xie Lian', '09152764591');
+INSERT INTO `landlord` (`id`, `first_name`, `middle_name`, `last_name`, `date_of_birth`, `email`, `contact_no`, `address`, `region`, `provinces`, `city`, `identification_document`, `emergency_contact_person`, `emergency_contact_number`, `profile_img`, `created_at`, `updated_at`) VALUES
+(1, 'Xiānle', '', 'Gu&oacute;w&aacute;ng', '1982-01-25', 'landlord@gmail.com', '0915 276 4557', 'Baliwasan, Lot.12 Blg.09', '09', '0973', '097332', 'id-guy.png', 'Xie Lian', '0987 874 5748', 'xianle king.png', '2023-04-23 23:31:20', '2023-04-23 23:31:20'),
+(4, 'Xian', '', 'L&egrave;', '1995-12-28', 'try@gmail.com', '0974 474 5618', 'Test', '09', '0973', '097332', 'id-girl.png', 'Test Try Testing', '0954 684 1551', '', '2023-04-23 23:31:20', '2023-04-23 23:31:20');
 
 -- --------------------------------------------------------
 
@@ -204,8 +200,8 @@ INSERT INTO `landlord` (`id`, `first_name`, `middle_name`, `last_name`, `date_of
 --
 
 DROP TABLE IF EXISTS `lease`;
-CREATE TABLE IF NOT EXISTS `lease` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `lease` (
+  `id` int(11) NOT NULL,
   `property_unit_id` int(11) NOT NULL,
   `monthly_rent` decimal(10,2) NOT NULL,
   `tenant_id` int(11) NOT NULL,
@@ -218,9 +214,8 @@ CREATE TABLE IF NOT EXISTS `lease` (
   `water` decimal(10,2) NOT NULL,
   `status` enum('Vacant','Occupied','Unavailable','') NOT NULL DEFAULT 'Occupied',
   `has_fixed_bills` tinyint(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  KEY `property_unit_id` (`property_unit_id`),
-  KEY `tenant_id` (`tenant_id`)
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -232,8 +227,9 @@ TRUNCATE TABLE `lease`;
 -- Dumping data for table `lease`
 --
 
-INSERT INTO `lease` (`id`, `property_unit_id`, `monthly_rent`, `tenant_id`, `lease_start`, `lease_end`, `lease_doc`, `one_month_deposit`, `one_month_advance`, `electricity`, `water`, `status`, `has_fixed_bills`) VALUES
-(1, 1, '5000.00', 1, '2022-12-17', '2023-03-17', 'Contract.jpg', '5000.00', '5000.00', '0.00', '0.00', 'Occupied', 0);
+INSERT INTO `lease` (`id`, `property_unit_id`, `monthly_rent`, `tenant_id`, `lease_start`, `lease_end`, `lease_doc`, `one_month_deposit`, `one_month_advance`, `electricity`, `water`, `status`, `has_fixed_bills`, `created_at`, `updated_at`) VALUES
+(1, 1, '5000.00', 1, '2022-12-17', '2023-03-17', 'Contract.jpg', '5000.00', '5000.00', '0.00', '0.00', 'Occupied', 0, '2023-04-23 23:31:20', '2023-04-23 23:31:20'),
+(12, 2, '5000.00', 1, '2023-04-17', '2023-07-17', NULL, '5000.00', '5000.00', '0.00', '0.00', 'Occupied', 0, '2023-04-23 23:31:20', '2023-04-23 23:31:20');
 
 -- --------------------------------------------------------
 
@@ -242,15 +238,13 @@ INSERT INTO `lease` (`id`, `property_unit_id`, `monthly_rent`, `tenant_id`, `lea
 --
 
 DROP TABLE IF EXISTS `password_reset_tokens`;
-CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `password_reset_tokens` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `token` varchar(64) NOT NULL,
   `expiration` datetime NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `fk_user_id` (`user_id`)
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -265,14 +259,14 @@ TRUNCATE TABLE `password_reset_tokens`;
 --
 
 DROP TABLE IF EXISTS `penalty`;
-CREATE TABLE IF NOT EXISTS `penalty` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `penalty` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `amount` decimal(10,2) NOT NULL,
+  `percentage` decimal(10,2) NOT NULL,
   `description` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`)
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -284,18 +278,18 @@ TRUNCATE TABLE `penalty`;
 -- Dumping data for table `penalty`
 --
 
-INSERT INTO `penalty` (`id`, `name`, `amount`, `description`, `created_at`, `updated_at`) VALUES
-(0, 'None', '0.00', 'No penalty to be issue', '2023-03-22 13:41:14', '2023-03-22 13:42:12'),
-(1, 'Late Payment Fee', '50.00', 'A penalty for late payment of rent, charged after the due date.', '2023-03-15 14:40:21', '2023-03-15 14:40:21'),
-(2, 'Bounced Check Fee', '35.00', 'A fee charged for checks that are returned due to insufficient funds.', '2023-03-15 14:40:21', '2023-03-15 14:40:21'),
-(3, 'Lost Key Replacement', '25.00', 'A fee for replacing lost keys to the apartment or building.', '2023-03-15 14:40:21', '2023-03-15 14:40:21'),
-(4, 'Pet Violation Fee', '100.00', 'A penalty for keeping unauthorized pets or for violating pet-related rules.', '2023-03-15 14:40:21', '2023-03-15 14:40:21'),
-(5, 'Unauthorized Occupant Fee', '150.00', 'A penalty for allowing unauthorized occupants to live in the unit.', '2023-03-15 14:40:21', '2023-03-15 14:40:21'),
-(6, 'Noise Violation Fee', '75.00', 'A penalty for excessive noise or disturbances that violate community rules.', '2023-03-15 14:40:21', '2023-03-15 14:40:21'),
-(7, 'Parking Violation Fee', '50.00', 'A penalty for parking in unauthorized areas or violating parking rules.', '2023-03-15 14:40:21', '2023-03-15 14:40:21'),
-(8, 'Damaged Property Fee', '150.00', 'A fee for repair costs incurred due to damage to the property caused by the tenant.', '2023-03-15 14:40:21', '2023-03-15 14:40:21'),
-(9, 'Trash Violation Fee', '25.00', 'A penalty for improper disposal of trash or not following trash disposal rules.', '2023-03-15 14:40:21', '2023-03-15 14:40:21'),
-(10, 'Early Lease Termination Fee', '500.00', 'A penalty for terminating the lease before the end of the agreed-upon term.', '2023-03-15 14:40:21', '2023-03-15 14:40:21');
+INSERT INTO `penalty` (`id`, `name`, `amount`, `percentage`, `description`, `created_at`, `updated_at`) VALUES
+(0, 'None', '0.00', '0.00', 'No penalty to be issue', '2023-03-22 13:41:14', '2023-03-22 13:42:12'),
+(1, 'Late Payment Fee', '50.00', '0.05', 'A penalty for late payment of rent, charged after the due date.', '2023-03-15 14:40:21', '2023-03-15 14:40:21'),
+(2, 'Bounced Check Fee', '50.00', '0.05', 'A fee charged for checks that are returned due to insufficient funds.', '2023-03-15 14:40:21', '2023-04-23 23:32:10'),
+(3, 'Lost Key Replacement', '200.00', '0.15', 'A fee for replacing lost keys to the apartment or building.', '2023-03-15 14:40:21', '2023-04-23 23:32:28'),
+(4, 'Pet Violation Fee', '100.00', '0.10', 'A penalty for keeping unauthorized pets or for violating pet-related rules.', '2023-03-15 14:40:21', '2023-03-15 14:40:21'),
+(5, 'Unauthorized Occupant Fee', '200.00', '0.15', 'A penalty for allowing unauthorized occupants to live in the unit.', '2023-03-15 14:40:21', '2023-04-23 23:32:40'),
+(6, 'Noise Violation Fee', '200.00', '0.15', 'A penalty for excessive noise or disturbances that violate community rules.', '2023-03-15 14:40:21', '2023-04-23 23:32:22'),
+(7, 'Parking Violation Fee', '50.00', '0.12', 'A penalty for parking in unauthorized areas or violating parking rules.', '2023-03-15 14:40:21', '2023-03-15 14:40:21'),
+(8, 'Damaged Property Fee', '500.00', '0.20', 'A fee for repair costs incurred due to damage to the property caused by the tenant.', '2023-03-15 14:40:21', '2023-03-15 14:40:21'),
+(9, 'Trash Violation Fee', '25.00', '0.12', 'A penalty for improper disposal of trash or not following trash disposal rules.', '2023-03-15 14:40:21', '2023-03-15 14:40:21'),
+(10, 'Early Lease Termination Fee', '500.00', '0.20', 'A penalty for terminating the lease before the end of the agreed-upon term.', '2023-03-15 14:40:21', '2023-03-15 14:40:21');
 
 -- --------------------------------------------------------
 
@@ -304,8 +298,8 @@ INSERT INTO `penalty` (`id`, `name`, `amount`, `description`, `created_at`, `upd
 --
 
 DROP TABLE IF EXISTS `properties`;
-CREATE TABLE IF NOT EXISTS `properties` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `properties` (
+  `id` int(11) NOT NULL,
   `property_name` varchar(100) NOT NULL,
   `property_description` text NOT NULL,
   `num_of_floors` int(50) NOT NULL,
@@ -319,8 +313,8 @@ CREATE TABLE IF NOT EXISTS `properties` (
   `features` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`features`)),
   `image_path` varchar(255) NOT NULL,
   `floor_plan` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `landlord_id` (`landlord_id`)
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -332,8 +326,10 @@ TRUNCATE TABLE `properties`;
 -- Dumping data for table `properties`
 --
 
-INSERT INTO `properties` (`id`, `property_name`, `property_description`, `num_of_floors`, `landlord_id`, `region`, `provinces`, `city`, `barangay`, `street`, `features_description`, `features`, `image_path`, `floor_plan`) VALUES
-(1, 'Kingdom', '', 3, 1, '09', '0973', '097332', '097332103', '', '', '[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\",\"8\",\"9\"]', 'kingdom.png', '[\"643b6c007aec84.58952073_D-1stplan.jpg\",\"643b6c007b3509.53053751_D-2ndplan.jpg\",\"643b6c007b7667.45036012_D-3rdplan.jpg\"]');
+INSERT INTO `properties` (`id`, `property_name`, `property_description`, `num_of_floors`, `landlord_id`, `region`, `provinces`, `city`, `barangay`, `street`, `features_description`, `features`, `image_path`, `floor_plan`, `created_at`, `updated_at`) VALUES
+(1, 'Kingdom', '', 3, 1, '09', '0973', '097332', '097332103', '', '', '[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\",\"8\",\"9\"]', 'kingdom.png', '[\"643b6c007aec84.58952073_D-1stplan.jpg\",\"643b6c007b3509.53053751_D-2ndplan.jpg\",\"643b6c007b7667.45036012_D-3rdplan.jpg\"]', '2023-04-23 23:31:21', '2023-04-23 23:31:21'),
+(2, 'D Rentals', '', 2, 4, '09', '0973', '097332', '097332094', '', '', '[\"1\",\"2\",\"5\",\"6\"]', '[\"D-birdsEye.jpg\",\"D-front.jpg\",\"D-frontCover.jpg\"]', '[\"64446e8240a358.52124524_D-1stplan.jpg\",\"64446e8240fdf5.51883886_D-2ndplan.jpg\"]', '2023-04-23 23:31:21', '2023-04-23 23:31:21'),
+(5, 'Test', 'It seems like you want to make the scrollbar width adjust to the full width of the container.\r\nUnfortunately, the width property in the ::-webkit-scrollbar selector does not work that way.\r\nThe width property is used to set the thickness (or cross-sectional size) of the scrollbar, not its length.\r\nThe length of the scrollbar is automatically determined based on the size of the container it&#039;s attached to.\r\nIf you want to customize the appearance of the scrollbar further, you can adjust other propert', 1, 4, '09', '0973', '097327', '097327004', '', '', '[\"2\"]', '[\"D-birdsEye.jpg\",\"D-front.jpg\",\"D-frontCover.jpg\",\"D-rear-right.jpg\"]', '[\"6444c422845f41.62602678_D-1stplan.jpg\"]', '2023-04-23 23:31:21', '2023-04-23 23:31:21');
 
 -- --------------------------------------------------------
 
@@ -342,8 +338,8 @@ INSERT INTO `properties` (`id`, `property_name`, `property_description`, `num_of
 --
 
 DROP TABLE IF EXISTS `property_units`;
-CREATE TABLE IF NOT EXISTS `property_units` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `property_units` (
+  `id` int(11) NOT NULL,
   `property_id` int(11) NOT NULL,
   `unit_type_id` int(11) NOT NULL,
   `unit_no` varchar(10) NOT NULL,
@@ -356,10 +352,8 @@ CREATE TABLE IF NOT EXISTS `property_units` (
   `status` varchar(255) NOT NULL DEFAULT 'Vacant',
   `one_month_deposit` decimal(10,2) NOT NULL,
   `one_month_advance` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_property_id` (`property_id`),
-  KEY `fk_unit_type_id` (`unit_type_id`),
-  KEY `fk_unit_condition_id` (`unit_condition_id`)
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -371,9 +365,9 @@ TRUNCATE TABLE `property_units`;
 -- Dumping data for table `property_units`
 --
 
-INSERT INTO `property_units` (`id`, `property_id`, `unit_type_id`, `unit_no`, `floor_level`, `num_rooms`, `num_bathrooms`, `monthly_rent`, `unit_condition_id`, `pu_features`, `status`, `one_month_deposit`, `one_month_advance`) VALUES
-(1, 1, 2, 'A-101', 1, 1, 1, '5000.00', 4, '[\"1\",\"2\",\"3\",\"5\",\"6\",\"7\",\"8\"]', 'Vacant', '5000.00', '5000.00'),
-(2, 1, 1, 'A-201', 2, 1, 1, '5000.00', 4, '[\"1\",\"2\",\"5\",\"6\",\"7\",\"8\"]', 'Vacant', '5000.00', '5000.00');
+INSERT INTO `property_units` (`id`, `property_id`, `unit_type_id`, `unit_no`, `floor_level`, `num_rooms`, `num_bathrooms`, `monthly_rent`, `unit_condition_id`, `pu_features`, `status`, `one_month_deposit`, `one_month_advance`, `created_at`, `updated_at`) VALUES
+(1, 1, 2, 'A-101', 1, 1, 1, '5000.00', 4, '[\"1\",\"2\",\"3\",\"5\",\"6\",\"7\",\"8\"]', 'Vacant', '5000.00', '5000.00', '2023-04-23 23:31:21', '2023-04-23 23:31:21'),
+(2, 1, 1, 'A-201', 2, 1, 1, '5000.00', 4, '[\"1\",\"2\",\"5\",\"6\",\"7\",\"8\"]', 'Vacant', '5000.00', '5000.00', '2023-04-23 23:31:21', '2023-04-23 23:31:21');
 
 -- --------------------------------------------------------
 
@@ -382,14 +376,13 @@ INSERT INTO `property_units` (`id`, `property_id`, `unit_type_id`, `unit_no`, `f
 --
 
 DROP TABLE IF EXISTS `refbrgy`;
-CREATE TABLE IF NOT EXISTS `refbrgy` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `refbrgy` (
+  `id` int(11) NOT NULL,
   `brgyCode` varchar(255) DEFAULT NULL,
   `brgyDesc` text DEFAULT NULL,
   `regCode` varchar(255) DEFAULT NULL,
   `provCode` varchar(255) DEFAULT NULL,
-  `citymunCode` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `citymunCode` varchar(255) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -42487,14 +42480,13 @@ INSERT INTO `refbrgy` (`id`, `brgyCode`, `brgyDesc`, `regCode`, `provCode`, `cit
 --
 
 DROP TABLE IF EXISTS `refcitymun`;
-CREATE TABLE IF NOT EXISTS `refcitymun` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `refcitymun` (
+  `id` int(255) NOT NULL,
   `psgcCode` varchar(255) DEFAULT NULL,
   `citymunDesc` text DEFAULT NULL,
   `regDesc` varchar(255) DEFAULT NULL,
   `provCode` varchar(255) DEFAULT NULL,
-  `citymunCode` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `citymunCode` varchar(255) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -44163,13 +44155,12 @@ INSERT INTO `refcitymun` (`id`, `psgcCode`, `citymunDesc`, `regDesc`, `provCode`
 --
 
 DROP TABLE IF EXISTS `refprovince`;
-CREATE TABLE IF NOT EXISTS `refprovince` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `refprovince` (
+  `id` int(11) NOT NULL,
   `psgcCode` varchar(255) DEFAULT NULL,
   `provDesc` text DEFAULT NULL,
   `regCode` varchar(255) DEFAULT NULL,
-  `provCode` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `provCode` varchar(255) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -44278,12 +44269,11 @@ INSERT INTO `refprovince` (`id`, `psgcCode`, `provDesc`, `regCode`, `provCode`) 
 --
 
 DROP TABLE IF EXISTS `refregion`;
-CREATE TABLE IF NOT EXISTS `refregion` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `refregion` (
+  `id` int(11) NOT NULL,
   `psgcCode` varchar(255) DEFAULT NULL,
   `regDesc` text DEFAULT NULL,
-  `regCode` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `regCode` varchar(255) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -44321,8 +44311,8 @@ INSERT INTO `refregion` (`id`, `psgcCode`, `regDesc`, `regCode`) VALUES
 --
 
 DROP TABLE IF EXISTS `tenant`;
-CREATE TABLE IF NOT EXISTS `tenant` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tenant` (
+  `id` int(11) NOT NULL,
   `first_name` varchar(50) NOT NULL,
   `middle_name` varchar(50) DEFAULT NULL,
   `last_name` varchar(50) NOT NULL,
@@ -44351,7 +44341,8 @@ CREATE TABLE IF NOT EXISTS `tenant` (
   `emergency_contact_person` varchar(100) NOT NULL,
   `emergency_contact_number` varchar(20) NOT NULL,
   `profile_img` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -44363,9 +44354,9 @@ TRUNCATE TABLE `tenant`;
 -- Dumping data for table `tenant`
 --
 
-INSERT INTO `tenant` (`id`, `first_name`, `middle_name`, `last_name`, `email`, `contact_no`, `relationship_status`, `type_of_household`, `previous_address`, `region`, `provinces`, `city`, `sex`, `date_of_birth`, `has_pet`, `number_of_pets`, `type_of_pet`, `is_smoking`, `has_vehicle`, `vehicle_specification`, `spouse_first_name`, `spouse_last_name`, `spouse_email`, `spouse_num`, `occupants`, `occupants_relations`, `emergency_contact_person`, `emergency_contact_number`, `profile_img`) VALUES
-(1, 'Xie', '', 'Lian', 'crown_prince@gmail.com', '0987 874 5748', 'Married', 'Couple', 'Kingdom Of Xian Le ', '09', '0973', '097332', 'Male', '1999-01-01', 'Yes', 1, 'Ghost', 'No', '[\"Others\"]', 'Carriage', 'Hua', 'Cheng', 'prince_of_death@gmail.com', '0957 784 8774', '[\"\"]', '[\"\"]', 'Hua Cheng', '0988 548 4654', 'xie_lian.jpg'),
-(2, 'Xu&aacute;N', 'ZhēN', 'JiāNgjun', 'general_xuanzhen@gmail.com', '0977 844 7874', 'Single', 'Extended Family', 'Southwest Of Xian Le', '09', '0973', '097332', 'Male', '2000-01-04', 'No', 0, 'None', 'No', '[\"Car\",\"Motorcycle\"]', '', '', '', '', '', '[\"Song Tiang\",\"Feng Xi\"]', '[\"Son\",\"Daughter\"]', 'Xie Lian', '0987 457 4156', '');
+INSERT INTO `tenant` (`id`, `first_name`, `middle_name`, `last_name`, `email`, `contact_no`, `relationship_status`, `type_of_household`, `previous_address`, `region`, `provinces`, `city`, `sex`, `date_of_birth`, `has_pet`, `number_of_pets`, `type_of_pet`, `is_smoking`, `has_vehicle`, `vehicle_specification`, `spouse_first_name`, `spouse_last_name`, `spouse_email`, `spouse_num`, `occupants`, `occupants_relations`, `emergency_contact_person`, `emergency_contact_number`, `profile_img`, `created_at`, `updated_at`) VALUES
+(1, 'Xie', '', 'Lian', 'crown_prince@gmail.com', '0987 874 5748', 'Married', 'Couple', 'Kingdom Of Xian Le ', '09', '0973', '097332', 'Male', '1999-01-01', 'Yes', 1, 'Ghost', 'No', '[\"Others\"]', 'Carriage', 'Hua', 'Cheng', 'prince_of_death@gmail.com', '0957 784 8744', NULL, NULL, 'Hua Cheng', '0988 548 4654', 'xie_lian.jpg', '2023-04-23 23:31:28', '2023-04-23 23:31:28'),
+(2, 'Xu&aacute;N', 'ZhēN', 'JiāNgjun', 'general_xuanzhen@gmail.com', '0977 844 7845', 'None', 'Extended Family', 'Southwest Of Xian Le', '09', '0973', '097332', 'Male', '2001-01-04', 'No', 0, 'None', 'No', '[\"Car\",\"Motorcycle\"]', '', '', '', '', '', '[\"Song Tiang\",\"Feng Xi\"]', '[\"Son\",\"Daughter\"]', 'Xie Lian', '0987 457 4156', '', '2023-04-23 23:31:28', '2023-04-23 23:31:28');
 
 -- --------------------------------------------------------
 
@@ -44374,14 +44365,15 @@ INSERT INTO `tenant` (`id`, `first_name`, `middle_name`, `last_name`, `email`, `
 --
 
 DROP TABLE IF EXISTS `tickets`;
-CREATE TABLE IF NOT EXISTS `tickets` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tickets` (
+  `id` int(11) NOT NULL,
   `raised_by` varchar(255) NOT NULL,
   `subject` varchar(255) NOT NULL,
   `date_created` datetime NOT NULL DEFAULT current_timestamp(),
   `status` varchar(255) NOT NULL,
   `messages` text NOT NULL,
-  PRIMARY KEY (`id`)
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -44396,11 +44388,12 @@ TRUNCATE TABLE `tickets`;
 --
 
 DROP TABLE IF EXISTS `unit_condition`;
-CREATE TABLE IF NOT EXISTS `unit_condition` (
+CREATE TABLE `unit_condition` (
   `id` int(11) NOT NULL,
   `condition_name` varchar(50) NOT NULL,
   `unit_type_picture` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  PRIMARY KEY (`id`)
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -44412,11 +44405,11 @@ TRUNCATE TABLE `unit_condition`;
 -- Dumping data for table `unit_condition`
 --
 
-INSERT INTO `unit_condition` (`id`, `condition_name`, `unit_type_picture`) VALUES
-(1, 'Bare', 'bare.jpg'),
-(2, 'Unfurnished', 'unfurnished.jpg'),
-(3, 'Semi Furnished', 'semi furnished.jpg'),
-(4, 'Fully Furnished', 'fully furnished.jpg');
+INSERT INTO `unit_condition` (`id`, `condition_name`, `unit_type_picture`, `created_at`, `updated_at`) VALUES
+(1, 'Bare', 'bare.jpg', '2023-04-23 23:31:28', '2023-04-23 23:31:28'),
+(2, 'Unfurnished', 'unfurnished.jpg', '2023-04-23 23:31:28', '2023-04-23 23:31:28'),
+(3, 'Semi Furnished', 'semi furnished.jpg', '2023-04-23 23:31:28', '2023-04-23 23:31:28'),
+(4, 'Fully Furnished', 'fully furnished.jpg', '2023-04-23 23:31:28', '2023-04-23 23:31:28');
 
 -- --------------------------------------------------------
 
@@ -44425,10 +44418,11 @@ INSERT INTO `unit_condition` (`id`, `condition_name`, `unit_type_picture`) VALUE
 --
 
 DROP TABLE IF EXISTS `unit_type`;
-CREATE TABLE IF NOT EXISTS `unit_type` (
+CREATE TABLE `unit_type` (
   `id` int(11) NOT NULL,
   `type_name` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -44440,10 +44434,230 @@ TRUNCATE TABLE `unit_type`;
 -- Dumping data for table `unit_type`
 --
 
-INSERT INTO `unit_type` (`id`, `type_name`) VALUES
-(1, 'Simplex'),
-(2, 'Duplex'),
-(3, 'Triplex');
+INSERT INTO `unit_type` (`id`, `type_name`, `created_at`, `updated_at`) VALUES
+(1, 'Simplex', '2023-04-23 23:31:28', '2023-04-23 23:31:28'),
+(2, 'Duplex', '2023-04-23 23:31:28', '2023-04-23 23:31:28'),
+(3, 'Triplex', '2023-04-23 23:31:28', '2023-04-23 23:31:28');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `account`
+--
+ALTER TABLE `account`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `events`
+--
+ALTER TABLE `events`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_events_lease` (`lease_id`),
+  ADD KEY `fk_events_invoice` (`invoice_id`);
+
+--
+-- Indexes for table `features`
+--
+ALTER TABLE `features`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `invoice`
+--
+ALTER TABLE `invoice`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `lease_unit_id` (`lease_unit_id`),
+  ADD KEY `tenant_id` (`tenant_id`),
+  ADD KEY `property_id` (`property_id`),
+  ADD KEY `penalty_id` (`penalty_id`),
+  ADD KEY `property_unit_id` (`property_unit_id`);
+
+--
+-- Indexes for table `landlord`
+--
+ALTER TABLE `landlord`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `lease`
+--
+ALTER TABLE `lease`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `property_unit_id` (`property_unit_id`),
+  ADD KEY `tenant_id` (`tenant_id`);
+
+--
+-- Indexes for table `password_reset_tokens`
+--
+ALTER TABLE `password_reset_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_user_id` (`user_id`);
+
+--
+-- Indexes for table `penalty`
+--
+ALTER TABLE `penalty`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `properties`
+--
+ALTER TABLE `properties`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `landlord_id` (`landlord_id`);
+
+--
+-- Indexes for table `property_units`
+--
+ALTER TABLE `property_units`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_property_id` (`property_id`),
+  ADD KEY `fk_unit_type_id` (`unit_type_id`),
+  ADD KEY `fk_unit_condition_id` (`unit_condition_id`);
+
+--
+-- Indexes for table `refbrgy`
+--
+ALTER TABLE `refbrgy`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `refcitymun`
+--
+ALTER TABLE `refcitymun`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `refprovince`
+--
+ALTER TABLE `refprovince`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `refregion`
+--
+ALTER TABLE `refregion`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tenant`
+--
+ALTER TABLE `tenant`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tickets`
+--
+ALTER TABLE `tickets`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `unit_condition`
+--
+ALTER TABLE `unit_condition`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `unit_type`
+--
+ALTER TABLE `unit_type`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `account`
+--
+ALTER TABLE `account`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `features`
+--
+ALTER TABLE `features`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `invoice`
+--
+ALTER TABLE `invoice`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `landlord`
+--
+ALTER TABLE `landlord`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `lease`
+--
+ALTER TABLE `lease`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `password_reset_tokens`
+--
+ALTER TABLE `password_reset_tokens`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `penalty`
+--
+ALTER TABLE `penalty`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `properties`
+--
+ALTER TABLE `properties`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `property_units`
+--
+ALTER TABLE `property_units`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `refbrgy`
+--
+ALTER TABLE `refbrgy`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `refcitymun`
+--
+ALTER TABLE `refcitymun`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `refprovince`
+--
+ALTER TABLE `refprovince`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `refregion`
+--
+ALTER TABLE `refregion`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tenant`
+--
+ALTER TABLE `tenant`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tickets`
+--
+ALTER TABLE `tickets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables

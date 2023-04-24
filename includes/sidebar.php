@@ -33,18 +33,18 @@
           <li class="nav-item">
             <a class="nav-link" href="../leases/leases.php">
             <i class='bx bxs-key menu-icon' title="Leases"></i>
-              <span class="menu-title">Lease</span>
+              <span class="menu-title">Leases</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-            <i class='bx bxs-book-content menu-icon' title="Invoice"></i>
-              <span class="menu-title">Invoice</span>
+            <i class='bx bxs-book-content menu-icon' title="Invoices"></i>
+              <span class="menu-title">Invoices</span>
             </a>
             <div class="collapse" id="auth">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="../invoices/invoices.php"> List of Invoice</a></li>
-                <li class="nav-item"> <a class="nav-link" href="../invoices/generate_invoice.php"> Generate Invoice</a></li>
+                <li class="nav-item"> <a class="nav-link" href="../invoices/invoices.php"> List of Invoices</a></li>
+                <li class="nav-item"> <a class="nav-link" href="../invoices/generate_invoice.php"> Generate Invoices</a></li>
                 <li class="nav-item"> <a class="nav-link" href="../invoices/pay_invoice.php"> Pay Due Invoice </a></li>
               </ul>
             </div>

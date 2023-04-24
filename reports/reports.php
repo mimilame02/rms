@@ -7,9 +7,10 @@
         this is to prevent users from accessing pages that requires
         authentication such as the dashboard
     */
-    if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] != 'admin'){
+    if (!isset($_SESSION['user_type']) || ($_SESSION['user_type'] != 'admin' && $_SESSION['user_type'] != 'landlord')) {
         header('location: ../login/login.php');
     }
+  
     //if the above code is false then html below will be displayed
 
     require_once '../tools/variables.php';
@@ -20,6 +21,11 @@
     require_once '../includes/dbconfig.php';
 ?>
 <body>
+<div class="loading-screen">
+  <img class="logo" src="../img/logo-edit.png" alt="logo">
+  <?php echo $page_title; ?>
+  <div class="loading-bar"></div>
+</div>
 <style>
   .table-container {
     position: relative;
@@ -47,8 +53,17 @@
   ?>
 <div class="container-fluid page-body-wrapper">
 <?php
-     require_once '../includes/sidebar.php';
-  ?>
+        if (isset($_SESSION['user_type'])) {
+            if ($_SESSION['user_type'] == 'landlord') {
+                require_once '../alandlord-dash/landlord_sidebar.php';
+            } elseif ($_SESSION['user_type'] == 'admin') {
+                require_once '../includes/sidebar.php';
+            }
+            // Add more conditions for other user types if needed
+        } else {
+            // Redirect to login or show a default sidebar if the user type is not set
+        }
+    ?>
 <div class="main-panel">
   <div class="content-wrapper">
     <div class="row">
@@ -83,13 +98,9 @@
                     <th>No. of Paid Invoices</th>
                     <th>Rent Due Date</th>
                     <th>Total Amount</th>
-                    <?php
-                        if($_SESSION['user_type'] == 'admin'){ 
-                    ?>
-                        <th>Action</th>
-                    <?php
-                        }
-                    ?>
+                    <?php if($_SESSION['user_type'] == 'admin' || $_SESSION['user_type'] == 'landlord'){ ?>
+                      <th>Action</th>
+                    <?php } ?>
                 </tr>
               </thead>
               <tbody>
@@ -159,13 +170,9 @@
                     <th>Rent Due Date</th>
                     <th>No. of Unpaid Invoices</th>
                     <th>Total Due</th>
-                    <?php
-                              if($_SESSION['user_type'] == 'admin'){ 
-                          ?>
-                          <th>Action</th>
-                          <?php
-                              }
-                          ?>
+                    <?php if($_SESSION['user_type'] == 'admin' || $_SESSION['user_type'] == 'landlord'){ ?>
+                        <th>Action</th>
+                      <?php } ?>
                   </tr>
               </thead>
               <tbody>

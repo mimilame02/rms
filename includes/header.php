@@ -24,11 +24,13 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    
 
 
     <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Poppins:wght@200&display=swap" rel="stylesheet">
@@ -38,6 +40,7 @@
     <link href="../css/invoice.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
     <link href="../css/login.css" rel="stylesheet">
+    <link href="../css/loading.css" rel="stylesheet">
 
     <!-- Intl Tel Input -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
@@ -109,12 +112,41 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.2/dist/sweetalert2.min.js"></script>
 
 
-
-
     <title><?php require_once '../tools/variables.php';
     echo $page_title; 
     ?></title>
     <link rel="icon" href="../img/logo-edit.png" type="image/icon type">
 
 </head>
+
+<script>
+function onReady(callback) {
+  var intervalId = window.setInterval(function() {
+    if (document.readyState === 'complete') {
+      window.clearInterval(intervalId);
+      callback.call(this);
+    }
+  }, 1000);
+}
+
+function setVisible(selector, visible) {
+  var element = document.querySelector(selector);
+  if (element) {
+    element.style.display = visible ? 'flex' : 'none';
+  }
+}
+
+function dismissLoading() {
+  setVisible('.loading-screen', false);
+  setVisible('.page', true);
+}
+
+onReady(function() {
+  setVisible('.page', false);
+  setVisible('.loading-screen', true);
+  setTimeout(dismissLoading, 1000); // Dismiss the loading screen after 1 second
+  document.addEventListener('keydown', dismissLoading); // Dismiss the loading screen when a key is pressed
+  document.addEventListener('click', dismissLoading); // Dismiss the loading screen when the mouse is clicked
+});
+</script>
 
