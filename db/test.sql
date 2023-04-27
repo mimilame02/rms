@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 24, 2023 at 01:34 AM
+-- Generation Time: Apr 26, 2023 at 04:57 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -39,11 +39,6 @@ CREATE TABLE `account` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Truncate table before insert `account`
---
-
-TRUNCATE TABLE `account`;
---
 -- Dumping data for table `account`
 --
 
@@ -72,11 +67,6 @@ CREATE TABLE `events` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Truncate table before insert `events`
---
-
-TRUNCATE TABLE `events`;
---
 -- Dumping data for table `events`
 --
 
@@ -97,11 +87,6 @@ CREATE TABLE `features` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Truncate table before insert `features`
---
-
-TRUNCATE TABLE `features`;
 --
 -- Dumping data for table `features`
 --
@@ -148,11 +133,6 @@ CREATE TABLE `invoice` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Truncate table before insert `invoice`
---
-
-TRUNCATE TABLE `invoice`;
 -- --------------------------------------------------------
 
 --
@@ -180,11 +160,6 @@ CREATE TABLE `landlord` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Truncate table before insert `landlord`
---
-
-TRUNCATE TABLE `landlord`;
 --
 -- Dumping data for table `landlord`
 --
@@ -219,11 +194,6 @@ CREATE TABLE `lease` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Truncate table before insert `lease`
---
-
-TRUNCATE TABLE `lease`;
---
 -- Dumping data for table `lease`
 --
 
@@ -247,11 +217,6 @@ CREATE TABLE `password_reset_tokens` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Truncate table before insert `password_reset_tokens`
---
-
-TRUNCATE TABLE `password_reset_tokens`;
 -- --------------------------------------------------------
 
 --
@@ -269,11 +234,6 @@ CREATE TABLE `penalty` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Truncate table before insert `penalty`
---
-
-TRUNCATE TABLE `penalty`;
 --
 -- Dumping data for table `penalty`
 --
@@ -318,11 +278,6 @@ CREATE TABLE `properties` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Truncate table before insert `properties`
---
-
-TRUNCATE TABLE `properties`;
---
 -- Dumping data for table `properties`
 --
 
@@ -357,11 +312,6 @@ CREATE TABLE `property_units` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Truncate table before insert `property_units`
---
-
-TRUNCATE TABLE `property_units`;
---
 -- Dumping data for table `property_units`
 --
 
@@ -385,11 +335,6 @@ CREATE TABLE `refbrgy` (
   `citymunCode` varchar(255) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Truncate table before insert `refbrgy`
---
-
-TRUNCATE TABLE `refbrgy`;
 --
 -- Dumping data for table `refbrgy`
 --
@@ -42490,11 +42435,6 @@ CREATE TABLE `refcitymun` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Truncate table before insert `refcitymun`
---
-
-TRUNCATE TABLE `refcitymun`;
---
 -- Dumping data for table `refcitymun`
 --
 
@@ -44164,11 +44104,6 @@ CREATE TABLE `refprovince` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Truncate table before insert `refprovince`
---
-
-TRUNCATE TABLE `refprovince`;
---
 -- Dumping data for table `refprovince`
 --
 
@@ -44277,11 +44212,6 @@ CREATE TABLE `refregion` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Truncate table before insert `refregion`
---
-
-TRUNCATE TABLE `refregion`;
---
 -- Dumping data for table `refregion`
 --
 
@@ -44346,11 +44276,6 @@ CREATE TABLE `tenant` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Truncate table before insert `tenant`
---
-
-TRUNCATE TABLE `tenant`;
---
 -- Dumping data for table `tenant`
 --
 
@@ -44370,17 +44295,20 @@ CREATE TABLE `tickets` (
   `raised_by` varchar(255) NOT NULL,
   `subject` varchar(255) NOT NULL,
   `date_created` datetime NOT NULL DEFAULT current_timestamp(),
-  `status` varchar(255) NOT NULL,
+  `status` set('Open','Overdue','Resolved','In Progress','Escalated','Closed') NOT NULL DEFAULT 'Open',
   `messages` text NOT NULL,
+  `attachment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Truncate table before insert `tickets`
+-- Dumping data for table `tickets`
 --
 
-TRUNCATE TABLE `tickets`;
+INSERT INTO `tickets` (`id`, `raised_by`, `subject`, `date_created`, `status`, `messages`, `attachment`, `created_at`, `updated_at`) VALUES
+(1, 'Tenant', 'Noisy neighbor', '2023-04-25 11:28:14', 'Open', 'Neighbor is noisy singing videoke tor the afternoon, my kids can\'t sleep', 'videoke.png', '2023-04-25 09:28:14', '2023-04-25 12:21:16');
+
 -- --------------------------------------------------------
 
 --
@@ -44396,11 +44324,6 @@ CREATE TABLE `unit_condition` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Truncate table before insert `unit_condition`
---
-
-TRUNCATE TABLE `unit_condition`;
 --
 -- Dumping data for table `unit_condition`
 --
@@ -44425,11 +44348,6 @@ CREATE TABLE `unit_type` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Truncate table before insert `unit_type`
---
-
-TRUNCATE TABLE `unit_type`;
 --
 -- Dumping data for table `unit_type`
 --

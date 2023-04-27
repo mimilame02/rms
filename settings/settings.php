@@ -11,7 +11,8 @@
     if (!isset($_SESSION['user_type']) || ($_SESSION['user_type'] != 'admin' && $_SESSION['user_type'] != 'landlord')) {
         header('location: ../login/login.php');
     }
-  
+
+
 
     require_once '../tools/variables.php';
     $page_title = 'RMS | Settings';
@@ -74,7 +75,7 @@
    
       <h5>Property</h5>
       <ul class="no-bullets settings-content">
-        <li><i class="fas fa-luggage-cart"></i><a href="#">Add Features and Amenities</a></li>
+      <li><i class="fas fa-clock"></i><a href="#" data-toggle="modal" data-target="#featureAndAmenitiesModal">Add Features and Amenities</a></li>
       </ul>
   
   <h5>Property Units</h5>
@@ -96,7 +97,7 @@
   </div>
   </div>
   </div>
-
+          <!-- this modal is for date -->
   <div class="modal fade" id="dateTimeModal" tabindex="-1" role="dialog" aria-labelledby="dateTimeModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -125,5 +126,32 @@
     </div>
   </div>
 </div>
+<!-- this modal is for features and amenities -->
+
+<div class="modal fade" id="featureAndAmenitiesModal" tabindex="-1" role="dialog" aria-labelledby="featureAndAmenitiesModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="featureAndAmenitiesModalLabel">Add Features And Amenities</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="featureAndAmenities" action="amenities.php" method="post">
+          <input type="hidden" name="action" value="add">
+          <label for="feature_name">Feature Name:</label>
+          <input type="text" name="feature_name" id="feature_name" required>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="document.getElementById('featureAndAmenities').submit();">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 </body>

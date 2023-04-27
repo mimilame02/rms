@@ -19,6 +19,52 @@
 
     require_once '../includes/header.php';
     require_once '../includes/dbconfig.php';
+
+// Check if add_success parameter is present and data was added
+if (isset($_GET['add_success']) && $_GET['add_success'] == '1' && isset($_SESSION['added_property_units'])) {
+  echo '<script>
+          $(document).ready(function() {
+              Swal.fire({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                      toast.addEventListener("mouseenter", Swal.stopTimer)
+                      toast.addEventListener("mouseleave", Swal.resumeTimer)
+                  },
+                  icon: "success",
+                  title: "Property Unit added successfully!"
+              });
+          });
+        </script>';
+  // Unset the added_lease session variable so the message is only shown once
+  unset($_SESSION['added_property_units']);
+}
+
+// Check if add_success parameter is present and data was added
+if (isset($_GET['add_success']) && $_GET['add_success'] == '1' && isset($_SESSION['edited_property_units'])) {
+  echo '<script>
+          $(document).ready(function() {
+              Swal.fire({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                      toast.addEventListener("mouseenter", Swal.stopTimer)
+                      toast.addEventListener("mouseleave", Swal.resumeTimer)
+                  },
+                  icon: "success",
+                  title: "Property Unit updated successfully!"
+              });
+          });
+        </script>';
+  // Unset the added_lease session variable so the message is only shown once
+  unset($_SESSION['edited_property_units']);
+}
 ?>
 <body>
 <div class="loading-screen">
@@ -157,42 +203,65 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
-<div id="delete-dialog" class="dialog" title="Delete Property Unit">
-    <p><span>Are you sure you want to delete the property unit record?</span></p>
-</div>
-
 <script>
     $(document).ready(function() {
-        $("#delete-dialog").dialog({
-            resizable: false,
-            draggable: false,
-            height: "auto",
-            width: 500,
-            modal: true,
-            autoOpen: false
-        });
-
-        // Change the background colors of the Yes and Cancel buttons using Bootstrap classes
-        $("#delete-dialog").dialog('option', 'buttons', {
-            "Yes" : {
-                text: "Yes",
-                class: "btn btn-danger",
-                click: function() {
-                    window.location.href = $(this).data("href");
-                }
-            },
-            "Cancel" : {
-                text: "Cancel",
-                class: "btn btn-secondary",
-                click: function() {
-                    $(this).dialog("close");
-                }
-            }
-        });
-
         $(".action-delete").on('click', function(e) {
             e.preventDefault();
-            $("#delete-dialog").data("href", $(this).attr("href")).dialog("open");
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-danger',
+                    cancelButton: 'btn btn-secondary'
+                },
+                buttonsStyling: false
+            });
+
+            swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let deleteUrl = $(this).attr("href");
+                    let row = $(this).closest('tr');
+
+                    $.ajax({
+                        url: deleteUrl,
+                        type: "DELETE",
+                        success: function(data) {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                            // Remove the table row corresponding to the deleted Tenant
+                            row.remove();
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Property Unit successfully deleted!'
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!'
+                            });
+                        }
+                    });
+                }
+            });
         });
     });
 </script>

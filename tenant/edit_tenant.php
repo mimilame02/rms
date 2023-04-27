@@ -279,7 +279,7 @@
                     <div class="d-flex">
                       <div class="col-sm-4">
                         <label for="region">Region</label>
-                        <select type="text" class="form-control form-control-sm selectpicker" name="region" id="region" placeholder="" data-live-search="true" required> 
+                        <select type="text" class="form-control form-control-sm" name="region" id="region" placeholder="" required> 
                           <option value="None">--Select--</option>
                           <?php
                                 require_once '../classes/reference.class.php';
@@ -295,7 +295,7 @@
                       </div>
                       <div class="col-sm-4 pl-0">
                         <label for="provinces">Provinces</label>
-                        <select type="text" id="provinces" class="form-control form-control-sm selectpicker" name="provinces" data-live-search="true" required>
+                        <select type="text" id="provinces" class="form-control form-control-sm" name="provinces" required>
                         <option value="None">--Select--</option>
                         <?php
                                 require_once '../classes/reference.class.php';
@@ -311,7 +311,7 @@
                       </div>
                       <div class="col-sm-3 pl-0">
                         <label for="city">City</label>
-                        <select type="text" class="form-control form-control-sm selectpicker" id="city" name="city" data-live-search="true" required>
+                        <select type="text" class="form-control form-control-sm" id="city" name="city" required>
                         <option value="None">--Select--</option>
                         <?php
                             require_once '../classes/reference.class.php';

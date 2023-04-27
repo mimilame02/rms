@@ -2,12 +2,14 @@
 
 require_once 'database.php';
 
-class Penalty {
+class Ticket {
     public $id;
-    public $name;
-    public $amount;
-    public $percentage;
-    public $description;
+    public $raised_by;
+    public $subject;
+    public $date_created;
+    public $status;
+    public $messages;
+    public $attachment;
 
     protected $db;
 
@@ -16,7 +18,7 @@ class Penalty {
     }
 
     function fetch($id = 0) {
-        $sql = "SELECT * FROM penalty WHERE id = :id;";
+        $sql = "SELECT * FROM tickets WHERE id = :id;";
         $query = $this->db->connect()->prepare($sql);
         $query->bindParam(':id', $id);
 
@@ -27,7 +29,7 @@ class Penalty {
     }
 
     function show() {
-        $sql = "SELECT * FROM penalty;";
+        $sql = "SELECT * FROM tickets;";
         $query = $this->db->connect()->prepare($sql);
 
         if ($query->execute()) {
@@ -36,8 +38,8 @@ class Penalty {
         return $data;
     }
 
-    function fetch_penalty($id) {
-        $sql = "SELECT * FROM penalty WHERE id = :id;";
+    function fetch_tickets($id) {
+        $sql = "SELECT * FROM tickets WHERE id = :id;";
         $query = $this->db->connect()->prepare($sql);
         $query->bindParam(':id', $id);
 
@@ -47,28 +49,29 @@ class Penalty {
         return $data;
     }
 
-    function add_penalty() {
-        $sql = "INSERT INTO penalty (name, amount, description) VALUES (:name, :amount, :description)";
+    function add_tickets() {
+        $sql = "INSERT INTO tickets (raised_by, subject, date_created, status, messages, attachment) VALUES (:raised_by, :subject, :date_created, :status, :messages, :attachment)";
         $query = $this->db->connect()->prepare($sql);
-        $query->bindParam(':name', $this->name);
-        $query->bindParam(':amount', $this->amount);
-        $query->bindParam(':description', $this->description);
-
+        $query->bindParam(':raised_by', $this->raised_by);
+        $query->bindParam(':subject', $this->subject);
+        $query->bindParam(':date_created', $this->date_created);
+        $query->bindParam(':status', $this->status);
+        $query->bindParam(':messages', $this->messages);
+        $query->bindParam(':attachment', $this->attachment);
+    
         if ($query->execute()) {
             return true;
         } else {
             return false;
         }
     }
-
-    function update_penalty() {
-        $sql = "UPDATE penalty SET name = :name, amount = :amount WHERE id = :id";
+    
+    function update_tickets() {
+        $sql = "UPDATE tickets SET messages = :messages WHERE id = :id";
         $query = $this->db->connect()->prepare($sql);
-        $query->bindParam(':name', $this->name);
-        $query->bindParam(':amount', $this->amount);
+        $query->bindParam(':messages', $this->messages);
         $query->bindParam(':id', $this->id);
 
-
         if ($query->execute()) {
             return true;
         } else {
@@ -76,8 +79,8 @@ class Penalty {
         }
     }
 
-    function delete_penalty($id) {
-        $sql = "DELETE FROM penalty WHERE id = :id;";
+    function delete_tickets($id) {
+        $sql = "DELETE FROM tickets WHERE id = :id;";
         $query = $this->db->connect()->prepare($sql);
         $query->bindParam(':id', $id);
 

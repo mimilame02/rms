@@ -80,6 +80,32 @@ class Property_Units {
             return false;
         }	
     }
+    function property_unit_edit() {
+        // attempt insert query execution
+        $sql = "UPDATE property_units SET property_id=:property_id, unit_type_id=:unit_type_id, unit_no=:unit_no, floor_level=:floor_level, num_rooms=:num_rooms, num_bathrooms=:num_bathrooms, monthly_rent=:monthly_rent, unit_condition_id=:unit_condition_id, pu_features=:pu_features, status=:status, one_month_deposit=:one_month_deposit, one_month_advance=:one_month_advance WHERE id=:id";
+    
+        $query = $this->db->connect()->prepare($sql);
+        $query->bindParam(':property_id', $this->property_id);
+        $query->bindParam(':unit_type_id', $this->unit_type_id);
+        $query->bindParam(':unit_no', $this->unit_no);
+        $query->bindParam(':floor_level', $this->floor_level);
+        $query->bindParam(':num_rooms', $this->num_rooms);
+        $query->bindParam(':num_bathrooms', $this->num_bathrooms);
+        $query->bindParam(':monthly_rent', $this->monthly_rent);
+        $query->bindParam(':unit_condition_id', $this->unit_condition_id);
+        $query->bindParam(':pu_features', $this->pu_features);
+        $query->bindParam(':status', $this->status);
+        $query->bindParam(':one_month_deposit', $this->one_month_deposit);
+        $query->bindParam(':one_month_advance', $this->one_month_advance);
+        $query->bindParam(':id', $this->id);
+
+        if ($query->execute()) {
+            return true;
+        } else {
+            error_log(print_r($query->errorInfo(), true));
+            return false;
+        }	
+    }
 
 
     function property_unit_delete($record_id){

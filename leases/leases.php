@@ -110,15 +110,15 @@
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "SELECT lease.*, property_units.unit_no, unit_type.type_name, property_units.monthly_rent, property_units.floor_level, DATE_FORMAT(MIN(lease.lease_start), '%M %d, %Y') AS lease_start,
-                    DATE_FORMAT(MAX(lease.lease_end), '%M %d, %Y') AS lease_end, tenant.first_name, tenant.last_name
-                    FROM lease
-                    LEFT JOIN property_units ON lease.property_unit_id = property_units.id
-                    LEFT JOIN unit_type ON property_units.unit_type_id = unit_type.id
-                    RIGHT JOIN tenant ON lease.tenant_id = tenant.id 
-                    WHERE tenant_id=tenant.id";
+                        $sql = "SELECT lease.*, property_units.unit_no, unit_type.type_name, property_units.monthly_rent, property_units.floor_level, DATE_FORMAT(MIN(lease.lease_start), '%M %d, %Y') AS lease_start,
+                        DATE_FORMAT(MAX(lease.lease_end), '%M %d, %Y') AS lease_end, tenant.first_name, tenant.last_name
+                        FROM lease
+                        LEFT JOIN property_units ON lease.property_unit_id = property_units.id
+                        LEFT JOIN unit_type ON property_units.unit_type_id = unit_type.id
+                        RIGHT JOIN tenant ON lease.tenant_id = tenant.id 
+                        WHERE tenant_id=tenant.id";
                     $result = mysqli_query($conn, $sql);
-                    $i = 1;
+                    $i = 0;
                     if (mysqli_num_rows($result) > 0){
                         while ($row = mysqli_fetch_assoc($result)){
                             // Determine lease status based on lease end date

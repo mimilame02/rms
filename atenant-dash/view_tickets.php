@@ -1,8 +1,9 @@
 <?php
-  require_once '../includes/dbconfig.php';
 
     //resume session here to fetch session values
     session_start();
+    require_once '../tools/functions.php';
+    require_once '../classes/tickets.class.php';
     /*
         if user is not login then redirect to login page,
         this is to prevent users from accessing pages that requires
@@ -12,17 +13,80 @@
         header('location: ../login/login.php');
     }
     //if the above code is false then html below will be displayed
+    // Check if the form was submitted
+if (isset($_POST['save_tickets'])) {
+  // Create a new instance of the class containing the add_tickets function
+  $tickets_obj = new Ticket();
+
+  // Set the class properties with the submitted form data
+  $tickets_obj->raised_by = $_SESSION['username']; // Assuming you store the user ID in the session
+  $tickets_obj->subject = $_POST['subject'];
+  $tickets_obj->date_created = date('Y-m-d H:i:s');
+  $tickets_obj->status = 'open'; // Assuming new tickets have an 'open' status
+  $tickets_obj->messages = $_POST['messages'];
+
+  // Handle the file upload if a file was provided
+  if (!empty($_FILES['attachment']['name'])) {
+      // Define the target directory and file name
+      $target_dir = '../img/tickets/'; // You may need to create this directory and set appropriate permissions
+      $target_file = $target_dir . basename($_FILES['attachment']['name']);
+
+      // Move the uploaded file to the target directory
+      if (move_uploaded_file($_FILES['attachment']['tmp_name'], $target_file)) {
+          $tickets_obj->attachment = $target_file;
+      } else {
+          $_SESSION['error'] = 'Error uploading the attachment.';
+      }
+  }
+
+  // Call the add_tickets function
+  if ($tickets_obj->add_tickets()) {
+    $_SESSION['added_tickets'] = true;
+    header('location: tenant_ticket.php?add_success=1');
+  } else {
+      $_SESSION['error'] = 'Error raising the ticket.';
+  }
+
+}
+// Check if add_success parameter is present and data was added
+if (isset($_GET['add_success']) && $_GET['add_success'] == '1' && isset($_SESSION['added_tickets'])) {
+  echo '<script>
+          $(document).ready(function() {
+              Swal.fire({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                      toast.addEventListener("mouseenter", Swal.stopTimer)
+                      toast.addEventListener("mouseleave", Swal.resumeTimer)
+                  },
+                  icon: "success",
+                  title: "Ticket added successfully!"
+              });
+          });
+        </script>';
+  // Unset the added_lease session variable so the message is only shown once
+  unset($_SESSION['added_tickets']);
+}
 
     require_once '../tools/variables.php';
     $page_title = 'RMS | Tickets';
-    $tickets = 'active';
+    $tickets_obj = 'active';
 
     require_once '../includes/header.php';
+    require_once '../includes/dbconfig.php';
 ?>
 <body>
+<div class="loading-screen">
+  <img class="logo" src="../img/logo-edit.png" alt="logo">
+  <?php echo $page_title; ?>
+  <div class="loading-bar"></div>
+</div>
 <div class="container-scroller">
   <?php
-    require_once 'tenant_navbar.php';
+    require_once '../includes/navbar.php';
   ?>
 <div class="container-fluid page-body-wrapper">
 <?php
@@ -32,7 +96,7 @@
   <div class="content-wrapper">
     <div class="row">
       <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-        <h3 class="font-weight-bolder">TICKETS</h3> 
+        <h3 class="font-weight-bolder">MY TICKETS</h3> 
       </div>
       <div class="add-tenant-container">
       <?php
@@ -85,7 +149,7 @@
                       <td>'.$row['status'].'</td>
                         <td>
                         <div class="action">
-                        <a class="me-2 green" href="tenant_view_tickets.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
+                        <a class="me-2 green" href="view_tickets.php?id='.$row['id'].'"><i class="fas fa-eye"></i></a>
                         </div>
                         </td>
                     </tr>';
@@ -109,7 +173,7 @@
         </button>
       </div>
 
-      <form action="tenant_save_tickets.php" method="POST">
+      <form action="tenant_ticket.php" method="POST" enctype="multipart/form-data">
       <div class="modal-body">
       <div class="col">
                         <label for="subject">Subject</label>
@@ -117,11 +181,10 @@
                         <br>
                       </div>
                       <div class="col">
-                        <label for="raised_by">Raised_by</label>
-                        <input  class="form-control form-control-sm " placeholder="raised_by" type="text" id="raised_by" name="raised_by" required>
-                        <br>
+                        <label for="attachment">Attachment</label>
+                        <input type="file" class="form-control form-control-sm " id="attachment" name="attachment">
                       </div>
-                            <div class="col">
+                            <div class="col mt-2">
                                   <label for="messages">Message/Task/Description</label>
                                   <textarea class="form-control form-control-lg" id="messages" name="messages" col="100" row="20"></textarea>
                                 </div>
@@ -130,10 +193,10 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         <button type="submit" class="btn btn-primary" name="save_tickets">Raise Ticket</button>
       </div>
-      </form>
     </div>
   </div>
 </div>
+</form>
 
 
 <script>

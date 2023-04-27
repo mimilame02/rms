@@ -12,11 +12,12 @@
     */
     if (!isset($_SESSION['user_type']) || ($_SESSION['user_type'] != 'admin' && $_SESSION['user_type'] != 'landlord')) {
         header('location: ../login/login.php');
-    }
-  
-     $property_obj = new Properties;
+    }  
+
+    $property_obj = new Properties;
      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $property_obj->id = $_POST['property-id'];
+
       //sanitize user inputs
       $property_obj->property_name = htmlentities($_POST['property_name']);
       $property_obj->property_description = htmlentities($_POST['property_description']);
@@ -93,26 +94,23 @@
           $msg = "Error uploading file";
         }
       }
-    } else {
-      if ($property_obj->properties_fetch($_GET['id'])){
-        $data = $property_obj->properties_fetch($_GET['id']);
-        $property_obj->id = $data['id'];
-        $property_obj->property_name = $data['property_name'];
-        $property_obj->property_description = $data['property_description'];
-        $property_obj->num_of_floors = $data['num_of_floors'];
-        $property_obj->landlord_id = $data['landlord_id'];
-        $property_obj->region = $data['region'];
-        $property_obj->provinces = $data['provinces'];
-        $property_obj->city = $data['city'];
-        $property_obj->barangay = $data['barangay'];
-        $property_obj->street = $data['street'];
-        $property_obj->features_description = $data['features_description'];
-        $property_obj->features = json_decode($data['features'], true);
-        $property_obj->image_path = $data['image_path'];
-        $property_obj->floor_plan = json_decode($data['floor_plan'], true);
-  
-      }
+  }else {
+    if ($property_obj->properties_fetch($_GET['id'])){
+      $data = $property_obj->properties_fetch($_GET['id']);
+      $property_obj->id = $data['id'];
+      $property_obj->property_name = $data['property_name'];
+      $property_obj->property_description = $data['property_description'];
+      $property_obj->num_of_floors = $data['num_of_floors'];
+      $property_obj->landlord_id = $data['landlord_id'];
+      $property_obj->region = $data['region'];
+      $property_obj->provinces = $data['provinces'];
+      $property_obj->city = $data['city'];
+      $property_obj->barangay = $data['barangay'];
+      $property_obj->street = $data['street'];
+      $property_obj->features_description = $data['features_description'];
+      $property_obj->features = json_decode($data['features'], true);
     }
+  }
     
     require_once '../tools/variables.php';
     $page_title = 'RMS | Edit Building';
@@ -167,7 +165,7 @@
               <span class="step rounded pt-3 pb-2 text-center">Images</span>
             </div>
             <form action="edit_building.php" id="regForm" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
-              <input type="text" hidden name="property-id" value="<?php echo $property_obj->id; ?>">
+            <input type="text" hidden name="property-id" value="<?php echo $property_obj->id; ?>">
               <div class="col-12">
                 <div class="tab">
                   <!-- Basic Details Step -->
@@ -177,7 +175,7 @@
                       <div class="form-group-row">
                         <div class="col">
                         <label for="property_name">Building Name</label>
-                        <input class="form-control form-control-sm req" type="text" id="property_name" name="property_name" value="<?php if(isset($_POST['property_name'])) { echo $_POST['property_name']; } else { echo $property_obj->property_name; }?>" required oninput="updateValidation(this)" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })">   
+                        <input class="form-control form-control-sm req" type="text" id="property_name" name="property_name" required oninput="updateValidation(this)" onkeyup="this.value = this.value.replace(/\b\w/g, function(l){ return l.toUpperCase(); })" value="<?php if(isset($_POST['property_name'])) { echo $_POST['property_name']; } else { echo $property_obj->property_name; }?>">   
                         <div class="invalid-feedback">Please provide a valid property name (letters, spaces, and dashes only).</div>                           
                         </div>
                       </div>
@@ -187,7 +185,7 @@
                         <div class="col">
                           <div class="col-lg-12">
                             <label for="property_description">Description of the Property</label>
-                            <textarea class="form-control form-control-lg" id="property_description" name="property_description" oninput="updateDescriptionWithLineBreaks()" maxlength="500" onkeyup="handleKeyUp(event, this)"><?php if(isset($_POST['property_description'])) { echo $_POST['property_description']; } else { echo $property_obj->property_description; }?></textarea>
+                            <textarea class="form-control form-control-lg" id="property_description" name="property_description" oninput="updateDescriptionWithLineBreaks()" maxlength="500" onkeyup="handleKeyUp(event, this)" col="100" row="50"><?php if(isset($_POST['property_description'])) { echo $_POST['property_description']; } else { echo $property_obj->property_description; }?></textarea>
                             <div class="invalid-feedback">Invalid Description (letters, spaces, and dashes only).</div>
                           </div>
                         </div>
@@ -199,19 +197,14 @@
                             <label for="landlord">Select Landlord</label>
                             <select class="form-control form-control-sm mb-3 req" id="landlord" name="landlord" required oninput="updateValidation(this)">
                               <option class="col-md-6" value="none" <?php if (!isset($_POST['landlord']) && !isset($property_obj->landlord_id)) echo 'selected'; ?>>Select Landlord</option>
-                                <?php
-                                  // Connect to the database and retrieve the list of landlords
-                                  $result = mysqli_query($conn, "SELECT id, last_name, first_name FROM landlord");
-                                  while ($row = mysqli_fetch_assoc($result)) {
-                                    $selected = '';
-                                    if (isset($_POST['landlord']) && $_POST['landlord'] == $row['id']) {
-                                      $selected = 'selected';
-                                    } elseif (isset($property_obj->landlord_id) && $property_obj->landlord_id == $row['id']) {
-                                      $selected = 'selected';
-                                    }
-                                    echo "<option value='" . $row['id'] . "'>" . $row['last_name'] . "," .$row['first_name']."</option>";
-                                  }
+                              <?php
+                              // Connect to the database and retrieve the list of landlords
+                              $result = mysqli_query($conn, "SELECT id, last_name, first_name FROM landlord");
+                              $landlords = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                              foreach ($landlords as $row) {
                                 ?>
+                              <option value="<?php echo $row['id'] ?>" <?php if(isset($_POST['landlord'])) { if ($_POST['landlord'] == $row['id']) echo ' selected="selected"'; } elseif ($property_obj->landlord_id == $row['id']) echo ' selected="selected"'; ?>> <?php echo $row['last_name']. ", ". $row['first_name']?></option>
+                              <?php } ?>
                             </select>
                             <div class="invalid-feedback">Must select a Landlord</div>
                           </div>
@@ -220,7 +213,7 @@
                         <div class="form-group-row">
                           <div class="">
                             <label for="num_of_floors">Number of Floors</label>
-                            <input class="form-control form-control-sm req" type="number" id="num_of_floors" name="num_of_floors" min="1" max="100" required onchange="generateFloorPlan()" oninput="updateValidation(this)" <?php if(isset($_POST['num_of_floors'])){echo "value=".$_POST['num_of_floors'];} else { echo $property_obj->num_of_floors; }?>?>>
+                            <input class="form-control form-control-sm req" type="number" id="num_of_floors" name="num_of_floors" min="1" max="100" required onchange="generateFloorPlan()" oninput="updateValidation(this)" value="<?php if(isset($_POST['num_of_floors'])) { echo $_POST['num_of_floors']; } else { echo $property_obj->num_of_floors; }?>">
                             <div class="invalid-feedback">Only greater than or equal to 0</div>
                           </div>
                         </div>
@@ -328,7 +321,7 @@
                         <div class="col d-flex">
                           <div class="col-lg-12">
                               <label for="features_description">Description of the Features</label>
-                              <textarea class="form-control form-control-lg" id="features_description" name="features_description" oninput="updateDescriptionWithLineBreaks()" maxlength="500" onkeyup="handleKeyUp(event, this)"><?php if(isset($_POST['features_description'])) { echo $_POST['features_description']; } else { echo $property_obj->features_description; }?></textarea>
+                              <textarea class="form-control form-control-lg" id="features_description" name="features_description" oninput="updateDescriptionWithLineBreaks()" maxlength="500" onkeyup="handleKeyUp(event, this)" col="100" row="50"><?php if(isset($_POST['features_description'])) { echo $_POST['features_description']; } else { echo $property_obj->features_description; }?></textarea>
                               <div class="invalid-feedback">Invalid Description (letters, spaces, and dashes only).</div>
                           </div>
                       </div>
@@ -341,17 +334,20 @@
                               <?php
                               // Connect to the database and retrieve the list of features
                               $result = mysqli_query($conn, "SELECT id, feature_name FROM features");
-                              $selected_features = isset($property_obj->features) ? json_decode($property_obj->features) : array();
+                              $selected_features = isset($property_obj->features) ? $property_obj->features : array();
                               echo "<div class='row p-3'>";
                               while ($row = mysqli_fetch_assoc($result)) {
                                 $checked = in_array($row['id'], $selected_features) ? "checked" : "";
-                                echo "
-                                  <div class='col-sm-4 text-dark'>
-                                    <input type='checkbox' class='checkmark req' id='feature" . $row['id'] . "' name='features[]' value='" . $row['id'] . "' $checked required oninput='updateValidation(this)''><label class='feature' for='feature" . $row['id'] . "'>" . $row['feature_name'] . "</label><br>
-                                  </div>
-                                ";
+                                echo "<div class='col-sm-4 text-dark'>";
+                                echo "<input type='checkbox' class='checkmark req' id='feature" . $row['id'] . "' name='features[]' value='" . $row['id'] . "'";
+                                if (isset($_POST['features']) && in_array($row['id'], $_POST['features'])) {
+                                  echo ' checked';
+                                } elseif (is_array($selected_features) && in_array($row['id'], $selected_features)) {
+                                  echo ' checked';
+                                }
+                                echo ">" . "<label class='pl-2 features'  for='feature" . $row['id'] . "'>" . $row['feature_name'] . "</label><br>";
+                                echo "</div>";
                               }
-                              echo"</div>";
                             ?>
                             <div class="invalid-feedback">
                               Please select at least one feature.
@@ -578,8 +574,8 @@
 
   function handleKeyUp(event, element) {
     // Capitalize first letter of each sentence
-    element.value = element.value.replace(/(?:\.|^|\n)\s*([a-z])/g, function(match, p1) {
-      return match.charAt(match.length - 1) === '.' ? '. ' + p1.toUpperCase() : p1.toUpperCase();
+    element.value = element.value.replace(/(^|\.\s+)([a-z])/g, function(match, p1, p2) {
+      return p1 + p2.toUpperCase();
     });
 
     // Add a line break after each period when the period key is pressed

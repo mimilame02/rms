@@ -13,10 +13,9 @@ session_start();
     this is to prevent users from accessing pages that requires
     authentication such as the dashboard
 */
-if (!isset($_SESSION['user_type']) || ($_SESSION['user_type'] != 'admin' && $_SESSION['user_type'] != 'landlord')) {
-  header('location: ../login/login.php');
+if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] != 'admin') {
+    header('location: ../login/login.php');
 }
-
 
 $db = new Database();
 $lease = new Leases($db);
@@ -37,48 +36,6 @@ print_r($invoice); */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $invoice = new Invoice();
 
-    // Check if penalty_active checkbox is checked
-  if (isset($_POST['penalty'])) {
-    // Get penalty amount and description from form
-    $amount = $_POST['penalty_amount'];
-    $description = $_POST['description'];
-
-    // Validate amount input  
-    if (!is_numeric($amount) || $amount < 0 || $amount > 1) {
-      $error = "Penalty amount must be a number between 0 and 1.";
-    } else {
-      // Add new penalty to database
-
-
-      // Calculate percentage based on amount
-      $percentage = $amount * 100;
-
-      if ($query->execute()) {
-        // Redirect to page with success message
-        header('Location: generate_invoice.php?success=Penalty added successfully.');
-        exit;
-      } else {
-        $error = "Error adding penalty.";
-      }
-    }
-  } else {
-    // Checkbox not checked, remove any existing penalty from database
-    $sql = "DELETE FROM penalty WHERE id = :id";
-    $query = $db->prepare($sql);
-    $query->bindParam(':id', $id);
-
-    // Get id of current penalty from form
-    $id = $_POST['penalty'];
-
-    if ($query->execute()) {
-      // Redirect to page with success message
-      header('Location: generate_invoice.php?success=Penalty removed successfully.');
-      exit;
-    } else {
-      $error = "Error removing penalty.";
-    }
-  }
-
     if (isset($_POST['action']) && $_POST['action'] == 'fetch_lease_data' && isset($_POST['lease_unit_id'])) {
         $lease_unit_id = $_POST['lease_unit_id'];
 
@@ -89,18 +46,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode($lease_data);
 
     } elseif (isset($_POST['action']) && $_POST['action'] == 'fetch_penalty_amount' && isset($_POST['penalty'])) {
-      $penalty_id = $_POST['penalty'];
-  
-      // Fetch penalty data based on penalty_id using the existing fetch_penalty function
-      $penalty_data = $penalty->fetch_penalty($penalty_id);
-  
-      // Return the penalty_amount and penalty_percentage as JSON
-      echo json_encode([
-          'penalty_amount' => $penalty_data['amount'],
-          'penalty_percentage' => $penalty_data['percentage'] * 100,
-      ]);
-  }
-   elseif(isset($_POST['save'])){
+        $penalty_id = $_POST['penalty'];
+
+        // Fetch penalty data based on penalty_id using the existing fetch_penalty function
+        $penalty_data = $penalty->fetch_penalty($penalty_id);
+
+        // Return the penalty_amount as JSON
+        echo json_encode(['penalty_amount' => $penalty_data['amount']]);
+
+    } elseif(isset($_POST['save'])){
       //sanitize user inputs
       $invoice->lease_unit_id = $_POST['lease_unit_id'];
       $invoice->tenant_id = $_POST['tenant_name'];
@@ -156,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
       
       // Add property to database
-      if ($invoice->invoice_add()) {
+      if ($invoice->invoice_add($tenant_id)) {
         header('Location: invoices.php');
         exit; // always exit after redirecting
       } else {
@@ -172,27 +126,13 @@ $invoices = 'active';
 require_once '../includes/header.php';
 ?>
 <body>
-<div class="loading-screen">
-  <img class="logo" src="../img/logo-edit.png" alt="logo">
-  <?php echo $page_title; ?>
-  <div class="loading-bar"></div>
-</div>
 <div class="container-scroller">
   <?php
     require_once '../includes/navbar.php';
   ?>
   <div class="container-fluid page-body-wrapper">
     <?php
-        if (isset($_SESSION['user_type'])) {
-            if ($_SESSION['user_type'] == 'landlord') {
-                require_once '../alandlord-dash/landlord_sidebar.php';
-            } elseif ($_SESSION['user_type'] == 'admin') {
-                require_once '../includes/sidebar.php';
-            }
-            // Add more conditions for other user types if needed
-        } else {
-            // Redirect to login or show a default sidebar if the user type is not set
-        }
+        require_once '../includes/sidebar.php';
     ?>
     <div class="main-panel">
       <div class="content-wrapper">
@@ -272,7 +212,7 @@ require_once '../includes/header.php';
                       <div class="col-md-12 pl-0">
                         <div class="form-group">
                           <label for="rent_due_dates_container">Rent Due Date</label>
-                          <input type="date" name="rent_due_date" class="form-control" id="rent_due_dates_container" placeholder="(default)" required>
+                          <input type="date" name="rent_due_date" min="<?php echo date('Y-m-d', strtotime('-1 month')); ?>" class="form-control" id="rent_due_dates_container" placeholder="(default)" required>
                         </div>
                       </div>
                       <div class="col-md-12 pl-0">
@@ -325,34 +265,17 @@ require_once '../includes/header.php';
                     <input type="number" name="water" class="form-control" id="water" placeholder="(default)" disabled>
                   </div>
                   <div class="form-group">
-  <h4 class="font-weight-bold mb-4" for="penalty">Penalty</h4>
-    <!-- Penalty checkbox -->
-    <div class="float-right mt-2">
-      <input class="checkmark req" type="checkbox" name="penalty_active" id="penalty_active" onchange="togglePenaltySelect()">
-      <label class="text-dark pl-2 mb-0 text-break fs-8" for="penalty_active">Apply penalty rule</label>
-    </div>
-  <div class="d-flex g-3" id="penalty_inputs">
-    <div class="form-group">
-    <label class="" for="penalty_amount">Penalty Amount (%)</label><br>
-    <input type="number" name="penalty_amount" id="penalty_amount" class="form-control">
-    </div>
-    <div class="form-group mx-3">
-    <label class="" for="penalty_description">Description</label><br>
-    <textarea class="form-control form-control-lg" id="penalty_description" name="description" maxlength="500" onkeyup="handleKeyUp(event, this)"></textarea>
-    </div>
-  </div>
-  <div class="d-flex g-3 mt-3" id="penalty_select" style="display: none;">
-    <select name="penalty" id="penalty" class="form-select form-control col-md-6" onchange="updatePenalty()" disabled>
-      <option value="">-- Select --</option>
-      <?php foreach ($penalty_data as $penalties): ?>
-      <option value="<?php echo $penalties['id']; ?>" data-penalty_amount="<?php echo $penalties['amount']; ?>" data-description="<?php echo $penalties['description']; ?>">
-        <?php echo $penalties['percentage'] * 100 . "%"; ?>
-      </option>
-      <?php endforeach; ?>
-    </select>
-    <p type="text" id="penaltyDescription" class="form-control h-auto ml-2 d-none" readonly></p>
-  </div>
-</div>
+                    <label for="penalty">Penalty (%)</label>
+                    <div class="d-flex g-3">
+                      <select name="penalty" id="penalty" class="form-select form-control col-md-6" onchange="updatePenalty()">
+                        <option value="">-- Select --</option>
+                        <?php foreach ($penalty_data as $penalties): ?>
+                        <option value="<?php echo $penalties['id']; ?>" data-penalty_amount="<?php echo $penalties['amount']; ?>" data-description="<?php echo $penalties['description']; ?>"><?php echo $penalties['percentage'] * 100 . "%";  ?></option>
+                        <?php endforeach; ?> 
+                      </select>
+                      <p type="text" id="penaltyDescription" class="form-control h-auto ml-2 d-none" readonly></p>
+                    </div>
+                  </div>
                   <div id="fixed-bill-fields" style="display: none;">
                     <div class="form-group">
                       <label for="num_of_invoices">Number of Invoices:</label>
@@ -506,54 +429,24 @@ function generateMonthlyBills(numOfInvoices, intervalInMonths) {
   return monthlyBills;
 }
 
-function togglePenaltySelect() {
-  let penaltySelect = document.getElementById("penalty");
-  let penaltyCheckbox = document.getElementById("penalty_active");
-  let penaltyAmountInput = document.getElementById("penalty_amount");
-  let penaltyDescriptionTextarea = document.getElementById("penalty_description");
-  let penaltyInputs = document.getElementById("penalty_inputs");
-  let penaltySelectfield = document.getElementById("penalty_select");
-
-  penaltySelect.disabled = !penaltyCheckbox.checked;
-  penaltySelect.value = '';
-
-  penaltyAmountInput.disabled = penaltyCheckbox.checked;
-  penaltyAmountInput.value = '';
-
-  penaltyDescriptionTextarea.disabled = penaltyCheckbox.checked;
-  penaltyDescriptionTextarea.value = '';
-
-  if (penaltyCheckbox.checked) {
-    penaltySelectfield.style.display = "none";
-  } else {
-    penaltySelectfield.style.display = "block";
-  }
-}
 
 function updatePenalty() {
-  let penaltySelect = document.getElementById("penalty");
-  let penaltyDescription = document.getElementById("penaltyDescription");
+    let penaltySelect = document.getElementById("penalty");
+    let penaltyDescription = document.getElementById("penaltyDescription");
 
-  let selectedOption = penaltySelect.options[penaltySelect.selectedIndex];
-  let description = selectedOption.getAttribute('data-description');
+    let selectedOption = penaltySelect.options[penaltySelect.selectedIndex];
+    let description = selectedOption.getAttribute('data-description');
 
-  if (description) {
-    penaltyDescription.textContent = description;
-    penaltyDescription.classList.remove('d-none');
-    penaltyDescription.classList.add('d-block');
-  } else {
-    penaltyDescription.textContent = '';
-    penaltyDescription.classList.remove('d-block');
-    penaltyDescription.classList.add('d-none');
-  }
+    if (description) {
+        penaltyDescription.textContent = description;
+        penaltyDescription.classList.remove('d-none');
+        penaltyDescription.classList.add('d-block');
+    } else {
+        penaltyDescription.textContent = '';
+        penaltyDescription.classList.remove('d-block');
+        penaltyDescription.classList.add('d-none');
+    }
 }
-
-function handleKeyUp(event, element) {
-  // add line breaks for each period followed by a space
-  element.value = element.value.replace(/\.(\s|$)/g, '.\n');
-}
-
-
 
 function calculateTotal() {
     const rent = parseFloat(document.getElementById("hidden_monthly_rent").value) || 0;

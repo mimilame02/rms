@@ -27,6 +27,7 @@
 }
 
 
+
 /* Scrollbar OVERFLOW Y */
 ::-webkit-scrollbar {
   width: 10px;
@@ -478,7 +479,16 @@ background: linear-gradient(111deg, rgba(8,76,78,1) 11%, rgba(13,91,94,1) 22%, r
   font-weight: bolder;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
-
+.plug {
+  color: white;
+  background-color: #62aa7b;
+  border: none;
+  border-radius: 13px;
+  padding: 8px;
+  font-weight: bolder;
+  padding-inline: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
 .lgreen{
   color: #26A852;
 }

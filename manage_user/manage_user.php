@@ -15,11 +15,6 @@
     
 ?>
 <body>
-<div class="loading-screen">
-  <img class="logo" src="../img/logo-edit.png" alt="logo">
-  <?php echo $page_title; ?>
-  <div class="loading-bar"></div>
-</div>
 <div class="container-scroller">
   <?php
     require_once '../includes/navbar.php';
@@ -58,13 +53,6 @@
                      <th>Name</th>
                      <th>Email</th>
                      <th>Role</th>
-                     <?php
-                                if($_SESSION['user_type'] == 'admin'){ 
-                            ?>
-                            <th>Action</th>
-                            <?php
-                                }
-                            ?>
             </tr>
         </thead>
         <tbody>
@@ -81,11 +69,6 @@
                       <td>'.$row['username'].'</td>
                       <td>'.$row['email'].'</td>
                       <td>'.$row['type'].'</td>
-                        <td>
-                        <div class="action">
-                        <a class="green action-delete" href="delete_user.php?id='.$row['id'].'"><i class="fas fa-trash"></i></a>
-          </div>
-                        </td>
                     </tr>';
                     $i++;
                     }
@@ -128,17 +111,24 @@
     </div>
 
     <div class="col d-none" id="tenant">
-      <label for="tenant_name">Tenant Name</label>
-      <select id="tenant_name" class="form-control form-control-sm" name="tenant_name">
-        <option selected>--Select--</option>
-        <?php
-        $result = mysqli_query($conn, "SELECT * FROM tenant");
-        while ($row = mysqli_fetch_assoc($result)) {
-          echo '<option value="' . $row['id'] . '">' . $row['first_name'] . ' ' . $row['last_name'] . '</option>';
-        }
-        ?>
-      </select>
-    </div>
+  <label for="tenant_name">Tenant Name</label>
+  <select id="tenant_name" class="form-control form-control-sm" name="tenant_name">
+    <option selected>--Select--</option>
+    <?php
+    $result = mysqli_query($conn, "SELECT * FROM tenant");
+    while ($row = mysqli_fetch_assoc($result)) {
+      // check if the tenant's email is already in the account table
+      $email = $row['email'];
+      $result2 = mysqli_query($conn, "SELECT * FROM account WHERE email='$email'");
+      if (mysqli_num_rows($result2) == 0) {
+        // if the email is not in the account table, add the option
+        echo '<option value="' . $row['id'] . '">' . $row['first_name'] . ' ' . $row['last_name'] . '</option>';
+      }
+    }
+    ?>
+  </select>
+</div>
+
 
     <div class="col d-none" id="landlord">
       <label for="landlord_name">Landlord Name</label>
@@ -171,30 +161,6 @@
   </div>
 </form>
 
-
-
-<!-- Delete Hotel Rooms Modal -->
-<div class="modal fade" id="delmanage_userModal" tabindex="-1" aria-labelledby="delmanage_userModal_Label" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="delmanage_userModal_Label">Delete User</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="save_user.php" method="POST">
-                    <div class="modal-body">
-                        <input type="hidden" name="user_id" id="delete_id">
-                        <h4>Are you sure, you want to delete this data?</h4>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" name="delete_user" class="btn btn-danger">Yes. Delete</button>
-                    </div>
-                </form>    
-            </div>
-        </div>
-    </div>
-    <!-- End of Delete Hotel Rooms Modal -->
 
 
 
@@ -252,6 +218,44 @@ select.addEventListener('change', function() {
   }
 });
 </script>
+
+<script>
+  // listen for changes to the tenant_name select element
+document.getElementById("tenant_name").addEventListener("change", function() {
+  // get the selected option's value
+  var tenant_id = this.value;
+  // send a request to the server to get the corresponding email
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      // check if the email already exists in the account table
+      var email = this.responseText.trim();
+      var emailInput = document.getElementById("email");
+      if (email !== "" && emailInput.value !== email) {
+        var xhr2 = new XMLHttpRequest();
+        xhr2.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            var response = JSON.parse(this.responseText);
+            if (response.exists) {
+              alert("This email address is already in use. Please choose a different email address.");
+              emailInput.value = "";
+            } else {
+              emailInput.value = email;
+            }
+          }
+        };
+        xhr2.open("GET", "check_email.php?email=" + encodeURIComponent(email), true);
+        xhr2.send();
+      } else {
+        emailInput.value = email;
+      }
+    }
+  };
+  xhr.open("GET", "get_tenant_email.php?id=" + tenant_id, true);
+  xhr.send();
+});
+</script>
+
 
 <script>
    $(document).ready(function() {

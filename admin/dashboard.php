@@ -149,7 +149,7 @@
                       <div class="card card-light-blue">
                         <div class="card-body white-text">
                           <span class="bx bx-building-house icons d-flex flex-row flex-wrap justify-content-between align-items-center mx-auto"><p class="fs-45 mb-2 ff fs-35 pl-5 fw-bolder"><?php echo $totalProperties; ?></p></span>
-                          <p class="mb-1 pt-3 fw-bolder">Total Property </p>
+                          <p class="mb-1 pt-3 fw-bolder">Total Buildings </p>
                         </div>
                       </div>
                     </div>

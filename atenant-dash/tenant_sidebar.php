@@ -1,4 +1,4 @@
-<nav class="sidebar sidebar-offcanvas" id="sidebar">
+<nav class="sidebar sidebar-offcanvas" id="tenant_sidebar">
         <ul class="nav fw-bolder">
           <li class="nav-item">
             <a class="nav-link" href="dashboard.php">
@@ -19,25 +19,13 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+            <a class="nav-link" href="tenant_invoice.php" aria-expanded="false" aria-controls="auth">
             <i class='bx bxs-book-content menu-icon' title="Invoice"></i>
               <span class="menu-title">My Invoice</span>
             </a>
-            <div class="collapse" id="auth">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="invoices.php"> List of Invoice</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pay_invoice.php"> Pay Due Invoice </a></li>
-              </ul>
-            </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="settings.php">
-            <i class='bx bx-cog menu-icon' title="Settings"></i>
-              <span class="menu-title">Settings</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="terms_and_conditions.php">
+            <a class="nav-link" href="tenant_tc.php">
             <i class='bx bxs-book-bookmark menu-icon' title="Terms and Condition"></i>
               <span class="menu-title">Terms and Condition</span>
             </a>

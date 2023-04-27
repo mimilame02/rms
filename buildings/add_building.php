@@ -167,7 +167,7 @@
                         <div class="col">
                           <div class="col-lg-12">
                             <label for="property_description">Description of the Property</label>
-                            <textarea class="form-control form-control-lg" id="property_description" name="property_description" oninput="updateDescriptionWithLineBreaks()" maxlength="500" onkeyup="handleKeyUp(event, this)"></textarea>
+                            <textarea class="form-control form-control-lg" id="property_description" name="property_description" oninput="updateDescriptionWithLineBreaks()" maxlength="500" onkeyup="handleKeyUp(event, this)" col="100" row="50"></textarea>
                             <div class="invalid-feedback">Invalid Description (letters, spaces, and dashes only).</div>
                           </div>
                         </div>
@@ -303,7 +303,7 @@
                         <div class="col d-flex">
                           <div class="col-lg-12">
                               <label for="features_description">Description of the Features</label>
-                              <textarea class="form-control form-control-lg" id="features_description" name="features_description" oninput="updateDescriptionWithLineBreaks()" maxlength="500" onkeyup="handleKeyUp(event, this)"></textarea>
+                              <textarea class="form-control form-control-lg" id="features_description" name="features_description" oninput="updateDescriptionWithLineBreaks()" maxlength="500" onkeyup="handleKeyUp(event, this)" col="100" row="50"></textarea>
                               <div class="invalid-feedback">Invalid Description (letters, spaces, and dashes only).</div>
                           </div>
                       </div>
@@ -553,8 +553,8 @@
 
   function handleKeyUp(event, element) {
     // Capitalize first letter of each sentence
-    element.value = element.value.replace(/(?:\.|^|\n)\s*([a-z])/g, function(match, p1) {
-      return match.charAt(match.length - 1) === '.' ? '. ' + p1.toUpperCase() : p1.toUpperCase();
+    element.value = element.value.replace(/(^|\.\s+)([a-z])/g, function(match, p1, p2) {
+      return p1 + p2.toUpperCase();
     });
 
     // Add a line break after each period when the period key is pressed

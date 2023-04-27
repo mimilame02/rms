@@ -58,7 +58,7 @@ class Leases{
     function lease_add() {
         // attempt insert query execution
         $sql = "INSERT INTO lease (property_unit_id, monthly_rent, tenant_id, lease_start, lease_end, lease_doc, one_month_deposit, one_month_advance, electricity, water, status)
-                VALUES (:property_unit_id,  :monthly_rent, :tenant_id, :lease_start, :lease_end, :lease_doc, :one_month_deposit, :one_month_advance, :electricity, :water, :status)";
+        VALUES (:property_unit_id,  :monthly_rent, :tenant_id, :lease_start, :lease_end, :lease_doc, :one_month_deposit, :one_month_advance, :electricity, :water, :status)";
 
         $query = $this->db->connect()->prepare($sql);
         $query->bindParam(':property_unit_id', $this->property_unit_id);
@@ -78,6 +78,7 @@ class Leases{
         } else {
             return false;
         }
+        
         }
 
     
