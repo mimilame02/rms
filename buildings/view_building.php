@@ -1,5 +1,4 @@
 <?php
-
 require_once '../includes/dbconfig.php';
 require_once '../classes/buildings.class.php';
 require_once '../classes/account.class.php';
